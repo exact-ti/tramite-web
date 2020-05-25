@@ -1,0 +1,11 @@
+@import './../../../../scss/variables';
+
+
+.seleccionado {
+    background-color: $green;
+    color: $white;
+}
+
+#paquete:hover{
+    font-weight: bold;
+}

@@ -1,0 +1,13 @@
+{
+    "mode": "test",
+
+    "dev": {
+        "login_url": "http://localhost:4200",
+        "api": "http://localhost:8890/api"
+    },
+
+    "test": {
+        "login_url": "http://www.exact.com.pe:8401",
+        "api": "http://www.exact.com.pe:8890/api"
+    }
+}

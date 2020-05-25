@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">TRACKING</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+<div class="modal-body pr-3">
+    <div class="row my-2">
+        <div class="col-3 font-weight-bold">
+            <span class="float-left">De:</span>
+        </div>
+        <div class="col">{{detalle.remitente}}</div>
+    </div>
+    <div class="row my-2">
+        <div class="col-3 font-weight-bold">
+            <span class="float-left">Origen:</span>
+        </div>
+        <div class="col">{{detalle.origen}}</div>
+    </div>
+    <div class="row my-2">
+        <div class="col-3 font-weight-bold">
+            <span class="float-left">Para:</span>
+        </div>
+        <div class="col">{{detalle.destinatario}}</div>
+    </div>
+    <div class="row my-2">
+        <div class="col-3 font-weight-bold">
+            <span class="float-left">Destino:</span>
+    </div>
+        <div class="col">{{detalle.destino}}</div>
+    </div>
+    <div class="row my-2" *ngIf="detalle.observacion && detalle.observacion.length > 0">
+        <div class="col-3 font-weight-bold">
+            <span class="float-left">Observación:</span>
+        </div>
+        <div class="col">{{detalle.observacion}}</div>
+    </div>
+    <div class="row mt-3">
+        <ul class="timeline">
+            <li *ngFor="let item of seguimientos">
+                <div class="col-12">{{item.fecha | date: 'dd/MM/yy HH:mm'}}</div>
+                <div class="col-12">{{item.estado}}</div>
+                <div class="col-12 font-weight-bold">{{item.ubicacion}}</div>
+            </li>
+        </ul>
+    </div>
+
+</div>

@@ -1,0 +1,10 @@
+@import './../../../scss/variables';
+
+ul {
+    width: 100%;
+}
+
+.nav-link.active{
+    background-color: transparent;
+    border-color: #dddfeb #dddfeb $gray-100 #dddfeb;    
+}

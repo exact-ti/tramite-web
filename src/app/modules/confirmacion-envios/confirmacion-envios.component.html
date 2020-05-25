@@ -1,0 +1,21 @@
+<form [formGroup]="confirmacionForm" (ngSubmit)="submit(confirmacionForm.value)">
+    <div class="my-4" *ngIf="!existenSeleccionados()">
+        <input type="text" class="form-control" name="paquete"
+            placeholder="Quiero confirmar la recepción del paquete con código..." formControlName="paqueteId">
+            <span *ngIf="confirmacionForm.get('paqueteId').invalid && confirmacionForm.get('paqueteId').dirty"
+                class="text-danger small">
+                Ingrese {{caracteresMinimosBusqueda}} caracteres o más
+            </span>
+    </div>
+    <div *ngIf="enviosWrappers.length > 0">        
+        <div class="my-4 row" *ngIf="confirmacionForm.get('paqueteId').value.length < caracteresMinimosBusqueda">
+            <div class="col-12 col-sm-8 col-lg-6 col-xl-4 card-parent" *ngFor="let item of enviosWrappers">
+                <app-envio-card [envioWrapper]="item" (click)="toggleSeleccionar(item)"></app-envio-card>
+            </div>
+        </div>
+    </div>    
+    <div class="my-4">
+        <input type="submit" class="btn btn-success" value="Confirmar" [disabled]="confirmacionForm.controls['paqueteId'].value.length < caracteresMinimosBusqueda && !existenSeleccionados()">
+    </div>
+
+</form>

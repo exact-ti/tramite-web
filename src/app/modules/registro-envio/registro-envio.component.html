@@ -1,0 +1,55 @@
+<div>
+    <form [formGroup]="envioForm" (ngSubmit)="submit(envioForm.value)">
+        <input type="text" *ngIf="!envioForm.get('destinatario').value" class="form-control"
+            [(ngModel)]="filtroDestinatario" [ngModelOptions]="{standalone: true}" name="destinatario"
+            placeholder="Mi envío es para..."
+            (ngModelChange)="filtroDestinatario.length >= caracteresMinimosBusqueda && buscarDestinatariosPorFiltro(filtroDestinatario)">
+        <div class="my-4">
+            <div *ngIf="filtroDestinatario.length < caracteresMinimosBusqueda && destinatariosFrecuentesWrappers.length > 0
+                " class="row">
+                <div class="col-12" *ngIf="!envioForm.get('destinatario').value">
+                    <p><small>Frecuentes</small></p>
+                </div>
+                <div [ngClass]="{'col-12 col-sm-6 col-lg-4 col-xl-3 card-parent': (!envioForm.get('destinatario').value || item.seleccionado)}"
+                    *ngFor="let item of destinatariosFrecuentesWrappers">
+                    <app-buzon-card *ngIf="(!envioForm.get('destinatario').value || item.seleccionado)"
+                        (click)="seleccionarDestinatario(item)" [buzonWrapper]="item"></app-buzon-card>
+
+                </div>
+            </div>
+            <div *ngIf="filtroDestinatario.length >= caracteresMinimosBusqueda" class="row">
+                <div class="col-12" *ngIf="!envioForm.get('destinatario').value">
+                    <p><small>Resultados</small></p>
+                </div>
+                <div [ngClass]="{'col-12 col-sm-6 col-lg-4 col-xl-3 card-parent': (!envioForm.get('destinatario').value || item.seleccionado)}"
+                    *ngFor="let item of destinatariosFiltroWrappers">
+                    <app-buzon-card *ngIf="(!envioForm.get('destinatario').value || item.seleccionado)"
+                        (click)="seleccionarDestinatario(item)" [buzonWrapper]="item"></app-buzon-card>
+
+                </div>
+            </div>
+        </div>
+        <div class="my-4">
+            <input type="text" class="form-control" name="paquete"
+                placeholder="Lo voy a enviar en el paquete con código..." formControlName="paqueteId">
+            <span *ngIf="envioForm.get('paqueteId').invalid && envioForm.get('paqueteId').dirty"
+                class="text-danger small">
+                Ingrese un código libre
+            </span>
+        </div>
+        <div class="my-4">
+            <input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" name="area" placeholder="Lo voy a dejar en la bandeja con código..."
+                formControlName="areaId">
+            <span *ngIf="envioForm.get('areaId').invalid && envioForm.get('areaId').dirty" class="text-danger small">
+                Ingrese un código existente
+            </span>
+        </div>
+        <div class="my-4">
+            <textarea name="observacion" class="form-control" formControlName="observacion" placeholder="Observación"
+                cols="30" rows="10"></textarea>
+        </div>
+        <div class="my-4">
+            <input class="btn btn-success" type="submit" value="Enviar" [disabled]="!envioForm.valid">
+        </div>
+    </form>
+</div>

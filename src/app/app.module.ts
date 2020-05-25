@@ -1,16 +1,86 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { map, take } from 'rxjs/operators';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { APP_ROUTING } from './app.routes';
+import { RegistroEnvioModule } from './modules/registro-envio/registro-envio.module';
+import { EnviosActivosModule } from './modules/envios-activos/envios-activos.module';
+import { ConfirmacionEnviosModule } from './modules/confirmacion-envios/confirmacion-envios.module';
+import { LocalStorageService } from './infrastructure/storage/local-storage.service';
+import { LocalStorage } from './core/repository/local-storage'
+import { AppConfig } from './app.config';
+import { IMenuRepository } from './core/repository/menu.repository';
+import { MenuProvider } from './infrastructure/api/menu.provider';
+import { RequesterService } from './infrastructure/api/core/requester.service';
+import { Interceptor } from './infrastructure/api/core/interceptor';
+import { SideBarComponent } from './layout/side-bar/side-bar.component';
+import { TopBarComponent } from './layout/top-bar/top-bar.component';
+import { TreeViewComponent } from './layout/side-bar/tree-view/tree-view.component';
+import { ErrorHandle } from './utils/error-handle';
+import { IBuzonRepository } from './core/repository/buzon.repository';
+import { BuzonProvider } from './infrastructure/api/buzon.provider';
+import { IConfiguracionRepository } from './core/repository/configuracion.repository';
+import { ConfiguracionProvider } from './infrastructure/api/configuracion.provider';
+import { IPaqueteRepository } from './core/repository/paquete.repository';
+import { PaqueteProvider } from './infrastructure/api/paquete.provider';
+import { IAreaRepository } from './core/repository/area.repository';
+import { AreaProvider } from './infrastructure/api/area.provider';
+import { IEnvioRepository } from './core/repository/envio.repository';
+import { EnvioProvider } from './infrastructure/api/envio.provider';
+
+export function cargarConfiguracion(httpClient: HttpClient) {
+  return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
+      map((x: any) => {
+        let modo: string = x.mode;
+        let objeto: any = x[modo];
+        AppConfig.Inicializar(objeto.login_url, objeto.api);
+      })
+  ).subscribe();
+}
+
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SideBarComponent,
+    TopBarComponent,
+    TreeViewComponent,
   ],
   imports: [
-    BrowserModule
+    ReactiveFormsModule,
+    BrowserModule,
+    HttpClientModule,
+    RegistroEnvioModule,
+    EnviosActivosModule,
+    ConfirmacionEnviosModule,
+    APP_ROUTING,
   ],
-  providers: [],
+  providers: [
+    RequesterService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: cargarConfiguracion,
+      multi: true,
+      deps: [HttpClient]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true
+    },
+    {provide: LocalStorage, useClass: LocalStorageService},
+    {provide: IMenuRepository, useClass: MenuProvider},
+    {provide: IBuzonRepository, useClass: BuzonProvider},
+    ErrorHandle,
+    {provide: IConfiguracionRepository, useClass: ConfiguracionProvider},
+    {provide: IPaqueteRepository, useClass: PaqueteProvider},
+    {provide: IAreaRepository, useClass: AreaProvider},
+    {provide: IEnvioRepository, useClass: EnvioProvider},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

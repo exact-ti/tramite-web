@@ -1,0 +1,7 @@
+<div class="card mb-2" [ngClass]="{seleccionado: envioWrapper.seleccionado}">
+    <div class="card-body">
+        <h6 class="font-weight-bold" *ngIf="envioWrapper.data.destinatario">Para {{envioWrapper.data.destinatario}}</h6>
+        <h6 class="font-weight-bold" *ngIf="envioWrapper.data.remitente">De {{envioWrapper.data.remitente}}</h6>
+        <small (click)="mostrarTracking()" class="card-text float-left" id="paquete">{{envioWrapper.data.paqueteId}}</small> <small class="card-text d-block text-right">{{envioWrapper.data.estado}}</small>
+    </div>
+</div>  
