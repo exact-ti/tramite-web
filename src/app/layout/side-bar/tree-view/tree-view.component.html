@@ -1,21 +1,22 @@
 <!-- Nav Item - Pages Collapse Menu -->
 
-<li *ngFor="let item of menu" class="nav-item">
+<li *ngFor="let item of menu" [ngClass]="{'nav-item': nivel == 0}">
 
-    <a *ngIf="item.link" [routerLink]="['/' + item.link]" routerLinkActive="router-link-active"  class="nav-link collapsed" href="#" aria-expanded="true"
-        aria-controls="collapseTwo">
+    <a *ngIf="item.link" [routerLink]="['/' + item.link]" routerLinkActive="router-link-active" class="collapse-item"
+        [ngClass]="{'nav-link': nivel == 0}" href="#" aria-expanded="true" aria-controls="collapseTwo">
         <i [class]="item.icono"></i>
         <span>{{item.nombre}}</span>
     </a>
 
-
-    <a *ngIf="!item.link" class="nav-link collapsed" data-toggle="collapse" [attr.data-target]="'#collapse-' + item.id"
-        aria-expanded="true" [attr.aria-controls]="'#collapse-' + item.id">
-        <i [class]="item.icono"></i>
-        <span>{{item.nombre}}</span>
-    </a>
-    <div [id]="'#collapse-' + item.id" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <ul app-tree-view [menu]="item.hijos" class="bg-white py-2 collapse-inner rounded">
-        </ul>
+    <div *ngIf="!item.link">
+        <a class="nav-link collapsed" data-toggle="collapse" [href]="'#collapse' + item.id" aria-expanded="false">
+            <i [class]="item.icono"></i>
+            <span>{{item.nombre}}</span>
+        </a>
+        <div [id]="'collapse' + item.id" class="collapse">
+            <ul app-tree-view [menu]="item.hijos" [nivel]="nivel + 1" class="bg-white py-2 collapse-inner rounded">
+            </ul>
+        </div>
     </div>
+
 </li>
