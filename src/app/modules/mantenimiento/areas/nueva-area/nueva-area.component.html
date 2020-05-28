@@ -1,0 +1,88 @@
+<!-- <div class="card">
+ -->
+    <div class="modal-header">
+        <h6 class="modal-title pull-left font-weight-bold">NUEVA ÁREA</h6>
+    </div>
+  
+    <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+  
+      <div class="card-body">
+  
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="nombre">Código de bandeja</label>
+              <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+              <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+                class="text-danger small">
+                Es necesario ingresar el código de  bandeja
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+                <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+                  class="text-danger small">
+                  Es necesario ingresar el nombre del área
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="nombre">Ubicación</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+                <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+                  class="text-danger small">
+                  Es necesario ingresar la ubicación
+                </span>
+              </div>
+            </div>
+          </div>  
+
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="region">Sede</label>
+              <select class="form-control" id="region" formControlName="region">
+                <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
+              </select>
+              <span *ngIf="!agregarForm.get('region').valid && agregarForm.get('region').touched"
+                class="text-danger small">
+                Es necesario la elección de una sede
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="region">Palomar</label>
+                <select class="form-control" id="region" formControlName="region">
+                  <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
+                </select>
+                <span *ngIf="!agregarForm.get('region').valid && agregarForm.get('region').touched"
+                  class="text-danger small">
+                  Es necesario la elección de un palomar
+                </span>
+              </div>
+            </div>
+          </div>        
+      </div>
+  
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" [disabled]="!agregarForm.valid">Agregar</button>
+        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+      </div>
+  
+    </form>
+  
+ <!--  </div> -->

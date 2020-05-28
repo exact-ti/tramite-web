@@ -1,8 +1,8 @@
 {
-    "mode": "test",
+    "mode": "dev",
 
     "dev": {
-        "login_url": "http://localhost:4200",
+        "login_url": "http://localhost:4300",
         "api": "http://localhost:8890/api"
     },
 

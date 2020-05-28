@@ -30,6 +30,11 @@ import { IAreaRepository } from './core/repository/area.repository';
 import { AreaProvider } from './infrastructure/api/area.provider';
 import { IEnvioRepository } from './core/repository/envio.repository';
 import { EnvioProvider } from './infrastructure/api/envio.provider';
+import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
+import { AreasModule } from './modules/mantenimiento/areas/areas.module';
+import { IUtdRepository } from './core/repository/utd.repository';
+import { UtdProvider } from './infrastructure/api/utd.provider';
+import { NuevaAreaComponent } from './modules/mantenimiento/areas/nueva-area/nueva-area.component';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -49,6 +54,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     SideBarComponent,
     TopBarComponent,
     TreeViewComponent,
+    NuevaAreaComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -57,6 +63,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     RegistroEnvioModule,
     EnviosActivosModule,
     ConfirmacionEnviosModule,
+    MantenimientoModule,
+    AreasModule,
     APP_ROUTING,
   ],
   providers: [
@@ -80,6 +88,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IPaqueteRepository, useClass: PaqueteProvider},
     {provide: IAreaRepository, useClass: AreaProvider},
     {provide: IEnvioRepository, useClass: EnvioProvider},
+    {provide: IUtdRepository, useClass: UtdProvider},
+
   ],
   bootstrap: [AppComponent]
 })

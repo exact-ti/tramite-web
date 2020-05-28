@@ -1,0 +1,27 @@
+<div class="my-4">
+    <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
+</div>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Código bandeja</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Ubicacion</th>
+        <th scope="col">Sede</th>
+        <th scope="col">Tipo Sede</th>
+        <th scope="col">Palomar</th>
+        <th scope="col">Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of enviosWrappers">
+        <th scope="row">{{item.data.id}}</th>
+        <td>{{item.data.nombre}}</td>
+        <td>{{item.data.ubicacion}}</td>
+        <td>{{item.data.sede}}</td>
+        <td>{{item.data.tiposede}}</td>
+        <td>{{item.data.sede}}</td>
+        <td>{{item.data.tiposede}}</td>
+      </tr>
+    </tbody>
+  </table>
