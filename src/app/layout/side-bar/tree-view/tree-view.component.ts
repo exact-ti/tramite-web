@@ -9,5 +9,6 @@ import { Menu } from 'src/app/core/model/menu.model';
 export class TreeViewComponent {
 
   @Input() menu: Menu[];
+  @Input() nivel: number;
 
 }

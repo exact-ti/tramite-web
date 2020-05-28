@@ -57,6 +57,9 @@ export class AppComponent implements OnInit {
 
 
 
+
+
+
   jqueryInicialization(): void {
     // Toggle the side navigation
     $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
@@ -102,6 +105,10 @@ export class AppComponent implements OnInit {
       }, 1000, 'easeInOutExpo');
       e.preventDefault();
     });
+
+    $
+
+
   }
 
 
