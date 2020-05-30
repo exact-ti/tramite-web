@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NuevaAreaComponent } from './nueva-area/nueva-area.component';
+import { ModificarAreaComponent } from './modificar-area/modificar-area.component';
 
 @Component({
   selector: 'app-areas',
@@ -19,8 +20,10 @@ export class AreasComponent implements OnInit {
     private areaRepository: IAreaRepository
   ) { }
 
-  public area: Area[];
+  public areas: any[];
   public enviosWrappers: any[] = [];
+  public areaModal : Area;
+  public modalTipoId : number;
 
   ngOnInit(): void {
     this.inicializarAreas();
@@ -31,6 +34,7 @@ export class AreasComponent implements OnInit {
     AppConfig.onInicialization.pipe(take(1)).subscribe(()=> {
       this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(
         (data) => {
+          this.areas=data;
           this.enviosWrappers = data.map((elemento)=> {
             return this.addWrapper(elemento);
           });
@@ -47,20 +51,57 @@ export class AreasComponent implements OnInit {
   }
 
   onAgregar() {
-    this.agregarAmbito();
+    this.modalTipoId=1;
+    this.agregarArea(null,this.modalTipoId);
   }
 
-  agregarAmbito() {
+  onEditar(row){
+    this.modalTipoId=2;
+    this.agregarArea(row,this.modalTipoId);
+  }
+
+  onSubmit(form: any) {
+ 
+  }
+
+
+
+  agregarArea(row,modalId) {
+    if(row!=null){
+      this.areaModal = this.areas.find(area => area.id == row);
+    }else{
+      this.areaModal=null
+    }
     let bsModalRef: BsModalRef = this.modalService.show(NuevaAreaComponent, {
       initialState: {
-        titulo: 'Agregar ámbito',
+        tipoModalId: modalId,
+        area:  this.areaModal,
+        titulo: this.areaModal==null ? 'NUEVA ÁREA' : 'MODIFICAR ÁREA'
       },
       class: 'modal-md',
       keyboard: false,
       backdrop: "static"
     });
-    /*bsModalRef.content.ambitoCreadoEvent.subscribe(() =>
-      this.listarAmbitos()
+    bsModalRef.content.ambitoCreadoEvent.subscribe(() =>
+      this.inicializarAreas()
+    ) 
+  }
+
+  modificarProducto(row) {
+    this.areaModal = this.areas.find(area => area.id == row);
+    let bsModalRef: BsModalRef = this.modalService.show(ModificarAreaComponent, {
+      initialState: {
+        id: row,
+        area: this.areaModal,
+        titulo: 'Modificar el producto'
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
+    });
+
+    /*bsModalRef.content.productoModificadoEvent.subscribe(() =>
+      this.listarProductos()
     )*/
   }
 }

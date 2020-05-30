@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { RequesterService } from './core/requester.service';
 import { HttpParams } from '@angular/common/http';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
@@ -29,10 +29,33 @@ export class AreaProvider extends IAreaRepository{
 
     listarAreasbySede(): Observable<any> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areas",{
-            params: new HttpParams().set("codigo",  String(this.myBool))
+            params: new HttpParams().set("mostrarInactivos",  String(this.myBool))
         })));
     }
+
+    crearArea(area: any): Observable<any> {
+        return this.client.post(this.prefix + "/envios", {
+            nombre: area.nombre,
+            ubicacion: area.ubicacion,
+            sedeId: area.sede, 
+            palomarId: area.palomarId,
+        });
+    }
+
+    modificarArea(area: any): Observable<any> {
+        return this.client.post(this.prefix + "/envios", {
+            id:area.id,
+            nombre: area.nombre,
+            ubicacion: area.ubicacion,
+            sedeId: area.sede, 
+            palomarId: area.palomarId,
+            activo:area.activo
+        });
+    }
     
-    
+/*     listarAreasbySede(): Observable<any> {
+        let obj = [{"id": 1,"codigoBandeja": "EXACT001", "nombre": "EXACT","ubicacion":"La victoria","sede": "central","tipoSede": "sucursal" }];
+        return of(obj);
+    } */
 
 }

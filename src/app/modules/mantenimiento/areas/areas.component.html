@@ -19,9 +19,11 @@
         <td>{{item.data.nombre}}</td>
         <td>{{item.data.ubicacion}}</td>
         <td>{{item.data.sede}}</td>
-        <td>{{item.data.tiposede}}</td>
+        <td>{{item.data.tipoSede}}</td>
         <td>{{item.data.sede}}</td>
-        <td>{{item.data.tiposede}}</td>
+        <td><div class="my-4">
+          <input class="btn btn-success" type="submit" value="Editar" (click)="onEditar(item.data.id)">
+      </div></td>
       </tr>
     </tbody>
   </table>

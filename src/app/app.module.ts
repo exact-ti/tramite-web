@@ -35,6 +35,12 @@ import { AreasModule } from './modules/mantenimiento/areas/areas.module';
 import { IUtdRepository } from './core/repository/utd.repository';
 import { UtdProvider } from './infrastructure/api/utd.provider';
 import { NuevaAreaComponent } from './modules/mantenimiento/areas/nueva-area/nueva-area.component';
+import { ModificarAreaComponent } from './modules/mantenimiento/areas/modificar-area/modificar-area.component';
+import { IPalomarRepository } from './core/repository/palomar.repository';
+import { PalomarProvider } from './infrastructure/api/palomar.provider';
+import { ISedeRepository } from './core/repository/sede.repository';
+import { SedeProvider } from './infrastructure/api/sede.provider';
+import { UtilsService } from './utils/utils';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -54,7 +60,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     SideBarComponent,
     TopBarComponent,
     TreeViewComponent,
-    NuevaAreaComponent
+    NuevaAreaComponent,
+    ModificarAreaComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -84,11 +91,14 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IMenuRepository, useClass: MenuProvider},
     {provide: IBuzonRepository, useClass: BuzonProvider},
     ErrorHandle,
+    UtilsService,
     {provide: IConfiguracionRepository, useClass: ConfiguracionProvider},
     {provide: IPaqueteRepository, useClass: PaqueteProvider},
     {provide: IAreaRepository, useClass: AreaProvider},
     {provide: IEnvioRepository, useClass: EnvioProvider},
     {provide: IUtdRepository, useClass: UtdProvider},
+    {provide: IPalomarRepository, useClass: PalomarProvider},
+    {provide: ISedeRepository, useClass: SedeProvider},
 
   ],
   bootstrap: [AppComponent]
