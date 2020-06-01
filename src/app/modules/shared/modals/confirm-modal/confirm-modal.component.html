@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Confirmar acción</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{mensaje}}</p>
+    <p style="color:red;">{{mensaje2}}</p>
+    <p>{{mensaje3}}</p>
+  
+  
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="confirmar()">Confirmar</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+  </div>

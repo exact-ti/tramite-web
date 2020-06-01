@@ -16,6 +16,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/confirmacion-envios/confirmacion-envios.module#ConfirmacionEnviosModule'
     },
     {
+        path: 'mantenimientos',
+        loadChildren: './modules/mantenimiento/mantenimiento.module#MantenimientoModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: 'envios-activos'

@@ -5,6 +5,8 @@ import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { BuzonCardComponent } from './buzon-card/buzon-card.component';
 import { EnvioCardComponent } from './envio-card/envio-card.component';
 import { TrackingComponent } from './modals/tracking/tracking.component';
+import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
+import { ButtonViewComponent } from './button-view/button-view.component';
 
 
 
@@ -12,7 +14,9 @@ import { TrackingComponent } from './modals/tracking/tracking.component';
   declarations: [
     BuzonCardComponent,
     EnvioCardComponent,
-    TrackingComponent
+    TrackingComponent,
+    ConfirmModalComponent,
+    ButtonViewComponent
   ],
   imports: [
     CommonModule, 
@@ -20,13 +24,15 @@ import { TrackingComponent } from './modals/tracking/tracking.component';
   ],
   exports: [
     BuzonCardComponent, 
-    EnvioCardComponent
+    EnvioCardComponent,
+    ButtonViewComponent
   ], 
   providers: [
     BsModalService,
   ], 
   entryComponents: [
     TrackingComponent,
+    ConfirmModalComponent
   ]
 })
 export class SharedModule { }

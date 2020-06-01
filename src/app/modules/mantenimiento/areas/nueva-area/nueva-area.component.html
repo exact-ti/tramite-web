@@ -1,0 +1,110 @@
+<!-- <div class="card">
+ -->
+    <div class="modal-header">
+        <h6 class="modal-title pull-left font-weight-bold">{{ titulo }}</h6>
+    </div>
+  
+    <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+  
+      <div class="card-body">
+  
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="codigo">Código de bandeja</label>
+              <input class="form-control" type="text" name="codigo" id="codigo" formControlName="codigo">
+              <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched"
+                class="text-danger small">
+                Es necesario ingresar el código de  bandeja
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+                <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+                  class="text-danger small">
+                  Es necesario ingresar el nombre del área
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="ubicacion">Ubicación</label>
+                <input class="form-control" type="text" name="ubicacion" id="ubicacion" formControlName="ubicacion">
+                <span *ngIf="!agregarForm.get('ubicacion').valid && agregarForm.get('ubicacion').touched"
+                  class="text-danger small">
+                  Es necesario ingresar la ubicación
+                </span>
+              </div>
+            </div>
+          </div>  
+
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="sede">Sede</label>
+              <select class="form-control" id="sede" formControlName="sede">
+                <option *ngFor="let sede of sedes" [ngValue]="sede">{{sede.descripcion}}</option>
+              </select>
+              <span *ngIf="!agregarForm.get('sede').valid && agregarForm.get('sede').touched"
+                class="text-danger small">
+                Es necesario la elección de una sede
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="palomar">Palomar</label>
+                <select class="form-control" id="palomar" formControlName="palomar">
+                  <option *ngFor="let palomar of palomares" [ngValue]="palomar">{{palomar}}</option>
+                </select>
+                <span *ngIf="!agregarForm.get('palomar').valid && agregarForm.get('palomar').touched"
+                  class="text-danger small">
+                  Es necesario la elección de un palomar
+                </span>
+              </div>
+            </div>
+          </div>     
+          
+          <div *ngIf="tipoModalId==2">
+            <div class="form-row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="activo">Estado</label>
+                  <select class="form-control" id="activo" formControlName="activo">
+                    <option value="true">ACTIVADO
+                    </option>
+                    <option value="false">DESACTIVADO
+                    </option>
+                  </select>
+                  <span *ngIf="!agregarForm.get('activo').value" class="text-danger small">
+                    No se puede modificar si está desactivado
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success"
+          [disabled]="!agregarForm.valid || agregarForm.pristine">Modificar</button>
+        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+      </div>
+
+ 
+  
+    </form>
+  
+ <!--  </div> -->

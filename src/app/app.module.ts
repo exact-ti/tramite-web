@@ -3,7 +3,6 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import { APP_ROUTING } from './app.routes';
 import { RegistroEnvioModule } from './modules/registro-envio/registro-envio.module';
@@ -30,6 +29,19 @@ import { IAreaRepository } from './core/repository/area.repository';
 import { AreaProvider } from './infrastructure/api/area.provider';
 import { IEnvioRepository } from './core/repository/envio.repository';
 import { EnvioProvider } from './infrastructure/api/envio.provider';
+import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
+import { AreasModule } from './modules/mantenimiento/areas/areas.module';
+import { IUtdRepository } from './core/repository/utd.repository';
+import { UtdProvider } from './infrastructure/api/utd.provider';
+import { NuevaAreaComponent } from './modules/mantenimiento/areas/nueva-area/nueva-area.component';
+import { ModificarAreaComponent } from './modules/mantenimiento/areas/modificar-area/modificar-area.component';
+import { IPalomarRepository } from './core/repository/palomar.repository';
+import { PalomarProvider } from './infrastructure/api/palomar.provider';
+import { ISedeRepository } from './core/repository/sede.repository';
+import { SedeProvider } from './infrastructure/api/sede.provider';
+import { UtilsService } from './utils/utils';
+import { NotifierModule } from 'angular-notifier';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -49,14 +61,20 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     SideBarComponent,
     TopBarComponent,
     TreeViewComponent,
+    NuevaAreaComponent,
+    ModificarAreaComponent,
   ],
   imports: [
+    NotifierModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     RegistroEnvioModule,
     EnviosActivosModule,
     ConfirmacionEnviosModule,
+    MantenimientoModule,
+    AreasModule,
+    Ng2SmartTableModule, 
     APP_ROUTING,
   ],
   providers: [
@@ -76,10 +94,15 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IMenuRepository, useClass: MenuProvider},
     {provide: IBuzonRepository, useClass: BuzonProvider},
     ErrorHandle,
+    UtilsService,
     {provide: IConfiguracionRepository, useClass: ConfiguracionProvider},
     {provide: IPaqueteRepository, useClass: PaqueteProvider},
     {provide: IAreaRepository, useClass: AreaProvider},
     {provide: IEnvioRepository, useClass: EnvioProvider},
+    {provide: IUtdRepository, useClass: UtdProvider},
+    {provide: IPalomarRepository, useClass: PalomarProvider},
+    {provide: ISedeRepository, useClass: SedeProvider},
+
   ],
   bootstrap: [AppComponent]
 })
