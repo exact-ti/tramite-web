@@ -3,7 +3,6 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import { APP_ROUTING } from './app.routes';
 import { RegistroEnvioModule } from './modules/registro-envio/registro-envio.module';
@@ -41,6 +40,8 @@ import { PalomarProvider } from './infrastructure/api/palomar.provider';
 import { ISedeRepository } from './core/repository/sede.repository';
 import { SedeProvider } from './infrastructure/api/sede.provider';
 import { UtilsService } from './utils/utils';
+import { NotifierModule } from 'angular-notifier';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -61,9 +62,10 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     TopBarComponent,
     TreeViewComponent,
     NuevaAreaComponent,
-    ModificarAreaComponent
+    ModificarAreaComponent,
   ],
   imports: [
+    NotifierModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
@@ -72,6 +74,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     ConfirmacionEnviosModule,
     MantenimientoModule,
     AreasModule,
+    Ng2SmartTableModule, 
     APP_ROUTING,
   ],
   providers: [

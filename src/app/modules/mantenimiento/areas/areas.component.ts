@@ -7,6 +7,9 @@ import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NuevaAreaComponent } from './nueva-area/nueva-area.component';
 import { ModificarAreaComponent } from './modificar-area/modificar-area.component';
+import { ButtonViewComponent } from '../../shared/button-view/button-view.component';
+import { UtilsService } from 'src/app/utils/utils';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
   selector: 'app-areas',
@@ -24,12 +27,71 @@ export class AreasComponent implements OnInit {
   public enviosWrappers: any[] = [];
   public areaModal : Area;
   public modalTipoId : number;
+  public mensaje : String;
+  settings = UtilsService.tableSettings;
+  dataAreas: LocalDataSource = new LocalDataSource();
 
   ngOnInit(): void {
     this.inicializarAreas();
   }
-
   
+  generarColumnas() {
+    this.settings.columns = {
+      codigobandeja: {
+        title: 'Código bandeja'
+      },
+      nombre: {
+        title: 'Nombre'
+      },
+      ubicacion: {
+        title: 'Ubicación'
+      },
+      sede: {
+        title: 'Sede'
+      },
+      tiposede: {
+        title: 'Tipo sede'
+      },
+      palomar: {
+        title: 'Palomar'
+      },      
+      buttonModificar: {
+        title: 'Editar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-wrench";
+          instance.pressed.subscribe(row => {
+            this.onEditar(row);
+          });
+        }
+      }
+    }
+  }
+
+  listarProductos() {
+    this.dataAreas.reset();
+    this.areaRepository.listarAreasbySede().subscribe(
+      areas => {
+        this.areas = areas;
+        let dataProductos = [];
+        areas.forEach(
+          producto => {
+            dataProductos.push({
+              codigobandeja: areas.id,
+              nombre: areas.nombre,
+              ubicacion:areas.ubicacion,
+              sede:areas.sede,
+              tiposede:areas.tiposede,
+              palomar:areas.palomar,
+            })
+          }
+        )
+        this.dataAreas.load(dataProductos);
+      }
+    )
+  }
+
   inicializarAreas(): void {
     AppConfig.onInicialization.pipe(take(1)).subscribe(()=> {
       this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(

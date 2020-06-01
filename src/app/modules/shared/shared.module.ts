@@ -6,6 +6,7 @@ import { BuzonCardComponent } from './buzon-card/buzon-card.component';
 import { EnvioCardComponent } from './envio-card/envio-card.component';
 import { TrackingComponent } from './modals/tracking/tracking.component';
 import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
+import { ButtonViewComponent } from './button-view/button-view.component';
 
 
 
@@ -14,7 +15,8 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
     BuzonCardComponent,
     EnvioCardComponent,
     TrackingComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    ButtonViewComponent
   ],
   imports: [
     CommonModule, 
@@ -22,7 +24,8 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
   ],
   exports: [
     BuzonCardComponent, 
-    EnvioCardComponent
+    EnvioCardComponent,
+    ButtonViewComponent
   ], 
   providers: [
     BsModalService,

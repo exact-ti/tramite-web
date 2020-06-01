@@ -50,4 +50,18 @@ export class UtilsService {
         return 'data:image/svg+xml;base64,' + encodedData;
     }
 
+    public static tableSettings = {
+        editable: false, 
+        columns: {},
+        actions: {
+            add: false,
+            edit: false,
+            delete: false,
+          }, 
+        hideSubHeader: true,
+        attr: {
+            class: 'table table-bordered'
+          }
+    }
+
 }
