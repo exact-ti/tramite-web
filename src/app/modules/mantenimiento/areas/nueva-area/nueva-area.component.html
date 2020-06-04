@@ -1,25 +1,28 @@
-<!-- <div class="card">
- -->
-    <div class="modal-header">
+     <div class="modal-header">
         <h6 class="modal-title pull-left font-weight-bold">{{ titulo }}</h6>
     </div>
   
     <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
   
       <div class="card-body">
-  
+      <div *ngIf="tipoModalId==1">
         <div class="form-row">
           <div class="col">
             <div class="form-group">
               <label for="codigo">Código de bandeja</label>
               <input class="form-control" type="text" name="codigo" id="codigo" formControlName="codigo">
-              <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched"
+              <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched && validarLongitud(agregarForm.get('codigo').value)"
                 class="text-danger small">
                 Es necesario ingresar el código de  bandeja
               </span>
+              <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched && !validarLongitud(agregarForm.get('codigo').value)"
+                class="text-danger small">
+                El código ya se encuentra en el sistema
+               </span>
             </div>
           </div>
         </div>
+      </div>
 
         <div class="form-row">
             <div class="col">
@@ -67,7 +70,7 @@
               <div class="form-group">
                 <label for="palomar">Palomar</label>
                 <select class="form-control" id="palomar" formControlName="palomar">
-                  <option *ngFor="let palomar of palomares" [ngValue]="palomar">{{palomar}}</option>
+                  <option *ngFor="let palomar of palomares" [ngValue]="palomar">{{palomar.descripcion}}</option>
                 </select>
                 <span *ngIf="!agregarForm.get('palomar').valid && agregarForm.get('palomar').touched"
                   class="text-danger small">
@@ -96,15 +99,10 @@
             </div>
           </div>
       </div>
-  
       <div class="modal-footer">
         <button type="submit" class="btn btn-success"
-          [disabled]="!agregarForm.valid || agregarForm.pristine">Modificar</button>
+          [disabled]="!agregarForm.valid || agregarForm.pristine"><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
+        </button>
         <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
       </div>
-
- 
-  
     </form>
-  
- <!--  </div> -->
