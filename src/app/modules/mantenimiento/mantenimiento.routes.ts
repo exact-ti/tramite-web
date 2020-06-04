@@ -2,6 +2,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 const APP_ROUTES: Routes = [
     { 
+        path: 'turnos-recorridos',
+        loadChildren: './turnos-recorridos/turnos-recorridos.module#TurnosRecorridosModule'
+    },
+    { 
         path: 'areas',
         loadChildren: './areas/areas.module#AreasModule'
     },

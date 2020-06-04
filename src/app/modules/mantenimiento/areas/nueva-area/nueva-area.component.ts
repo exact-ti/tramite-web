@@ -22,7 +22,7 @@ export class NuevaAreaComponent implements OnInit {
 
   constructor(    public bsModalRef: BsModalRef,    private modalService: BsModalService,
     private sedeRepository: ISedeRepository ,private palomarRepository: IPalomarRepository,private utilsService: UtilsService,
-    private areaRepository: IAreaRepository,    private notifier: NotifierService 
+    private areaRepository: IAreaRepository, private notifier: NotifierService 
     ) { }
   agregarForm: FormGroup;
   titulo : String;

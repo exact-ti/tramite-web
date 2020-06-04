@@ -41,7 +41,11 @@ import { ISedeRepository } from './core/repository/sede.repository';
 import { SedeProvider } from './infrastructure/api/sede.provider';
 import { UtilsService } from './utils/utils';
 import { NotifierModule } from 'angular-notifier';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { TurnosRecorridosModule } from './modules/mantenimiento/turnos-recorridos/turnos-recorridos.module';
+import { ITurnoRecorridoRepository } from './core/repository/turno-recorrido.repository';
+import { TurnoRecorridoProvider } from './infrastructure/api/turno-recorrido.provider';
+import { IUsuarioRepository } from './core/repository/usuario.repository';
+import { UsuarioProvider } from './infrastructure/api/usuario.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -72,9 +76,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     RegistroEnvioModule,
     EnviosActivosModule,
     ConfirmacionEnviosModule,
-    MantenimientoModule,
-    AreasModule,
-    Ng2SmartTableModule, 
+    TurnosRecorridosModule,
     APP_ROUTING,
   ],
   providers: [
@@ -102,6 +104,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IUtdRepository, useClass: UtdProvider},
     {provide: IPalomarRepository, useClass: PalomarProvider},
     {provide: ISedeRepository, useClass: SedeProvider},
+    {provide: ITurnoRecorridoRepository, useClass: TurnoRecorridoProvider},
+    {provide: IUsuarioRepository, useClass: UsuarioProvider},
 
   ],
   bootstrap: [AppComponent]

@@ -7,6 +7,7 @@ import { EnvioCardComponent } from './envio-card/envio-card.component';
 import { TrackingComponent } from './modals/tracking/tracking.component';
 import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
 import { ButtonViewComponent } from './button-view/button-view.component';
+import { AreaCardComponent } from './area-card/area-card.component';
 
 
 
@@ -16,16 +17,19 @@ import { ButtonViewComponent } from './button-view/button-view.component';
     EnvioCardComponent,
     TrackingComponent,
     ConfirmModalComponent,
-    ButtonViewComponent
+    ButtonViewComponent,
+    AreaCardComponent
   ],
   imports: [
     CommonModule, 
     ModalModule.forRoot(),
+    
   ],
   exports: [
     BuzonCardComponent, 
     EnvioCardComponent,
-    ButtonViewComponent
+    ButtonViewComponent,
+    AreaCardComponent,
   ], 
   providers: [
     BsModalService,

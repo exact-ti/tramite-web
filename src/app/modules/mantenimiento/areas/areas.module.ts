@@ -4,6 +4,7 @@ import { AreasComponent } from './areas.component';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_ROUTING } from './areas.routes';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 
 
@@ -15,6 +16,7 @@ import { APP_ROUTING } from './areas.routes';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    Ng2SmartTableModule,
   ]
 })
 export class AreasModule { }

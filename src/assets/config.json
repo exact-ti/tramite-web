@@ -2,7 +2,7 @@
     "mode": "dev",
 
     "dev": {
-        "login_url": "http://localhost:4300",
+        "login_url": "http://localhost:4200",
         "api": "http://localhost:8890/api"
     },
 

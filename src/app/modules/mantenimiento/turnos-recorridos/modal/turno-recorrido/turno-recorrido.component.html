@@ -1,0 +1,88 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">
+        {{ tipoFormulario == 1 ? 'NUEVO TURNO RECORRIDO' : 'ACTUALIZAR TURNO RECORRIDO' }}</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+
+<form [formGroup]="turnoRecorridoForm" (ngSubmit)="submit(turnoRecorridoForm.value)">
+    <div class="modal-body pr-3">
+        <div class="form-group">
+            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control" formControlName="nombre"
+                placeholder="Ingrese el nombre">
+            <span *ngIf="turnoRecorridoForm.get('nombre').invalid && turnoRecorridoForm.get('nombre').dirty"
+                class="text-danger small">
+                El nombre del turno recorrido es obligatorio
+            </span>
+        </div>
+        <div class="form-group">
+            <ng-select [items]=operativos bindLabel="descripcion" formControlName="operativo"
+                placeholder="Selecciona el operativo"></ng-select>
+            <span *ngIf="turnoRecorridoForm.get('operativo').invalid && turnoRecorridoForm.get('operativo').dirty"
+                class="text-danger small">
+                El operativo es obligatorio
+            </span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <input type="time" class="form-control" formControlName="horaInicio" placeholder="Hora inicio">
+                    <span
+                        *ngIf="turnoRecorridoForm.get('horaInicio').invalid && turnoRecorridoForm.get('horaInicio').dirty"
+                        class="text-danger small">
+                        La hora inicial es obligatoria
+                    </span>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <input type="time" class="form-control" formControlName="horaFin" placeholder="Hora fin">
+                    <span *ngIf="turnoRecorridoForm.get('horaFin').invalid && turnoRecorridoForm.get('horaFin').dirty"
+                        class="text-danger small">
+                        La hora final es obligatoria
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <ng-select [items]=areas bindLabel="nombre" [(ngModel)]="area" [ngModelOptions]="{standalone: true}" placeholder="Selecciona el área">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-primary float-right"
+                    (click)="agregarArea(area)"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+        <div *ngIf="areasSeleccionadas.length > 0; else mensaje" class="row" dndDropzone dndEffectAllowed="copyMove"
+            (dndDrop)="onDrop($event, areasSeleccionadas)">
+            <div class="col-6 dndPlaceholder" dndPlaceholderRef>
+            </div>
+            <div class="col-6" *ngFor="let area of areasSeleccionadas" [dndDraggable]="area" dndEffectAllowed="move"
+                (dndMoved)="onDragged(area, areasSeleccionadas, 'move')">
+                <app-area-card [area]="area" (onClose)="removerArea(area)"></app-area-card>
+            </div>
+        </div>
+        <ng-template #mensaje>
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-warning" role="alert">
+                        No hay áreas asociadas al recorrido
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <div *ngIf="tipoFormulario == 2" class="custom-control custom-switch form-group mt-3">
+            <input type="checkbox" class="custom-control-input" id="activo" formControlName="activo">
+            <label class="custom-control-label" for="activo">Activo</label>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" [disabled]="turnoRecorridoForm.invalid">Registrar</button>
+    </div>
+</form>
