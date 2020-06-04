@@ -120,7 +120,6 @@ export class RegistroEnvioComponent implements OnInit {
   }
 
   private existenciaAreaValidator({ value }: AbstractControl): Observable<ValidationErrors | null> {
-
     if (value.length == 0) {
       return of(null);
     } else {

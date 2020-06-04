@@ -35,21 +35,22 @@ export class AreaProvider extends IAreaRepository{
     }
 
     crearArea(area: any): Observable<any> {
-        return this.client.post(this.prefix + "/envios", {
+        return this.client.post(this.prefix + "/areas", {
+            id:area.id,
             nombre: area.nombre,
             ubicacion: area.ubicacion,
-            sedeId: area.sede, 
-            palomarId: area.palomarId,
+            sedeId:area.sede.id, 
+            palomarId: area.palomar.id,
         });
     }
 
     modificarArea(area: any): Observable<any> {
-        return this.client.post(this.prefix + "/envios", {
+        return this.client.post(this.prefix + "/areas", {
             id:area.id,
             nombre: area.nombre,
             ubicacion: area.ubicacion,
-            sedeId: area.sede, 
-            palomarId: area.palomarId,
+            sedeId: area.sede.id, 
+            palomarId: area.palomar.id,
             activo:area.activo
         });
     }

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -108,6 +108,9 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IUsuarioRepository, useClass: UsuarioProvider},
 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA],
+
 })
 export class AppModule { }

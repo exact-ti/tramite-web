@@ -16,7 +16,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    Ng2SmartTableModule,
+    Ng2SmartTableModule
   ]
 })
 export class AreasModule { }

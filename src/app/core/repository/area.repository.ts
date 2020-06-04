@@ -9,4 +9,5 @@ export abstract class IAreaRepository {
     abstract modificarArea(area: any): Observable<any>;
     abstract listarAreasDeUTD(mostrarInactivos: boolean): Observable<any>;
 
+
 }
