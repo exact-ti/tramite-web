@@ -8,7 +8,8 @@ import { IUtdRepository } from 'src/app/core/repository/utd.repository';
 import { Utd } from 'src/app/core/model/utd.model';
 
 @Injectable()
-export class AreaProvider extends IAreaRepository{    
+export class AreaProvider extends IAreaRepository{
+
 
     constructor(
         private client: RequesterService,
@@ -34,24 +35,27 @@ export class AreaProvider extends IAreaRepository{
     }
 
     crearArea(area: any): Observable<any> {
-        return this.client.post(this.prefix + "/envios", {
+        return this.client.post(this.prefix + "/areas", {
+            id:area.id,
             nombre: area.nombre,
             ubicacion: area.ubicacion,
-            sedeId: area.sede, 
-            palomarId: area.palomarId,
+            sedeId:area.sede.id, 
+            palomarId: area.palomar.id,
         });
     }
 
     modificarArea(area: any): Observable<any> {
-        return this.client.post(this.prefix + "/envios", {
+        return this.client.post(this.prefix + "/areas", {
             id:area.id,
             nombre: area.nombre,
             ubicacion: area.ubicacion,
-            sedeId: area.sede, 
-            palomarId: area.palomarId,
+            sedeId: area.sede.id, 
+            palomarId: area.palomar.id,
             activo:area.activo
         });
     }
+
+
     
 /*     listarAreasbySede(): Observable<any> {
         let obj = [{"id": 1,"codigoBandeja": "EXACT001", "nombre": "EXACT","ubicacion":"La victoria","sede": "central","tipoSede": "sucursal" }];

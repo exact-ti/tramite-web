@@ -1,14 +1,16 @@
 import { Sede } from './sede.model';
+import { Palomar } from './palomar.model';
 
 export class Area {
-
     constructor(
         public id: string,
-        public codigoBandeja: String,
         public nombre: string,
         public sede: Sede,
+        public palomar:Palomar,
+        public sedeId: number,
+        public palomarId: number,
         public ubicacion:string,
-        public tiposede:string,
+        public tipoSede:string,
         public activo:boolean
     ){}
 
