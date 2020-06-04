@@ -7,6 +7,7 @@ export abstract class IAreaRepository {
     abstract listarAreasbySede(): Observable<any>;
     abstract crearArea(area: any): Observable<any>;
     abstract modificarArea(area: any): Observable<any>;
+    abstract listarAreasDeUTD(mostrarInactivos: boolean): Observable<any>;
 
 
 }

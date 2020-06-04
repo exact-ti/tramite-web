@@ -1,0 +1,7 @@
+<div class="my-4 mb-5">
+    <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
+
+    <div *ngIf="turnosRecorridosDS.count() !== 0" class="center mt-3">
+        <ng2-smart-table [settings]="settings" [source]="turnosRecorridosDS"></ng2-smart-table>
+    </div>
+</div>

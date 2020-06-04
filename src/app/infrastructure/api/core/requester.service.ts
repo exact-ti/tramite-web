@@ -19,6 +19,10 @@ export class RequesterService {
         return this.httpClient.post(AppConfig.API + path, body, options);
     }
 
+    public put(path: string, body: {} = null, options: {} = {}): Observable<any>{
+        return this.httpClient.put(AppConfig.API + path, body, options);
+    }
+
     
     
     

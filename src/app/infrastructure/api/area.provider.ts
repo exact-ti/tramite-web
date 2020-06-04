@@ -9,7 +9,7 @@ import { Utd } from 'src/app/core/model/utd.model';
 
 @Injectable()
 export class AreaProvider extends IAreaRepository{
-
+        
 
     constructor(
         private client: RequesterService,
@@ -55,11 +55,10 @@ export class AreaProvider extends IAreaRepository{
         });
     }
 
-
-    
-/*     listarAreasbySede(): Observable<any> {
-        let obj = [{"id": 1,"codigoBandeja": "EXACT001", "nombre": "EXACT","ubicacion":"La victoria","sede": "central","tipoSede": "sucursal" }];
-        return of(obj);
-    } */
+    listarAreasDeUTD(mostrarInactivos: boolean): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areas", {
+            params: new HttpParams().set("mostrarInactivos",  String(mostrarInactivos))
+        })));
+    }
 
 }
