@@ -9,6 +9,7 @@ import { Utd } from 'src/app/core/model/utd.model';
 
 @Injectable()
 export class AreaProvider extends IAreaRepository{
+
         
 
     constructor(
@@ -32,6 +33,10 @@ export class AreaProvider extends IAreaRepository{
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areas",{
             params: new HttpParams().set("mostrarInactivos",  String(this.myBool))
         })));
+    }
+
+    listarAreasSinPalomar(): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areas/libres")));
     }
 
     crearArea(area: any): Observable<any> {

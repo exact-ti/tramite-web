@@ -12,6 +12,10 @@ const APP_ROUTES: Routes = [
     { 
         path: 'interconexiones',
         loadChildren: './interconexiones/interconexiones.module#InterconexionesModule'
+    },    
+    { 
+        path: 'palomares',
+        loadChildren: './palomares/palomares.module#PalomaresModule'
     },
 ];
 

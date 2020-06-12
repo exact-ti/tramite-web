@@ -47,6 +47,7 @@ import { IUsuarioRepository } from './core/repository/usuario.repository';
 import { UsuarioProvider } from './infrastructure/api/usuario.provider';
 import { InterconexionProvider } from './infrastructure/api/interconexion.provider';
 import { IInterconexionRepository } from './core/repository/interconexion.repository';
+import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.module';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
