@@ -34,7 +34,6 @@ import { AreasModule } from './modules/mantenimiento/areas/areas.module';
 import { IUtdRepository } from './core/repository/utd.repository';
 import { UtdProvider } from './infrastructure/api/utd.provider';
 import { NuevaAreaComponent } from './modules/mantenimiento/areas/nueva-area/nueva-area.component';
-import { ModificarAreaComponent } from './modules/mantenimiento/areas/modificar-area/modificar-area.component';
 import { IPalomarRepository } from './core/repository/palomar.repository';
 import { PalomarProvider } from './infrastructure/api/palomar.provider';
 import { ISedeRepository } from './core/repository/sede.repository';
@@ -46,6 +45,8 @@ import { ITurnoRecorridoRepository } from './core/repository/turno-recorrido.rep
 import { TurnoRecorridoProvider } from './infrastructure/api/turno-recorrido.provider';
 import { IUsuarioRepository } from './core/repository/usuario.repository';
 import { UsuarioProvider } from './infrastructure/api/usuario.provider';
+import { InterconexionProvider } from './infrastructure/api/interconexion.provider';
+import { IInterconexionRepository } from './core/repository/interconexion.repository';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -66,7 +67,6 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     TopBarComponent,
     TreeViewComponent,
     NuevaAreaComponent,
-    ModificarAreaComponent,
   ],
   imports: [
     NotifierModule,
@@ -106,7 +106,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: ISedeRepository, useClass: SedeProvider},
     {provide: ITurnoRecorridoRepository, useClass: TurnoRecorridoProvider},
     {provide: IUsuarioRepository, useClass: UsuarioProvider},
-
+    {provide: IInterconexionRepository, useClass: InterconexionProvider},
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA,

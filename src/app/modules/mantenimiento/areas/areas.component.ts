@@ -1,17 +1,13 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { IUtdRepository } from 'src/app/core/repository/utd.repository';
 import { Area } from 'src/app/core/model/area.model';
 import { AppConfig } from 'src/app/app.config';
-import { take, map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NuevaAreaComponent } from './nueva-area/nueva-area.component';
-import { ModificarAreaComponent } from './modificar-area/modificar-area.component';
 import { ButtonViewComponent } from '../../shared/button-view/button-view.component';
 import { UtilsService } from 'src/app/utils/utils';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Observable, of } from 'rxjs';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-areas',
@@ -37,9 +33,6 @@ export class AreasComponent implements OnInit {
     AppConfig.DespuesDeInicializar(()=> this.inicializarAreas());    
     this.generarColumnas();
     this.settings.hideSubHeader = false;
- 
-
-    //this.listarAreas()
   }
   
   @Output() areaCreadoEvent = new EventEmitter<File>();
@@ -93,7 +86,7 @@ export class AreasComponent implements OnInit {
               ubicacion:area.ubicacion,
               sede:area.sede.descripcion,
               tiposede:area.tipoSede,
-              palomar:area.palomar.descripcion,
+              //palomar:area.palomar.descripcion,
             })
           }
         )
@@ -103,7 +96,6 @@ export class AreasComponent implements OnInit {
   }
 
   inicializarAreas(): void {
-    //AppConfig.onInicialization.pipe(take(1)).subscribe(()=> {
       this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(
         (areas) => {
           this.areas = areas;
@@ -123,7 +115,6 @@ export class AreasComponent implements OnInit {
           this.dataAreas.load(dataAreas);
         }
       )
-    //});    
   } 
   
 
@@ -137,11 +128,6 @@ export class AreasComponent implements OnInit {
     this.modalTipoId=2;
     this.agregarArea(row,this.modalTipoId);
   }
-
-  onSubmit(form: any) {
- 
-  }
-
 
 
   agregarArea(row,modalId) {
@@ -165,23 +151,4 @@ export class AreasComponent implements OnInit {
     ) 
   }
 
-  modificarProducto(row) {
-    this.areaModal = this.areas.find(area => area.id == row);
-    let bsModalRef: BsModalRef = this.modalService.show(ModificarAreaComponent, {
-      initialState: {
-        id: row,
-        area: this.areaModal,
-        titulo: 'Modificar el producto'
-      },
-      class: 'modal-md',
-      keyboard: false,
-      backdrop: "static"
-    });
-    bsModalRef.content.areaCreadoEvent.subscribe(() =>
-      this.inicializarAreas()
-    ) 
-    /*bsModalRef.content.productoModificadoEvent.subscribe(() =>
-      this.listarProductos()
-    )*/
-  }
 }

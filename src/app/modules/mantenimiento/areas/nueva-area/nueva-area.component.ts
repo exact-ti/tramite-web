@@ -24,6 +24,7 @@ export class NuevaAreaComponent implements OnInit {
     private sedeRepository: ISedeRepository, private palomarRepository: IPalomarRepository, private utilsService: UtilsService,
     private areaRepository: IAreaRepository, private notifier: NotifierService
   ) { }
+  
   agregarForm: FormGroup;
   titulo: String;
   area: Area;
@@ -92,18 +93,6 @@ export class NuevaAreaComponent implements OnInit {
 
   }
 
-/*
- (change)="somethingChanged(agregarForm.get('codigo').value)"
-  somethingChanged(codigo) {
-    if (codigo.length == 0) {
-      this.respuesta= false;
-    } else {
-      this.areaRepository.verificarExistencia(codigo).pipe(take(1)).subscribe(
-        (data) => {
-          this.respuesta=data;
-    })
-  }
-}*/
 private existenciaAreaValidator({ value }: AbstractControl): Observable<ValidationErrors | null> {
   if (value.length == 0) {
     return of(null);
