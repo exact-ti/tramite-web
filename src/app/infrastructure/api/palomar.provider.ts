@@ -43,19 +43,35 @@ export class PalomarProvider extends IPalomarRepository{
     }
 
     listarPalomaresPrincipal(): Observable<any> {
-        if (!this.palomaresMantenimiento) {
             return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() +"/palomares").pipe(map((response: any) => {                
                 this.palomaresMantenimiento = response.map((element)=> new Palomar(element.id, element.descripcion,element.ubicacion,element.tipoPalomar,element.destino,element.activo));
                 return this.palomaresMantenimiento;
             }))));
-
-        }else{
-            return of(this.palomaresMantenimiento);
-        }
     }    
 
     listarPalomaresSave(): Palomar[] {
         return this.palomaresSaved;
     }
+
+    registrarPalomar(palomar: any): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.post(this.prefix + "/utds/" + utd.id.toString() + "/palomares", this.transformar(palomar))));
+    }
+
+    editarPalomar(id: String, palomar: any): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.put(this.prefix + "/palomares/" + id.toString(), this.transformar(palomar))));
+    }
+
+    transformar(palomar: any) {
+        let palomares : String[]= [];
+        palomar.areas.map((area) => {
+            palomares.push(area.id);
+        })
+        return {
+            ubicacion: palomar.ubicacion,
+            areas: palomares,
+            activo: palomar.activo,
+        }
+    }
+
 
 }

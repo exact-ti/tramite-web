@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { IPalomarRepository } from 'src/app/core/repository/palomar.repository';
 import { Palomar } from 'src/app/core/model/palomar.model';
@@ -35,6 +35,7 @@ export class PalomaresComponent implements OnInit {
     this.settings.hideSubHeader = false;
   }
 
+  @Output() palomarCreadoEvent = new EventEmitter<File>();
 
   
   generarColumnas() {
@@ -92,7 +93,7 @@ export class PalomaresComponent implements OnInit {
               ubicacion:palomar.ubicacion,
               tipo:palomar.tipoPalomar,
               destino:palomar.destino,
-              estado:palomar.activo,
+              estado:palomar.activo ==true ? "ACTIVO" : "DESACTIVADO",
             })
           }
         )
@@ -104,7 +105,7 @@ export class PalomaresComponent implements OnInit {
   
 modelPalomar(row,modalId) {
   if(row!=null){
-    this.palomarModal = this.palomares.find(interconexion => interconexion.id == row.codigobandeja);
+    this.palomarModal = this.palomares.find(palomar => palomar.id == row.codigopalomar);
   }else{
     this.palomarModal=null
   }
@@ -118,6 +119,7 @@ modelPalomar(row,modalId) {
     keyboard: false,
     backdrop: "static"
   });
+  
   bsModalRef.content.palomarCreadoEvent.subscribe(() =>
     this.inicializarPalomares()
   ) 

@@ -6,4 +6,6 @@ export abstract class IPalomarRepository {
     abstract listarPalomaresSave(): Palomar[];
     abstract listarPalomaresPrincipal(): Observable<any>;
     abstract listarDetallePalomar(id: string): Observable<any>;
+    abstract registrarPalomar(palomar: any): Observable<any>;
+    abstract editarPalomar(id: String, palomar: any): Observable<any>;
 }

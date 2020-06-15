@@ -10,7 +10,7 @@
       <div class="col">
         <div class="form-group">
           <label for="codigo">Código de bandeja</label>
-          <input class="form-control" type="text" name="codigo" id="codigo" formControlName="codigo">
+          <input class="form-control" type="text" name="codigo" id="codigo" formControlName="codigo"  [attr.disabled]="true">
           <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched"
             class="text-danger small">
             Es necesario ingresar el código de  bandeja
@@ -41,7 +41,7 @@
         <div class="col">
           <div class="form-group">
             <label for="tipo">Tipo Palomar</label>
-            <input class="form-control" type="text" name="tipo" id="tipo" formControlName="tipo">
+            <input class="form-control" type="text" name="tipo" id="tipo" formControlName="tipo" [attr.disabled]="true">
             <span *ngIf="!agregarForm.get('tipo').valid && agregarForm.get('tipo').touched"
               class="text-danger small">
               Es necesario ingresar la ubicación
@@ -66,8 +66,7 @@
         (dndDrop)="onDrop($event, areasSeleccionadas)">
         <div class="col-6 dndPlaceholder" dndPlaceholderRef>
         </div>
-        <div class="col-6" *ngFor="let area of areasSeleccionadas" [dndDraggable]="area" dndEffectAllowed="move"
-            (dndMoved)="onDragged(area, areasSeleccionadas, 'move')">
+        <div class="col-6" *ngFor="let area of areasSeleccionadas">
             <app-area-card [area]="area" (onClose)="removerArea(area)"></app-area-card>
         </div>
     </div> 
@@ -101,7 +100,7 @@
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-success"
-      [disabled]="!agregarForm.valid || agregarForm.pristine"><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
+      [disabled]="!agregarForm.valid || agregarForm.pristine || areasSeleccionadas.length==0"><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
     </button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
   </div>
