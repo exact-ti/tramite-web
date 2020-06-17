@@ -1,1 +1,106 @@
-<p>interconexion-modal works!</p>
+<div class="modal-header">
+  <h6 class="modal-title pull-left font-weight-bold">{{ titulo }}</h6>
+</div>
+
+<form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+
+  <div class="card-body">
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+          <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
+            Es necesario ingresar el nombre de la interconexión
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="destino">Destino</label>
+          <ng-select [items]=destinos bindLabel="descripcion" ng-change="update()" [(ngModel)]="destino"
+            [ngModelOptions]="{standalone: true}" placeholder="Selecciona el destino">
+          </ng-select>
+          <span *ngIf="!agregarForm.get('destino').valid && agregarForm.get('destino').touched"
+            class="text-danger small">
+            Es necesario la elección de una destino
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <label for="destino">Turno</label>
+    <div class="row">
+      <div class="col-5">
+        <label for="destino">Hora Inicio</label>
+      </div>
+      <div class="col-5">
+        <label for="destino">Hora Fin</label>
+      </div>
+      <div class="col-2">
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <div class="form-group">
+          <input type="time" class="form-control" [(ngModel)]="horaInicio" formControlName="horaInicio" placeholder="Hora inicio">
+
+        </div>
+      </div>
+      <div class="col-5">
+        <div class="form-group">
+          <input type="time" class="form-control"  [(ngModel)]="horaFin" formControlName="horaFin" placeholder="Hora fin">
+        </div>
+      </div>
+      <div class="col-2">
+        <label for="destino"> </label>
+        <button type="button" (click)="agregarTurno(horaInicio,horaFin)" class="btn btn-primary float-right"><i class="fas fa-plus"></i></button>
+    </div>
+    </div>
+
+    <div *ngIf="turnosSeleccionadas.length > 0; else mensaje" class="row" >
+      <div class="col-6 dndPlaceholder" dndPlaceholderRef>
+      </div>
+      <div class="col-6" *ngFor="let turno of turnosSeleccionadas" >
+          <app-turno-card [turno]="turno" (onClose)="removerTurno(turno)"></app-turno-card>
+      </div>
+  </div>
+  <ng-template #mensaje>
+      <div class="row">
+          <div class="col">
+              <div class="alert alert-warning" role="alert">
+                  No hay turnos asociadas al recorrido
+              </div>
+          </div>
+      </div>
+  </ng-template>
+
+    <div *ngIf="tipoModalId==2">
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="activo">Estado</label>
+            <select class="form-control" id="activo" formControlName="activo">
+              <option value="true">ACTIVADO
+              </option>
+              <option value="false">DESACTIVADO
+              </option>
+            </select>
+            <span *ngIf="!agregarForm.get('activo').value" class="text-danger small">
+              No se puede modificar si está desactivado
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success"
+      [disabled]="!agregarForm.valid || agregarForm.pristine || validarundefined(destino) || turnosSeleccionadas.length==0"><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
+    </button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+  </div>
+</form>

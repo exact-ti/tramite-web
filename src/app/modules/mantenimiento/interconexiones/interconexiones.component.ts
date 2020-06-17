@@ -38,24 +38,18 @@ export class InterconexionesComponent implements OnInit {
 
   generarColumnas() {
     this.settings.columns = {
-      codigobandeja: {
-        title: 'Código bandeja'
-      },
       nombre: {
         title: 'Nombre'
       },
-      ubicacion: {
-        title: 'Ubicación'
+      destino: {
+        title: 'Destino'
       },
-      sede: {
-        title: 'Sede'
+      turnos: {
+        title: 'Turnos'
       },
-      tiposede: {
-        title: 'Tipo sede'
+      estado: {
+        title: 'Estado'
       },
-      palomar: {
-        title: 'Palomar'
-      },      
       buttonModificar: {
         title: 'Editar',
         type: 'custom',
@@ -71,19 +65,18 @@ export class InterconexionesComponent implements OnInit {
   }
 
   inicializarInterconexiones(): void {
-    this.interconexionRepository.listarInterconexiones().pipe(take(1)).subscribe(
+    this.interconexionRepository.listarInterconexionesMantenimiento().pipe(take(1)).subscribe(
       (interconexiones) => {
         this.interconexiones = interconexiones;
         let datainterconexiones = [];
         interconexiones.forEach(
           interconexion => {
             datainterconexiones.push({
-              codigobandeja: interconexion.id,
+              id:interconexion.id,
               nombre: interconexion.nombre,
-              ubicacion:interconexion.ubicacion,
-              sede:interconexion.sede.descripcion,
-              tiposede:interconexion.tipoSede,
-              palomar:interconexion.palomar.descripcion,
+              destino:interconexion.destino,
+              turnos:interconexion.turnos,
+              estado:interconexion.activo ==true ? "ACTIVO" : "DESACTIVADO",
             })
           }
         )
@@ -105,7 +98,7 @@ onEditar(row){
 
 modelInterconexion(row,modalId) {
   if(row!=null){
-    this.interconexionModal = this.interconexiones.find(interconexion => interconexion.id == row.codigobandeja);
+    this.interconexionModal = this.interconexiones.find(interconexion => interconexion.id == row.id);
   }else{
     this.interconexionModal=null
   }

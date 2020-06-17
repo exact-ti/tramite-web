@@ -47,13 +47,17 @@ import { IUsuarioRepository } from './core/repository/usuario.repository';
 import { UsuarioProvider } from './infrastructure/api/usuario.provider';
 import { InterconexionProvider } from './infrastructure/api/interconexion.provider';
 import { IInterconexionRepository } from './core/repository/interconexion.repository';
-import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.module';
-
+/* import { IgxGridModule, IgxTimePickerModule } from 'igniteui-angular';
+ */import { InterconexionesModule } from './modules/mantenimiento/interconexiones/interconexiones.module';
+/* import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HammerModule } from "@angular/platform-browser"; */
+/* import { NgDatepickerModule } from 'ng2-datepicker';
+ */
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
       map((x: any) => {
         let modo: string = x.mode;
-        let objeto: any = x[modo];
+        let objeto: any = x[modo]; 
         AppConfig.Inicializar(objeto.login_url, objeto.api);
       })
   ).subscribe();
@@ -71,13 +75,19 @@ export function cargarConfiguracion(httpClient: HttpClient) {
   ],
   imports: [
     NotifierModule,
-    ReactiveFormsModule,
+/*     IgxTimePickerModule,
+ */    ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     RegistroEnvioModule,
     EnviosActivosModule,
     ConfirmacionEnviosModule,
     TurnosRecorridosModule,
+    InterconexionesModule,
+/*     HammerModule,
+    BrowserAnimationsModule ,
+    NgDatepickerModule, */
+
     APP_ROUTING,
   ],
   providers: [

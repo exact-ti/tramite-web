@@ -8,6 +8,7 @@ import { TrackingComponent } from './modals/tracking/tracking.component';
 import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
 import { ButtonViewComponent } from './button-view/button-view.component';
 import { AreaCardComponent } from './area-card/area-card.component';
+import { TurnoCardComponent } from './turno-card/turno-card.component';
 
 
 
@@ -18,7 +19,8 @@ import { AreaCardComponent } from './area-card/area-card.component';
     TrackingComponent,
     ConfirmModalComponent,
     ButtonViewComponent,
-    AreaCardComponent
+    AreaCardComponent,
+    TurnoCardComponent
   ],
   imports: [
     CommonModule, 
@@ -30,6 +32,7 @@ import { AreaCardComponent } from './area-card/area-card.component';
     EnvioCardComponent,
     ButtonViewComponent,
     AreaCardComponent,
+    TurnoCardComponent
   ], 
   providers: [
     BsModalService,

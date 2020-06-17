@@ -9,6 +9,7 @@ import { Area } from 'src/app/core/model/area.model';
 
 @Injectable()
 export class TurnoRecorridoProvider extends ITurnoRecorridoRepository{
+
     
 
     constructor(
@@ -27,6 +28,10 @@ export class TurnoRecorridoProvider extends ITurnoRecorridoRepository{
 
     listarDetalleTurnoRecorrido(id: number): Observable<any> {
         return this.client.get(this.prefix + "/turnos/" + id.toString());
+    }
+
+    listarTurnos(): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/turnos")));
     }
 
     registrarTurnoRecorrido(turnoRecorrido: any): Observable<any> {

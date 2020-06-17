@@ -5,7 +5,8 @@ export class Interconexion {
         public nombre: string,
         public destino: string,
         public turnos: string,
-        public estado: boolean,
+        public activo: boolean,
+        public origen: string
     ){}
 
 }
