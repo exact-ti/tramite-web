@@ -11,8 +11,9 @@ export class AreaCardComponent implements OnInit {
 
   @Input() area: any;
   @Output() onClose = new EventEmitter();
-
+  probando : any;
   ngOnInit(): void {
+    this.probando = this.area;
   }
 
   close() {

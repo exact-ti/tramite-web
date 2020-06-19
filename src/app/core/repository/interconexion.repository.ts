@@ -8,5 +8,5 @@ export abstract class IInterconexionRepository{
     abstract listarDetalleInterconexion(id: number): Observable<any>;
     abstract listarInterconexionesMantenimiento(): Observable<any>;
     abstract listarDestinos(): Observable<any>;
-
+    abstract verificarExistenciaNombre(nombre: string): Observable<boolean>;
 }

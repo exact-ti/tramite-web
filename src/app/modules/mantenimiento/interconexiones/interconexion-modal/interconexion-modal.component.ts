@@ -5,14 +5,15 @@ import { IPalomarRepository } from 'src/app/core/repository/palomar.repository';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from 'src/app/utils/utils';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidationErrors, AbstractControl } from '@angular/forms';
 import { Palomar } from 'src/app/core/model/palomar.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
 import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { Interconexion } from 'src/app/core/model/interconexion.model';
 import { IInterconexionRepository } from 'src/app/core/repository/interconexion.repository';
 import { ITurnoRecorridoRepository } from 'src/app/core/repository/turno-recorrido.repository';
+import { DndDropEvent } from 'ngx-drag-drop';
 /* import { IgxTimePickerModule } from 'igniteui-angular';
  */
 @Component({
@@ -36,7 +37,7 @@ export class InterconexionModalComponent implements OnInit {
   turnos: any[] = [];
   time = { hour: 13, minute: 30 };
   meridian = true;
-  destino: any = null;
+  variable = true;
   activo: boolean;
   turno: any;
   tipoModalId: number;
@@ -47,16 +48,17 @@ export class InterconexionModalComponent implements OnInit {
   modificarpalomarSubscription: Subscription;
   turnosSeleccionadasInitialState: any[] = [];
   turnosSeleccionadas: any[] = [];
+  turnosSeleccionadasProbar: any[] = [];
   registrarPalomar: any;
+  modificarBoolean=false;
   intervalo : any = {
     horaInicio:'',
     horaFin:'',
   };  
 
-  palomarFormInitialState: any = {
+  interconexionFormInitialState: any = {
     id: '',
     nombre: '',
-    ubicacion: '',
     destino: '',
     activo: true,
   };
@@ -70,30 +72,64 @@ export class InterconexionModalComponent implements OnInit {
 
   inicializarForm(): void {
     this.agregarForm = new FormGroup({
-      'nombre': new FormControl(this.palomarFormInitialState.nombre, Validators.required),
-      'destino': new FormControl(this.palomarFormInitialState.destino),
-      'ubicacion': new FormControl(this.palomarFormInitialState.ubicacion),
-      'activo': new FormControl(this.palomarFormInitialState.activo, Validators.required),
-      horaInicio: new FormControl(''),
-      horaFin: new FormControl(''),
-    })
+      'nombre': new FormControl(this.interconexionFormInitialState.nombre, Validators.required ,this.existenciaNombreInterconexionValidator.bind(this)),
+      'destino': new FormControl(this.interconexionFormInitialState.destino, Validators.required),
+      'activo': new FormControl(this.interconexionFormInitialState.activo, Validators.required),
+    }, this.formValidator.bind(this))
   }
 
   @Output() interconexionCreadoEvent = new EventEmitter<any>();
 
   modificarInterconexionSubscription: Subscription;
 
+  private existenciaNombreInterconexionValidator({ value }: AbstractControl): Observable<ValidationErrors | null> {
+    if (value.length == 0) {
+      return of(null);
+    } else {
+  
+      if(this.tipoModalId==1){
+  
+        return this.interconexionRepository.verificarExistenciaNombre(value).pipe(take(1), map((existe: boolean) => {
+          if (!existe) {
+            return null;
+          } else {
+            return {
+              noExiste: true
+            }
+          }
+        }));
+      
+      }else{
+        return of(null);
+      }
+  
+    }
+  }
+  onDrop(event: DndDropEvent, list?: any[]) {
+
+    if (list
+      && (event.dropEffect === "copy"
+        || event.dropEffect === "move")) {
+
+      let index = event.index;
+
+      if (typeof index === "undefined") {
+
+        index = list.length;
+      }
+
+      list.splice(index, 0, event.data);
+    }
+  }
   async cargarDatosVista() {
     this.destinos = await this.listarDestinos();
     if (this.tipoModalId == 2) {
       var data = await this.listarDetalleInterconexion();
       var destino = this.destinos.find(destino => destino.id = data.destino.id);
-      this.destino = destino;
-      this.palomarFormInitialState = {
+      this.interconexionFormInitialState = {
         nombre: data.nombre,
-        ubicacion: data.tipo,
-        destino: destino.id,
-        activo: data.activo
+        destino: destino,
+        activo: data.activo,
       };
       data.turnos.map((area) => {
         this.turnosSeleccionadas.push(area);
@@ -114,11 +150,15 @@ export class InterconexionModalComponent implements OnInit {
   }
 
   agregarTurno(horaInicio: any,horaFin:any) {
+    let intervalo1 = {
+      horaInicio:'',
+      horaFin:'',     
+    }
     if (horaInicio || horaFin) {
-      this.intervalo.horaInicio = horaInicio;
-      this.intervalo.horaFin = horaFin;
-      if (this.turnosSeleccionadas.findIndex(turnoSeleccionada => turnoSeleccionada == this.intervalo) == -1) {
-        this.turnosSeleccionadas.push(this.intervalo);
+      intervalo1.horaInicio = horaInicio+":00";
+      intervalo1.horaFin = horaFin+":00";
+      if (this.validarTurnos(intervalo1.horaInicio,intervalo1.horaFin)) {
+        this.turnosSeleccionadas.push(intervalo1);
         this.agregarForm.updateValueAndValidity();
       } else {
         alert('No puedes agregar un turno que ya está en la lista');
@@ -126,6 +166,17 @@ export class InterconexionModalComponent implements OnInit {
     }
     this.turno = null;
   }
+
+  validarTurnos(horaInicio: any,horaFin:any){
+    this.variable = true;
+    this.turnosSeleccionadas.forEach(turno => {
+      if(turno.horaInicio==horaInicio && turno.horaFin==horaFin){
+        this.variable =false;
+      }
+    })
+    return this.variable ;
+  }
+
   removerTurno(turno: any) {
     this.turnosSeleccionadas.splice(this.turnosSeleccionadas.findIndex(turnoSeleccionada => turnoSeleccionada == turno), 1);
     this.agregarForm.updateValueAndValidity();
@@ -139,10 +190,6 @@ export class InterconexionModalComponent implements OnInit {
     }
   }
 
-  validarCodigo(codigo: String) {
-
-  }
-
   validarundefined(codigo: String) {
     if (codigo == null) {
       return true;
@@ -152,16 +199,30 @@ export class InterconexionModalComponent implements OnInit {
 
   }
 
- 
+  private formValidator(form: FormGroup): ValidationErrors | null {
+    if (this.turnosSeleccionadas.length == 0) {
+      return {
+        noAreas: true
+      }
+    }
+    if ( JSON.stringify(this.interconexionFormInitialState) ==  JSON.stringify(this.agregarForm.value)){
+      if (JSON.stringify(this.turnosSeleccionadasInitialState) == JSON.stringify(this.turnosSeleccionadas)) {
+        return {
+          noCambio: true
+        }
+      }
+    } 
+     return null;    
+  }
 
-  transformar(interconexion: any, turnos: any[],destino:any) {
+  transformar(interconexion: any, turnos: any[]) {
     return {
       nombre: interconexion.value.nombre,
-      destinoId:destino.id,
+      destinoId:interconexion.value.destino.id,
       turnos: turnos.map((area, index) => {
         return {
-          horaInicio: area.horaInicio,
-          horaFin:  area.horaFin
+          horaInicio: area.horaInicio.substring(0,5) + ":00",
+          horaFin:  area.horaFin.substring(0,5) + ":00",
         }
       }),
       activo: interconexion.value.activo,
@@ -176,7 +237,7 @@ export class InterconexionModalComponent implements OnInit {
     });
     if (this.tipoModalId == 1) {
       bsModalRef.content.confirmarEvent.subscribe(() => {
-        this.modificarpalomarSubscription = this.interconexionRepository.registrarInterconexion(this.transformar(this.agregarForm, this.turnosSeleccionadas,this.destino)).subscribe(
+        this.modificarpalomarSubscription = this.interconexionRepository.registrarInterconexion(this.transformar(this.agregarForm, this.turnosSeleccionadas)).subscribe(
           area => {
             this.notifier.notify('success', 'Se ha creado el area correctamente');
             this.bsModalRef.hide();
@@ -189,7 +250,7 @@ export class InterconexionModalComponent implements OnInit {
       })
     } else {
       bsModalRef.content.confirmarEvent.subscribe(() => {
-        this.modificarpalomarSubscription = this.interconexionRepository.editarInterconexion(this.interconexion.id.toString(), this.transformar(this.agregarForm, this.turnosSeleccionadas,this.destino)).subscribe(
+        this.modificarpalomarSubscription = this.interconexionRepository.editarInterconexion(this.interconexion.id.toString(), this.transformar(this.agregarForm, this.turnosSeleccionadas)).subscribe(
           area => {
             this.notifier.notify('success', 'Se ha modificado el area correctamente');
             this.bsModalRef.hide();

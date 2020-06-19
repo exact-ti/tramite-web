@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Subscription, of, Observable } from 'rxjs';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { Palomar } from 'src/app/core/model/palomar.model';
 import { IPalomarRepository } from 'src/app/core/repository/palomar.repository';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -40,7 +40,7 @@ export class PalomarModalComponent implements OnInit {
   areasSeleccionadas: any[] = [];
   registrarPalomar: any;
   palomarFormInitialState: any = {
-    id: '',
+    codigo: '',
     tipo: 'AREA',
     ubicacion: '',
     activo: true,
@@ -58,16 +58,16 @@ export class PalomarModalComponent implements OnInit {
 
   inicializarForm(): void {
     this.agregarForm = new FormGroup({
-      'codigo': new FormControl(this.palomarFormInitialState.id),
+      'codigo': new FormControl(this.palomarFormInitialState.codigo),
       'tipo': new FormControl("AREA"),
       'ubicacion': new FormControl(this.palomarFormInitialState.ubicacion, Validators.required),
       'activo': new FormControl(this.palomarFormInitialState.activo, Validators.required)
-    })
+    }, this.formValidator.bind(this))
   }
 
   agregarArea(area: any) {
     if (area) {
-      if (this.areasSeleccionadas.findIndex(areaSeleccionada => areaSeleccionada == area) == -1) {
+      if (this.areasSeleccionadas.findIndex (areaSeleccionada => areaSeleccionada == area) == -1) {
         this.areasSeleccionadas.push(area);
         this.agregarForm.updateValueAndValidity();
       } else {
@@ -83,8 +83,8 @@ export class PalomarModalComponent implements OnInit {
     if (this.tipoModalId == 2) {
       var data = await this.listarDetallePalomar();
       this.palomarFormInitialState = {
-        id: data.id,
-        tipo: data.tipo,
+        codigo: data.id,
+        tipo: "AREA",
         ubicacion: data.ubicacion,
         activo: data.activo
       };
@@ -95,6 +95,22 @@ export class PalomarModalComponent implements OnInit {
       this.areasSeleccionadasInitialState = [...this.areasSeleccionadas];
       this.inicializarForm();
     }
+  }
+
+  private formValidator(form: FormGroup): ValidationErrors | null {
+    if (this.areasSeleccionadas.length == 0) {
+      return {
+        noAreas: true
+      }
+    }
+    if ( JSON.stringify(this.palomarFormInitialState) ==  JSON.stringify(this.agregarForm.value)){
+      if (JSON.stringify(this.areasSeleccionadasInitialState) == JSON.stringify(this.areasSeleccionadas)) {
+        return {
+          noCambio: true
+        }
+      }
+    } 
+     return null;    
   }
 
   onDrop(event: DndDropEvent, list?: any[]) {

@@ -53,6 +53,12 @@ export class InterconexionProvider extends IInterconexionRepository{
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/destinos")));
     }
 
+    verificarExistenciaNombre(areaId: string): Observable<boolean> {
+        return this.client.get(this.prefix + "/interconexiones/existe", {
+            params: new HttpParams().set("nombre", areaId)
+        });
+    }
+
     transformar(palomar: any) {
         let palomares : String[]= [];
         palomar.areas.map((area) => {

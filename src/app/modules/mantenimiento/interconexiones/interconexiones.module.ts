@@ -8,7 +8,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { DndModule } from 'ngx-drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IgxTimePickerModule } from 'igniteui-angular';
 
 
 
@@ -23,7 +22,6 @@ import { IgxTimePickerModule } from 'igniteui-angular';
     DndModule,
     FormsModule,
     ReactiveFormsModule,
-    IgxTimePickerModule
   ]
 })
 export class InterconexionesModule { }

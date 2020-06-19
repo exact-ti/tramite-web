@@ -6,6 +6,7 @@ import { ButtonViewComponent } from '../../shared/button-view/button-view.compon
 import { LocalDataSource } from 'ng2-smart-table';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TurnoRecorridoComponent } from './modal/turno-recorrido/turno-recorrido.component';
+import { AppConfig } from 'src/app/app.config';
 
 @Component({
   selector: 'app-turnos-recorridos',
@@ -25,7 +26,9 @@ export class TurnosRecorridosComponent implements OnInit {
 
   ngOnInit(): void {
     this.configurarTabla();
-    this.listarTurnosRecorridos();
+    AppConfig.DespuesDeInicializar(()=> this.listarTurnosRecorridos());    
+    //this.settings.hideSubHeader = false;
+
   }
 
   onAgregar() {

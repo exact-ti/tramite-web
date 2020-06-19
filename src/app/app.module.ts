@@ -29,8 +29,6 @@ import { IAreaRepository } from './core/repository/area.repository';
 import { AreaProvider } from './infrastructure/api/area.provider';
 import { IEnvioRepository } from './core/repository/envio.repository';
 import { EnvioProvider } from './infrastructure/api/envio.provider';
-import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
-import { AreasModule } from './modules/mantenimiento/areas/areas.module';
 import { IUtdRepository } from './core/repository/utd.repository';
 import { UtdProvider } from './infrastructure/api/utd.provider';
 import { NuevaAreaComponent } from './modules/mantenimiento/areas/nueva-area/nueva-area.component';
@@ -47,12 +45,11 @@ import { IUsuarioRepository } from './core/repository/usuario.repository';
 import { UsuarioProvider } from './infrastructure/api/usuario.provider';
 import { InterconexionProvider } from './infrastructure/api/interconexion.provider';
 import { IInterconexionRepository } from './core/repository/interconexion.repository';
-/* import { IgxGridModule, IgxTimePickerModule } from 'igniteui-angular';
- */import { InterconexionesModule } from './modules/mantenimiento/interconexiones/interconexiones.module';
-/* import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HammerModule } from "@angular/platform-browser"; */
-/* import { NgDatepickerModule } from 'ng2-datepicker';
- */
+import { InterconexionesModule } from './modules/mantenimiento/interconexiones/interconexiones.module';
+import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.module';
+import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
+import { AreasModule } from './modules/mantenimiento/areas/areas.module';
+
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
       map((x: any) => {
@@ -71,12 +68,11 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     SideBarComponent,
     TopBarComponent,
     TreeViewComponent,
-    NuevaAreaComponent,
+    NuevaAreaComponent
   ],
   imports: [
     NotifierModule,
-/*     IgxTimePickerModule,
- */    ReactiveFormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     RegistroEnvioModule,
@@ -84,10 +80,9 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     ConfirmacionEnviosModule,
     TurnosRecorridosModule,
     InterconexionesModule,
-/*     HammerModule,
-    BrowserAnimationsModule ,
-    NgDatepickerModule, */
-
+    PalomaresModule,
+    MantenimientoModule,
+    AreasModule,
     APP_ROUTING,
   ],
   providers: [
