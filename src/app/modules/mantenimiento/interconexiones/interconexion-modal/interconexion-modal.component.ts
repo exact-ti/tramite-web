@@ -129,7 +129,7 @@ export class InterconexionModalComponent implements OnInit {
       this.interconexionFormInitialState = {
         nombre: data.nombre,
         destino: destino,
-        activo: data.activo,
+        activo: String(data.activo),
       };
       data.turnos.map((area) => {
         this.turnosSeleccionadas.push(area);
@@ -254,12 +254,12 @@ export class InterconexionModalComponent implements OnInit {
       bsModalRef.content.confirmarEvent.subscribe(() => {
         this.modificarpalomarSubscription = this.interconexionRepository.editarInterconexion(this.interconexion.id.toString(), this.transformar(this.agregarForm, this.turnosSeleccionadas)).subscribe(
           area => {
-            this.notifier.notify('success', 'Se ha modificado el area correctamente');
+            this.notifier.notify('success', 'Se ha modificado la interconexión correctamente');
             this.bsModalRef.hide();
             this.interconexionCreadoEvent.emit(area);
           },
           error => {
-            this.notifier.notify('error', 'No se modificó el area');
+            this.notifier.notify('error', 'No se modificó la interconexión');
           }
         );
       })

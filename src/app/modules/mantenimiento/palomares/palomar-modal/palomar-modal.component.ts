@@ -61,7 +61,7 @@ export class PalomarModalComponent implements OnInit {
       'codigo': new FormControl(this.palomarFormInitialState.codigo),
       'tipo': new FormControl(this.palomarFormInitialState.tipo),
       'ubicacion': new FormControl(this.palomarFormInitialState.ubicacion, Validators.required),
-      'activo': new FormControl(this.palomarFormInitialState.activo, Validators.required)
+      'activo': new FormControl( this.palomarFormInitialState.activo , Validators.required)
     }, this.formValidator.bind(this))
   }
 
@@ -87,14 +87,16 @@ export class PalomarModalComponent implements OnInit {
         codigo: data.id,
         tipo: data.tipoPalomar,
         ubicacion: data.ubicacion,
-        activo: data.activo
+        activo:  String(data.activo)
       };
       this.tipoPalomar=this.validarTipoPalomar(data.tipoPalomar);
-      data.areas.map((area) => {
-        this.areasSeleccionadas.push(area);
-      })
-      //this.areasSeleccionadas = this.areas.filter(area => data.areas.findIndex(area2 => area2.id == area.id) > -1);
+      if(this.tipoPalomar){
+        data.areas.map((area) => {
+          this.areasSeleccionadas.push(area);
+        })
+              //this.areasSeleccionadas = this.areas.filter(area => data.areas.findIndex(area2 => area2.id == area.id) > -1);
       this.areasSeleccionadasInitialState = [...this.areasSeleccionadas];
+      }
       this.inicializarForm();
     }
   }
@@ -108,15 +110,23 @@ export class PalomarModalComponent implements OnInit {
     }
 
   private formValidator(form: FormGroup): ValidationErrors | null {
+
+/*     if(this.agregarForm.value){
+      return {
+        noActivado: true
+      }
+    } */
     if (this.areasSeleccionadas.length == 0 && this.tipoModalId==1) {
       return {
         noAreas: true
       }
     }
-
-    if (this.areasSeleccionadas.length == 0 && this.tipoModalId==2) {
+      if(!this.agregarForm){
       return null;
-    }
+    } 
+   /*  if (this.areasSeleccionadas.length == 0 && this.tipoModalId==2) {
+      return null;
+  } */
     if ( JSON.stringify(this.palomarFormInitialState) ==  JSON.stringify(this.agregarForm.value)){
       if (JSON.stringify(this.areasSeleccionadasInitialState) == JSON.stringify(this.areasSeleccionadas)) {
         return {
