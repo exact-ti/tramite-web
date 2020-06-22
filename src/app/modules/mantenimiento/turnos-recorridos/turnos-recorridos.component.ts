@@ -62,7 +62,7 @@ export class TurnosRecorridosComponent implements OnInit {
   configurarTabla(): void {
     this.settings.columns = {
       id: {
-        show: false,
+        title: 'ID'
       },
       nombre: {
         title: 'Nombre'

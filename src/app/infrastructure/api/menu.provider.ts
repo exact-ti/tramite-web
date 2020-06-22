@@ -21,8 +21,6 @@ export class MenuProvider extends IMenuRepository {
 
     private menu: Menu[];
 
-    public pantallaActiva: string;
-
     listarMenu(): Observable<Menu[]> {
 
         if (!this.menu) {

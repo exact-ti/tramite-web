@@ -35,14 +35,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd) 
-    ).subscribe(() => {
-      let primary = this.activatedRoute.snapshot.routeConfig.component.name;
-      if(primary) {
-        console.log(primary);
-      }      
-    });
+    
   }
 
   guardarTokens(paramMap: ParamMap): boolean {

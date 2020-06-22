@@ -1,11 +1,13 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DropEffect, DndDropEvent } from 'ngx-drag-drop';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 import { take } from 'rxjs/operators';
 import { ITurnoRecorridoRepository } from 'src/app/core/repository/turno-recorrido.repository';
+import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-turno-recorrido',
@@ -19,6 +21,8 @@ export class TurnoRecorridoComponent implements OnInit {
     public areaRepository: IAreaRepository,
     public usuarioRepository: IUsuarioRepository, 
     public turnoRecorridoRepository: ITurnoRecorridoRepository,
+    public modalService: BsModalService,
+    public notifier: NotifierService,
   ) { }
 
   tipoFormulario: number;
@@ -124,23 +128,36 @@ export class TurnoRecorridoComponent implements OnInit {
   }
 
   submit(value: any){
-    value.areas = this.areasSeleccionadas;
+
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      initialState: {
+        mensaje: "¿Estás seguro que deseas continuar?"
+      }
+    });
+
+    bsModalRef.content.confirmarEvent.subscribe(() => {
+      value.areas = this.areasSeleccionadas;
+      this.guardar(value);
+    });    
+  }
+
+
+  guardar(value) {
     if (this.tipoFormulario == 1) {
       this.turnoRecorridoRepository.registrarTurnoRecorrido(value).pipe(take(1)).subscribe(data => {
         if (data.status == "success") {
-          alert("Turno Recorrido creado");
+          this.notifier.notify('success', 'Se ha creado el turno correctamente');
           this.bsModalRef.hide();
         }
       });
     }else{
       this.turnoRecorridoRepository.editarTurnoRecorrido(this.turnoRecorridoId, value).pipe(take(1)).subscribe(data => {
         if (data.status == "success") {
-          alert("Turno Recorrido actualizado");
+          this.notifier.notify('success', 'Se ha actualizado el turno correctamente');
           this.bsModalRef.hide();
         }
       });
-    }
-    
+    }    
   }
 
 
