@@ -32,7 +32,7 @@ export class PalomarModalComponent implements OnInit {
   activo: boolean;
   area: any;
   tipoModalId: number;
-
+  tipoPalomar:boolean = true;
   sedeSubscription: Subscription;
   palomarSubscription: Subscription;
   modificarpalomarSubscription: Subscription;
@@ -59,7 +59,7 @@ export class PalomarModalComponent implements OnInit {
   inicializarForm(): void {
     this.agregarForm = new FormGroup({
       'codigo': new FormControl(this.palomarFormInitialState.codigo),
-      'tipo': new FormControl("AREA"),
+      'tipo': new FormControl(this.palomarFormInitialState.tipo),
       'ubicacion': new FormControl(this.palomarFormInitialState.ubicacion, Validators.required),
       'activo': new FormControl(this.palomarFormInitialState.activo, Validators.required)
     }, this.formValidator.bind(this))
@@ -78,16 +78,18 @@ export class PalomarModalComponent implements OnInit {
   }
 
 
+
   async cargarDatosVista() {
     this.areas = await this.listarAreas();
     if (this.tipoModalId == 2) {
       var data = await this.listarDetallePalomar();
       this.palomarFormInitialState = {
         codigo: data.id,
-        tipo: "AREA",
+        tipo: data.tipoPalomar,
         ubicacion: data.ubicacion,
         activo: data.activo
       };
+      this.tipoPalomar=this.validarTipoPalomar(data.tipoPalomar);
       data.areas.map((area) => {
         this.areasSeleccionadas.push(area);
       })
@@ -97,11 +99,23 @@ export class PalomarModalComponent implements OnInit {
     }
   }
 
+    validarTipoPalomar(tipo :any){
+        if(tipo=="AREA"){
+          return true;
+        }else{
+          return false;
+        }
+    }
+
   private formValidator(form: FormGroup): ValidationErrors | null {
-    if (this.areasSeleccionadas.length == 0) {
+    if (this.areasSeleccionadas.length == 0 && this.tipoModalId==1) {
       return {
         noAreas: true
       }
+    }
+
+    if (this.areasSeleccionadas.length == 0 && this.tipoModalId==2) {
+      return null;
     }
     if ( JSON.stringify(this.palomarFormInitialState) ==  JSON.stringify(this.agregarForm.value)){
       if (JSON.stringify(this.areasSeleccionadasInitialState) == JSON.stringify(this.areasSeleccionadas)) {

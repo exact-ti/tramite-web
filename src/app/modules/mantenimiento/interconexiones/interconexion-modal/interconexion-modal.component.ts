@@ -150,6 +150,8 @@ export class InterconexionModalComponent implements OnInit {
   }
 
   agregarTurno(horaInicio: any,horaFin:any) {
+    this.horaInicio=null;
+    this.horaFin=null;
     let intervalo1 = {
       horaInicio:'',
       horaFin:'',     

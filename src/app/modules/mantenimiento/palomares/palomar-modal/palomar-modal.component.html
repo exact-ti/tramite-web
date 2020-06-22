@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>  
-
+<div *ngIf="tipoPalomar">
       <div class="row">
         <div class="col">
             <div class="form-group">
@@ -70,11 +70,12 @@
             <app-area-card [area]="area" (onClose)="removerArea(area)"></app-area-card>
         </div>
     </div> 
+  </div>
     <ng-template #mensaje>
       <div class="row">
           <div class="col">
               <div class="alert alert-warning" role="alert">
-                  No hay áreas asociadas al recorrido
+                  No hay áreas asociadas al palomar
               </div>
           </div>
       </div>
@@ -87,7 +88,7 @@
               <select class="form-control" id="activo" formControlName="activo">
                 <option value="true">ACTIVADO
                 </option>
-                <option value="false">DESACTIVADO
+                <option value="false" *ngIf="areasSeleccionadas.length == 0">DESACTIVADO
                 </option>
               </select>
               <span *ngIf="!agregarForm.get('activo').value" class="text-danger small">
