@@ -49,6 +49,7 @@ import { InterconexionesModule } from './modules/mantenimiento/interconexiones/i
 import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.module';
 import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
 import { AreasModule } from './modules/mantenimiento/areas/areas.module';
+import { UsuariosModule } from './modules/mantenimiento/usuarios/usuarios.module';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -83,6 +84,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     PalomaresModule,
     MantenimientoModule,
     AreasModule,
+    UsuariosModule,
     APP_ROUTING,
   ],
   providers: [

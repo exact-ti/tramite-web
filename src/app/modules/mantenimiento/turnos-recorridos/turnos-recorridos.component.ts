@@ -32,7 +32,6 @@ export class TurnosRecorridosComponent implements OnInit {
   }
 
   onAgregar() {
-
     this.mostrarTurnoRecorridoFormulario({
       tipoFormulario: 1,
     });

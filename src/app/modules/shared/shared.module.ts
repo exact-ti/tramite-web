@@ -9,6 +9,7 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
 import { ButtonViewComponent } from './button-view/button-view.component';
 import { AreaCardComponent } from './area-card/area-card.component';
 import { TurnoCardComponent } from './turno-card/turno-card.component';
+import { UtdCardComponent } from './utd-card/utd-card.component';
 
 
 
@@ -20,7 +21,8 @@ import { TurnoCardComponent } from './turno-card/turno-card.component';
     ConfirmModalComponent,
     ButtonViewComponent,
     AreaCardComponent,
-    TurnoCardComponent
+    TurnoCardComponent,
+    UtdCardComponent
   ],
   imports: [
     CommonModule, 
@@ -32,7 +34,8 @@ import { TurnoCardComponent } from './turno-card/turno-card.component';
     EnvioCardComponent,
     ButtonViewComponent,
     AreaCardComponent,
-    TurnoCardComponent
+    TurnoCardComponent,
+    UtdCardComponent
   ], 
   providers: [
     BsModalService,

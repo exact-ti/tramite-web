@@ -1,15 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-area-card',
-  templateUrl: './area-card.component.html',
-  styleUrls: ['./area-card.component.scss']
+  selector: 'app-utd-card',
+  templateUrl: './utd-card.component.html',
+  styleUrls: ['./utd-card.component.scss']
 })
-export class AreaCardComponent implements OnInit {
+export class UtdCardComponent implements OnInit {
 
   constructor() { }
-
-  @Input() area: any;
+  @Input() utd: any;
   @Output() onClose = new EventEmitter();
   ngOnInit(): void {
   }

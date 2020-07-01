@@ -17,6 +17,10 @@ const APP_ROUTES: Routes = [
         path: 'palomares',
         loadChildren: './palomares/palomares.module#PalomaresModule'
     },
+    { 
+        path: 'usuarios',
+        loadChildren: './usuarios/usuarios.module#UsuariosModule'
+    },
 ];
 
 export const APP_ROUTING = RouterModule.forChild(APP_ROUTES);

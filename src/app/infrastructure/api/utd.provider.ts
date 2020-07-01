@@ -10,6 +10,7 @@ import { map, flatMap, last } from 'rxjs/operators';
 @Injectable()
 export class UtdProvider extends IUtdRepository{
 
+
     constructor(
         private client: RequesterService
     ){
@@ -42,6 +43,10 @@ export class UtdProvider extends IUtdRepository{
         }else{
             return of(this.utdSeleccionado);
         }
+    }
+
+    listarUtds(): Observable<any> {
+        return this.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areas")));
     }
 
 

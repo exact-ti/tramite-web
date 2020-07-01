@@ -32,6 +32,7 @@ export class TurnoRecorridoComponent implements OnInit {
   };
 
   area: any;
+
   turnoRecorridoId: number;
   turnoRecorridoForm: FormGroup;
   operativos: any[] = [];
