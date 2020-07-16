@@ -66,4 +66,9 @@ export class AreaProvider extends IAreaRepository{
         })));
     }
 
+    listarAreasItem(): Observable<any[]> {
+        return this.client.get(this.prefix + "/areas/items");
+    }
+
+
 }

@@ -21,13 +21,14 @@ export class UsuarioProvider extends IUsuarioRepository{
     }
 
     private prefix: string = "/servicio-tramite";
+    private prefixUsuario: string = "/servicio-usuario";
 
     listarOperativosDeUTD(): Observable<any[]> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/usuarios")));
     }
 
     listarUsuariosMantenimiento(): Observable<any[]> {
-        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/usuarios")));
+        return this.client.get(this.prefixUsuario + "/usuarios/");
     }
 
     listarPerfilesDeUsuario(): Observable<any[]> {
@@ -40,32 +41,30 @@ export class UsuarioProvider extends IUsuarioRepository{
 
 
     listarDetalleUsuario(id: number): Observable<any> {
-        return this.client.get(this.prefix + "/interconexiones/" + id);
+        return this.client.get(this.prefix + "/usuarios/" + id);
     }
 
 
     registrarUsuario(usuario: any): Observable<any> {
-        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.post(this.prefix + "/utds/" + utd.id.toString() + "/turnos", this.transformar(usuario))));
+        return this.client.post(this.prefix + "/usuarios", this.transformar(usuario))
     }
 
     editarUsuario(id: number, usuario: any): Observable<any> {
-        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.put(this.prefix + "/turnos/" + id.toString(), this.transformar(usuario))));
+        return this.client.put(this.prefix + "/usuarios/"+ id.toString(), this.transformar(usuario));
     }
 
-    transformar(turnoRecorrido: any) {
+    transformar(usuario: any) {
         return {
-            nombre: turnoRecorrido.nombre,
-            usuarioId: turnoRecorrido.operativo.id,
-            usuarioNombre: turnoRecorrido.operativo.descripcion,
-            areas: turnoRecorrido.areas.map((area, index) => {
-                return {
-                    id: area.id,
-                    orden: index
-                }
+            username: usuario.username,
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            utds: usuario.utds.map((utd) => {
+                return utd.id
             }),
-            horaInicio: turnoRecorrido.horaInicio.substring(0,5) + ":00",
-            horaFin: turnoRecorrido.horaFin.substring(0,5) + ":00",
-            activo: turnoRecorrido.activo,
+            perfilId: usuario.perfil.id,
+            password: usuario.contrasena,
+            areaId:usuario.area==null?null:usuario.area.id,
+            activo: usuario.activo,
         }
     }
 

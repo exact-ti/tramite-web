@@ -50,6 +50,12 @@ import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.mod
 import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
 import { AreasModule } from './modules/mantenimiento/areas/areas.module';
 import { UsuariosModule } from './modules/mantenimiento/usuarios/usuarios.module';
+import { ModificarBuzonUtdComponent } from './layout/top-bar/modificar-buzon-utd/modificar-buzon-utd.component';
+import { PerfilProvider } from './infrastructure/api/perfil.provider';
+import { IPerfilRepository } from './core/repository/perfil.repository';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { IDashboardRepository } from './core/repository/dashboard.repository';
+import { DashboardProvider } from './infrastructure/api/dashboard.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -69,7 +75,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     SideBarComponent,
     TopBarComponent,
     TreeViewComponent,
-    NuevaAreaComponent
+    NuevaAreaComponent,
+    ModificarBuzonUtdComponent,
   ],
   imports: [
     NotifierModule,
@@ -78,6 +85,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     HttpClientModule,
     RegistroEnvioModule,
     EnviosActivosModule,
+    DashboardModule,
     ConfirmacionEnviosModule,
     TurnosRecorridosModule,
     InterconexionesModule,
@@ -115,6 +123,10 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: ITurnoRecorridoRepository, useClass: TurnoRecorridoProvider},
     {provide: IUsuarioRepository, useClass: UsuarioProvider},
     {provide: IInterconexionRepository, useClass: InterconexionProvider},
+    {provide: IPerfilRepository, useClass: PerfilProvider},
+    {provide: IDashboardRepository, useClass: DashboardProvider},
+
+
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA,

@@ -1,8 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ISedeRepository } from 'src/app/core/repository/sede.repository';
-import { IPalomarRepository } from 'src/app/core/repository/palomar.repository';
-import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from 'src/app/utils/utils';
 import { FormGroup, FormControl, Validators, ValidationErrors, AbstractControl } from '@angular/forms';

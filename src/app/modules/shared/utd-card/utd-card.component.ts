@@ -10,6 +10,7 @@ export class UtdCardComponent implements OnInit {
   constructor() { }
   @Input() utd: any;
   @Output() onClose = new EventEmitter();
+  mostrar : any;
   ngOnInit(): void {
   }
 

@@ -20,6 +20,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/mantenimiento/mantenimiento.module#MantenimientoModule'
     },
     {
+        path: 'dashboard',
+        loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: 'envios-activos'

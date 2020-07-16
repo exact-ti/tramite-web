@@ -45,9 +45,16 @@ export class UtdProvider extends IUtdRepository{
         }
     }
 
-    listarUtds(): Observable<any> {
-        return this.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areas")));
+    listarUtdsActivos(): Observable<any> {
+        return this.client.get(this.prefix + "/utds/items");
     }
+
+    seleccionarUtd(utd: any): any {
+        this.utdSeleccionado=utd;
+        return this.utdSeleccionado;
+    }
+
+
 
 
 }

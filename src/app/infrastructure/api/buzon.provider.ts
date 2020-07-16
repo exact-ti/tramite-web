@@ -9,6 +9,7 @@ import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class BuzonProvider extends IBuzonRepository {
+
    
     
     constructor(private client: RequesterService){
@@ -43,9 +44,12 @@ export class BuzonProvider extends IBuzonRepository {
             return of(this.buzonSeleccionado);
         }
     }
-    seleccionarBuzon(buzon: Buzon): void {
+
+    seleccionarBuzon(buzon: Buzon): Buzon {
         this.buzonSeleccionado = buzon;
+        return this.buzonSeleccionado;
     }
+
     listarDestinatariosFrecuentes(cantidad: number): Observable<any> {
         return this.listarBuzonSeleccionado().pipe(flatMap((buzonSeleccionado)=>{
             return this.client.get(this.prefix + "/buzones/" + buzonSeleccionado.id + "/destinatariosfrecuentes", {
@@ -59,4 +63,5 @@ export class BuzonProvider extends IBuzonRepository {
             params: new HttpParams().set("filtro", filtro),
         });
     }
+
 }

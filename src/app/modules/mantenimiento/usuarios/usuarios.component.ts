@@ -24,9 +24,9 @@ export class UsuariosComponent implements OnInit {
   
 
   ngOnInit(): void {
-/*     this.configurarTabla();
-    AppConfig.DespuesDeInicializar(()=> this.listarTurnosRecorridos());    
-    this.settings.hideSubHeader = false; */
+    this.configurarTabla();
+    AppConfig.DespuesDeInicializar(()=> this.listarUsuarios());    
+    this.settings.hideSubHeader = false;
   }
 
   onAgregar() {
@@ -44,17 +44,17 @@ export class UsuariosComponent implements OnInit {
     });
 
     this.modalService.onHidden.pipe(take(1)).subscribe((reason: String)=> {
-      this.listarTurnosRecorridos();
+      this.listarUsuarios();
     });
   }
 
-  listarTurnosRecorridos(): void {
+  listarUsuarios(): void {
     this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(data => {
       this.usuariosDS.load(data.map(item => {
         return {
           id: item.id,
           nombre:item.nombre,
-          usuario: item.usuario,
+          usuario: item.username,
           correo: item.correo,
           perfil: item.perfil
         }
@@ -88,7 +88,7 @@ export class UsuariosComponent implements OnInit {
           instance.pressed.subscribe(row => {
             this.mostrarusuarioFormulario({
               tipoFormulario: 2, 
-              turnoRecorridoId: row.id,
+              usuarioId: row.id,
             })
           });
         }

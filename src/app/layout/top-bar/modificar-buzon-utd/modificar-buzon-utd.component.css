@@ -1,0 +1,17 @@
+.dndPlaceholder {
+
+    min-height: 72px;
+    border: 1px dashed green;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .list-group-mine .list-group-item {
+    background-color: #f1f9fb;
+    border-top: 1px solid #f1f9fb;
+    border-left-color: #fff;
+    border-right-color: #fff;
+  }
+  
+  .list-group-mine .list-group-item:hover {
+    background-color: rgb(183, 200, 236);
+  }
