@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h6 class="modal-title pull-left font-weight-bold">
-        {{ tipoFormulario == 1 ? 'NUEVO BUZON' : 'EDITAR BUZON' }}</h6>
+        {{ tipoFormulario == 1 ? 'NUEVO BUZÓN' : 'EDITAR BUZÓN' }}</h6>
     <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
         <span aria-hidden="true" class="text-white">&times;</span>
     </button>
@@ -14,7 +14,7 @@
                 formControlName="nombre" placeholder="Ingrese el nombre">
             <span *ngIf="buzonForm.get('nombre').invalid && buzonForm.get('nombre').dirty"
                 class="text-danger small">
-                El nombre del usuario es obligatorio
+                El nombre del buzón es obligatorio
             </span>
         </div>
         <div >
