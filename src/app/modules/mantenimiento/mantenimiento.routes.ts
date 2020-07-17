@@ -21,6 +21,10 @@ const APP_ROUTES: Routes = [
         path: 'usuarios',
         loadChildren: './usuarios/usuarios.module#UsuariosModule'
     },
+    { 
+        path: 'buzones-genericos',
+        loadChildren: './buzones-genericos/buzones-genericos.module#BuzonesGenericosModule'
+    },
 ];
 
 export const APP_ROUTING = RouterModule.forChild(APP_ROUTES);

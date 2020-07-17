@@ -16,4 +16,7 @@ export abstract class IUsuarioRepository {
     abstract registrarUsuario(usuario: any): Observable<any>;
 
     abstract editarUsuario(id: number, usuario: any): Observable<any>;
+
+    abstract listarUsuariosConBuzon(): Observable<any>;
+
 }

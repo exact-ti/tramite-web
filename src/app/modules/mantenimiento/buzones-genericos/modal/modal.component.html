@@ -1,0 +1,86 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">
+        {{ tipoFormulario == 1 ? 'NUEVO BUZON' : 'EDITAR BUZON' }}</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+
+<form [formGroup]="buzonForm" (ngSubmit)="submit(buzonForm.value)">
+    <div class="modal-body pr-3">
+        <div class="form-group">
+            <label for="codigo">Nombre</label>
+            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
+                formControlName="nombre" placeholder="Ingrese el nombre">
+            <span *ngIf="buzonForm.get('nombre').invalid && buzonForm.get('nombre').dirty"
+                class="text-danger small">
+                El nombre del usuario es obligatorio
+            </span>
+        </div>
+        <div >
+            <div class="form-group">
+                <label for="area">ÁREA</label>
+                <ng-select [items]=areas bindLabel="nombre" formControlName="area"
+                    placeholder="Selecciona el área"></ng-select>
+                <span *ngIf="buzonForm.get('area').invalid && buzonForm.get('area').dirty"
+                    class="text-danger small">
+                    El área es obligatorio
+                </span>
+            </div>
+        </div>
+        <div>
+            <label for="codigo">USUARIO</label>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <ng-select [items]=usuarios bindLabel="nombre" [(ngModel)]="usuario"
+                            [ngModelOptions]="{standalone: true}" placeholder="Selecciona el USUARIO">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-primary float-right" (click)="agregarUsuario(usuario)"><i
+                            class="fas fa-plus"></i></button>
+                </div>
+            </div>
+            <div *ngIf="usuariosSeleccionadas.length > 0; else mensaje" class="row" dndDropzone>
+                <div class="col-10 dndPlaceholder" dndPlaceholderRef>
+                </div>
+                <div class="col-10" *ngFor="let usuario of usuariosSeleccionadas">
+                    <app-usuario-card [usuario]="usuario" (onClose)="removerUsuario(usuario)"></app-usuario-card>
+                </div>
+            </div>
+            <ng-template #mensaje>
+                <div class="row">
+                    <div class="col">
+                        <div class="alert alert-warning" role="alert">
+                            No hay ningún usuario seleccionado
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+        <div *ngIf="tipoFormulario!=1">
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="activo">Estado</label>
+                        <select class="form-control" id="activo" formControlName="activo">
+                            <option value="true">ACTIVADO
+                            </option>
+                            <option value="false">DESACTIVADO
+                            </option>
+                        </select>
+                        <span *ngIf="!buzonForm.get('activo').value" class="text-danger small">
+                            No se puede modificar si está desactivado
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success"
+            [disabled]="buzonForm.invalid">{{tipoFormulario==1 ? 'Guardar' : 'Modificar'}}</button>
+    </div>
+</form>

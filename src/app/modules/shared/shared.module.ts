@@ -10,6 +10,7 @@ import { ButtonViewComponent } from './button-view/button-view.component';
 import { AreaCardComponent } from './area-card/area-card.component';
 import { TurnoCardComponent } from './turno-card/turno-card.component';
 import { UtdCardComponent } from './utd-card/utd-card.component';
+import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
 
 
 
@@ -22,7 +23,8 @@ import { UtdCardComponent } from './utd-card/utd-card.component';
     ButtonViewComponent,
     AreaCardComponent,
     TurnoCardComponent,
-    UtdCardComponent
+    UtdCardComponent,
+    UsuarioCardComponent
   ],
   imports: [
     CommonModule, 
@@ -35,7 +37,8 @@ import { UtdCardComponent } from './utd-card/utd-card.component';
     ButtonViewComponent,
     AreaCardComponent,
     TurnoCardComponent,
-    UtdCardComponent
+    UtdCardComponent,
+    UsuarioCardComponent
   ], 
   providers: [
     BsModalService,

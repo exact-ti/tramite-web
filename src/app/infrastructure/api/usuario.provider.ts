@@ -12,6 +12,7 @@ export class UsuarioProvider extends IUsuarioRepository{
 
 
 
+
     constructor(
         private client: RequesterService,
         private utdRepository: IUtdRepository,
@@ -42,6 +43,10 @@ export class UsuarioProvider extends IUsuarioRepository{
 
     listarDetalleUsuario(id: number): Observable<any> {
         return this.client.get(this.prefix + "/usuarios/" + id);
+    }
+
+    listarUsuariosConBuzon(): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/usuariosconbuzon")));
     }
 
 
