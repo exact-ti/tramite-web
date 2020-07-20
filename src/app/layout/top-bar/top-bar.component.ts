@@ -10,6 +10,7 @@ import { ModificarBuzonUtdComponent } from './modificar-buzon-utd/modificar-buzo
 import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-top-bar',
@@ -23,7 +24,7 @@ export class TopBarComponent implements OnInit {
     private utdRepository: IUtdRepository,
     private perfilRepository: IPerfilRepository,
     private localStorageService: LocalStorage,
-    private modalService: BsModalService,
+    private modalService: BsModalService
   ) { }
 
   public perfilSeleccionado: any;
@@ -79,6 +80,7 @@ export class TopBarComponent implements OnInit {
     this.localStorageService.deleteTokens();
     window.location.href = AppConfig.LOGIN_URL;
   }
+
 
   modificarData() {
     let bsModalRef: BsModalRef = this.modalService.show(ModificarBuzonUtdComponent, {

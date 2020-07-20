@@ -24,6 +24,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
     },
     {
+        path: 'home',
+        loadChildren: './modules/principal/principal.module#PrincipalModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: 'envios-activos'

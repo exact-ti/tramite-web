@@ -57,6 +57,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { IDashboardRepository } from './core/repository/dashboard.repository';
 import { DashboardProvider } from './infrastructure/api/dashboard.provider';
 import { BuzonesGenericosModule } from './modules/mantenimiento/buzones-genericos/buzones-genericos.module';
+import { PrincipalModule } from './modules/principal/principal.module';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -85,6 +86,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     RegistroEnvioModule,
     EnviosActivosModule,
     DashboardModule,
+    PrincipalModule,
     ConfirmacionEnviosModule,
     TurnosRecorridosModule,
     InterconexionesModule,

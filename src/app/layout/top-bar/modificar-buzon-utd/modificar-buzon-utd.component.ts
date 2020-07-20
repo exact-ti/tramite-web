@@ -8,6 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
 import { AppConfig } from 'src/app/app.config';
 import { take, filter } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-modificar-buzon-utd',
@@ -21,7 +22,8 @@ export class ModificarBuzonUtdComponent implements OnInit {
     private buzonRepository: IBuzonRepository,
     private utdRepository: IUtdRepository,
     private modalService: BsModalService,
-    private notifier: NotifierService
+    private notifier: NotifierService,private router: Router, 
+    private route: ActivatedRoute
   ) { }
 
   confirmarSubscription: Subscription;
@@ -62,6 +64,10 @@ export class ModificarBuzonUtdComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
+  go(vista) {
+    this.router.navigate(['/'+vista]/* , { relativeTo: this.route } */);
+  }
+
 
   seleccionarItem(value: any) {
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
@@ -73,8 +79,6 @@ export class ModificarBuzonUtdComponent implements OnInit {
       if (this.perfilSeleccionado.id == 1) {
         this.utdRepository.seleccionarUtd(value)
         this.notifier.notify('success', 'Se ha modificado la UTD correctamente');
-        
-        
       } else {
         this.buzonRepository.seleccionarBuzon(value);
         this.notifier.notify('success', 'Se ha modificado el buzón correctamente');
@@ -83,6 +87,7 @@ export class ModificarBuzonUtdComponent implements OnInit {
       setTimeout(()=>{
         this.bsModalRef.hide();
       }, 100);
+      this.go(this.perfilSeleccionado.id ==TipoPerfilEnum.CLIENTE?"dashboard":"home");
     });
   }
 }
