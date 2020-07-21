@@ -54,6 +54,7 @@ export class TurnosRecorridosComponent implements OnInit {
           id: item.id,
           nombre: item.nombre,
           usuario: item.usuario,
+          utd:item.utd,
           horario: item.horaInicio + " - " + item.horaFin, 
           nroAreas: item.cantidadAreas,
         }
@@ -63,9 +64,6 @@ export class TurnosRecorridosComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        show: false,
-      },
       nombre: {
         title: 'Nombre'
       },
@@ -74,6 +72,9 @@ export class TurnosRecorridosComponent implements OnInit {
       },
       horario: {
         title: 'Horario'
+      },
+      utd: {
+        title: 'UTD'
       },
       nroAreas: {
         title: 'Nro Áreas'

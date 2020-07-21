@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { take } from 'rxjs/operators';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 import { IBuzonRepository } from 'src/app/core/repository/buzon.repository';
+import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-modal',
@@ -16,7 +18,7 @@ export class ModalComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef,
     public areaRepository: IAreaRepository,
     public usuarioRepository: IUsuarioRepository,
-    public buzonRepository: IBuzonRepository,
+    public buzonRepository: IBuzonRepository, private modalService: BsModalService, private notifier: NotifierService
   ) { }
 
   tipoFormulario: number;
@@ -85,39 +87,39 @@ export class ModalComponent implements OnInit {
   }
 
   private formValidator(form: FormGroup): ValidationErrors | null {
-/*          if (this.usuariosSeleccionadas.length == 0) {
-          return {
-            noUsuarios: true
-          }
-        }  */
-        if(this.buzonForm){
-          if(this.buzonFormInitialState.nombre==this.buzonForm.value.nombre){
-            if(this.buzonFormInitialState.activo==this.buzonForm.value.activo){
-              if(this.buzonForm.value.area!=null){
-                var areaInitial = this.buzonFormInitialState.area;
-                var areaForm= this.buzonForm.value.area;
-                if(areaInitial.id==areaForm.id){
-                  if (JSON.stringify(this.usuariosSeleccionadasInitialState) == JSON.stringify(this.usuariosSeleccionadas)) {
-                    return {
-                      noCambio: true
-                    }
-                  } 
+    /*          if (this.usuariosSeleccionadas.length == 0) {
+              return {
+                noUsuarios: true
+              }
+            }  */
+    if (this.buzonForm) {
+      if (this.buzonFormInitialState.nombre == this.buzonForm.value.nombre) {
+        if (this.buzonFormInitialState.activo == this.buzonForm.value.activo) {
+          if (this.buzonForm.value.area != null) {
+            var areaInitial = this.buzonFormInitialState.area;
+            var areaForm = this.buzonForm.value.area;
+            if (areaInitial.id == areaForm.id) {
+              if (JSON.stringify(this.usuariosSeleccionadasInitialState) == JSON.stringify(this.usuariosSeleccionadas)) {
+                return {
+                  noCambio: true
                 }
               }
             }
           }
- /*          if (JSON.stringify(this.buzonFormInitialState) == JSON.stringify(this.buzonForm.value)) {
-            if (JSON.stringify(this.usuariosSeleccionadasInitialState) == JSON.stringify(this.usuariosSeleccionadas)) {
-              return {
-                noCambio: true
-              }
-            } 
-          } */
-        }else{
-          return {
-            noDefinido: true
-          }
         }
+      }
+      /*          if (JSON.stringify(this.buzonFormInitialState) == JSON.stringify(this.buzonForm.value)) {
+                 if (JSON.stringify(this.usuariosSeleccionadasInitialState) == JSON.stringify(this.usuariosSeleccionadas)) {
+                   return {
+                     noCambio: true
+                   }
+                 } 
+               } */
+    } else {
+      return {
+        noDefinido: true
+      }
+    }
 
 
     return null;
@@ -147,21 +149,42 @@ export class ModalComponent implements OnInit {
 
   submit(value: any) {
     value.usuarios = this.usuariosSeleccionadas;
-    if (this.tipoFormulario == 1) {
-      this.buzonRepository.registrarBuzon(value).pipe(take(1)).subscribe(data => {
-        if (data.status == "success") {
-          alert("Usuario creado");
-          this.bsModalRef.hide();
-        }
-      });
-    } else {
-      this.buzonRepository.editarBuzon(this.buzonGenericoId, value).pipe(take(1)).subscribe(data => {
-        if (data.status == "success") {
-          alert("Usuario actualizado");
-          this.bsModalRef.hide();
-        }
-      });
-    }
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      initialState: {
+        mensaje: this.tipoFormulario == 1 ? "¿Está seguro que desea crear un nuevo buzón?" : "¿Está seguro que desea modificar el buzón?"
+      }
+    });
+
+    bsModalRef.content.confirmarEvent.subscribe(() => {
+      if (this.tipoFormulario == 1) {
+        this.buzonRepository.registrarBuzon(value).pipe(take(1)).subscribe(data => {
+          if (data.status == "success") {
+            this.notifier.notify('success', 'Se ha creado el buzón correctamente');
+            this.bsModalRef.hide();
+          }else{
+            this.notifier.notify('error', 'No se registro el buzón');
+          }
+        },
+        error => {
+          this.notifier.notify('error', 'No se registro el buzón');
+        });
+      } else {
+        this.buzonRepository.editarBuzon(this.buzonGenericoId, value).pipe(take(1)).subscribe(data => {
+          if (data.status == "success") {
+            this.notifier.notify('success', 'Se ha actualizado el buzón correctamente');
+            this.bsModalRef.hide();
+          }else{
+            this.notifier.notify('error', 'No se actualizó el buzón');
+          }
+        },
+        error => {
+          this.notifier.notify('error', 'No se actualizó el buzón');
+        });;
+      }
+
+    })
+
+
 
   }
 }

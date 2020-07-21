@@ -106,7 +106,7 @@ modelInterconexion(row,modalId) {
     initialState: {
       tipoModalId: modalId,
       interconexion:  this.interconexionModal,
-      titulo: this.interconexionModal==null ? 'NUEVA INTERCONEXIÓN' : 'MODIFICAR INTERCONEXIÓN'
+      titulo: this.interconexionModal==null ? 'NUEVA INTERCONEXIÓN' : 'MODIFICAR INTERCONEXIÓN' + ' '+ row.nombre
     },
     class: 'modal-md',
     keyboard: false,

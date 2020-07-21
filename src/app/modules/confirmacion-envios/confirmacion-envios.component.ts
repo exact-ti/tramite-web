@@ -5,6 +5,7 @@ import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
 import { take } from 'rxjs/operators';
 import { AppConfig } from 'src/app/app.config';
 import { IConfiguracionRepository } from 'src/app/core/repository/configuracion.repository';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-confirmacion-envios',
@@ -15,7 +16,7 @@ export class ConfirmacionEnviosComponent implements OnInit {
 
   constructor(
     private envioRepository: IEnvioRepository,
-    private configuracionRepository: IConfiguracionRepository,
+    private configuracionRepository: IConfiguracionRepository, private notifier: NotifierService
   ) { }
 
   public confirmacionForm: FormGroup;
@@ -58,9 +59,9 @@ export class ConfirmacionEnviosComponent implements OnInit {
     }
     this.envioRepository.confirmarEnvios(paquetesIds).pipe(take(1)).subscribe((data) => {
       if (data) {
-        alert('Confirmación correcta');        
+        this.notifier.notify('success', 'Confirmación correcta');
       }else{        
-        alert('No fue posible confirmar el/los envíos seleccionados');
+        this.notifier.notify('error', 'No fue posible confirmar el/los envíos seleccionados');
       }
       this.confirmacionForm.reset({
         paqueteId: ''

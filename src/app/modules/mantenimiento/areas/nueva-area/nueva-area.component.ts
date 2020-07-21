@@ -128,19 +128,19 @@ private existenciaAreaValidator({ value }: AbstractControl): Observable<Validati
       area.activo = this.agregarForm.get('activo').value;
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
-          mensaje: "¿Está seguro que desea crear?"
+          mensaje: this.tipoModalId==1?"¿Está seguro que desea crear el área?":"¿Está seguro que desea modificar el área?"
         }
       });
       if (this.area == null) {
         bsModalRef.content.confirmarEvent.subscribe(() => {
           this.modificarAreaSubscription = this.areaRepository.crearArea(area).subscribe(
             area => {
-              this.notifier.notify('success', 'Se ha creado el area correctamente');
+              this.notifier.notify('success', 'Se ha creado el área correctamente');
               this.bsModalRef.hide();
               this.areaCreadoEvent.emit(area);
             },
             error => {
-              this.notifier.notify('error', 'No se registro el area');
+              this.notifier.notify('error', 'No se registro el área');
             }
           );
         })

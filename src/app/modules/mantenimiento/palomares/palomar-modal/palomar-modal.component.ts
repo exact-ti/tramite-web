@@ -121,7 +121,17 @@ export class PalomarModalComponent implements OnInit {
         noAreas: true
       }
     }
-      if(!this.agregarForm){
+
+    if (this.areasSeleccionadas.length == 0 && this.tipoModalId==2) {
+      if(form.value.activo.toString()=="true"){
+        return {
+          noAreas: true
+        }
+      }
+    }
+
+
+    if(!this.agregarForm){
       return null;
     } 
    /*  if (this.areasSeleccionadas.length == 0 && this.tipoModalId==2) {
@@ -188,31 +198,31 @@ export class PalomarModalComponent implements OnInit {
     // this.agregarForm.areas = this.areasSeleccionadas;
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
-        mensaje: this.tipoModalId == 1 ? "¿Está seguro que desea crear?" : "¿Está seguro que desea modificar"
+        mensaje: this.tipoModalId == 1 ? "¿Está seguro que desea crear?" : "¿Está seguro que desea modificar?"
       }
     });
     bsModalRef.content.confirmarEvent.subscribe(() => {
       if (this.tipoModalId == 1) {
         this.modificarpalomarSubscription = this.palomarRepository.registrarPalomar(this.transformar(this.agregarForm, this.areasSeleccionadas)).subscribe(
           area => {
-            this.notifier.notify('success', 'Se ha creado el area correctamente');
+            this.notifier.notify('success', 'Se ha creado el palomar correctamente');
             this.bsModalRef.hide();
             this.palomarCreadoEvent.emit(area);
           },
           error => {
-            this.notifier.notify('error', 'No se registro el area');
+            this.notifier.notify('error', 'No se registró el palomar');
           }
         );
       } else {
         this.modificarpalomarSubscription = this.palomarRepository.editarPalomar(this.palomar.id, this.transformar(this.agregarForm, this.areasSeleccionadas)).subscribe(
           area => {
 
-            this.notifier.notify('success', 'Se ha modificado el area correctamente');
+            this.notifier.notify('success', 'Se ha modificado el palomar correctamente');
             this.bsModalRef.hide();
             this.palomarCreadoEvent.emit(area);
           },
           error => {
-            this.notifier.notify('error', 'No se modificó el area');
+            this.notifier.notify('error', 'No se modificó el palomar');
           }
         );
       }

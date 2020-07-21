@@ -113,7 +113,7 @@ modelPalomar(row,modalId) {
     initialState: {
       tipoModalId: modalId,
       palomar:  this.palomarModal,
-      titulo: this.palomarModal==null ? 'NUEVO PALOMAR' : 'MODIFICAR PALOMAR'
+      titulo: this.palomarModal==null ? 'NUEVO PALOMAR' : 'MODIFICAR PALOMAR'+" "+row.codigopalomar
     },
     class: 'modal-md',
     keyboard: false,

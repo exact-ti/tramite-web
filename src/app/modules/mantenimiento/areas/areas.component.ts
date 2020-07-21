@@ -140,7 +140,7 @@ export class AreasComponent implements OnInit {
       initialState: {
         tipoModalId: modalId,
         area:  this.areaModal,
-        titulo: this.areaModal==null ? 'NUEVA ÁREA' : 'MODIFICAR ÁREA'
+        titulo: this.areaModal==null ? 'NUEVA ÁREA' : 'MODIFICAR ÁREA'+" "+ row.nombre.toUpperCase()
       },
       class: 'modal-md',
       keyboard: false,

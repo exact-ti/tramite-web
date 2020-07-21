@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 import { IUtdRepository } from 'src/app/core/repository/utd.repository';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { IPerfilRepository } from 'src/app/core/repository/perfil.repository';
+import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-modal',
@@ -19,7 +21,8 @@ export class ModalComponent implements OnInit {
     public areaRepository: IAreaRepository,
     public usuarioRepository: IUsuarioRepository,
     public perfilRepository: IPerfilRepository,
-    public utdRepository: IUtdRepository,) { }
+    public utdRepository: IUtdRepository, private modalService: BsModalService,
+    private notifier: NotifierService) { }
   tipoFormulario: number;
   usuarioFormInitialState: any = {
     nombre: '',
@@ -35,7 +38,7 @@ export class ModalComponent implements OnInit {
 
   usuarioId: number;
   usuarioForm: FormGroup;
-  mostrar : any;
+  mostrar: any;
   tiposPerfil: any[] = [];
   perfiles: any[] = [];
   areas: any[] = [];
@@ -93,15 +96,16 @@ export class ModalComponent implements OnInit {
       } else {
         this.showAreaOrUtd = false;
       }
-      this.perfiles= await this.listarPerfiles(data.perfil.tipoPerfil.id);
-      this.utdsSeleccionadas = data.utds != null? this.utds.filter(utd => data.utds.findIndex(utd2 => utd2.id == utd.id) > -1) : [];
+      this.perfiles = await this.listarPerfiles(data.perfil.tipoPerfil.id);
+      this.utdsSeleccionadas = data.utds != null ? this.utds.filter(utd => data.utds.findIndex(utd2 => utd2.id == utd.id) > -1) : [];
       this.utdsSeleccionadasInitialState = [...this.utdsSeleccionadas];
       this.inicializarForm();
     }
   }
 
   showPassword() {
-    this.show_password = !this.show_password;}
+    this.show_password = !this.show_password;
+  }
 
   listarUtds() {
     return this.utdRepository.listarUtdsActivos().pipe(take(1)).toPromise();
@@ -147,11 +151,11 @@ export class ModalComponent implements OnInit {
           noCambio: true
         }
       }
-    }else{
+    } else {
       this.mostrar = this.usuarioForm.get("tipoPerfil").value;
-      if(this.mostrar!=null){
-        if(this.mostrar.id==2){
-          if(this.usuarioForm.get("area").value==null){
+      if (this.mostrar != null) {
+        if (this.mostrar.id == 2) {
+          if (this.usuarioForm.get("area").value == null) {
             return {
               noArea: true
             }
@@ -186,22 +190,39 @@ export class ModalComponent implements OnInit {
 
   submit(value: any) {
     value.utds = this.utdsSeleccionadas;
-    if (this.tipoFormulario == 1) {
-      this.usuarioRepository.registrarUsuario(value).pipe(take(1)).subscribe(data => {
-        if (data.status == "success") {
-          alert("Usuario creado");
-          this.bsModalRef.hide();
-        }
-      });
-    } else {
-      this.usuarioRepository.editarUsuario(this.usuarioId, value).pipe(take(1)).subscribe(data => {
-        if (data.status == "success") {
-          alert("Usuario actualizado");
-          this.bsModalRef.hide();
-        }
-      });
-    }
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      initialState: {
+        mensaje: this.tipoFormulario == 1 ? "¿Está seguro que desea crear?" : "¿Está seguro que desea modificar?"
+      }
+    });
 
+    bsModalRef.content.confirmarEvent.subscribe(() => {
+      if (this.tipoFormulario == 1) {
+        this.usuarioRepository.registrarUsuario(value).pipe(take(1)).subscribe(data => {
+          if (data.status == "success") {
+            this.notifier.notify('success', 'Usuario creado');
+            this.bsModalRef.hide();
+          } else {
+            this.notifier.notify('error', 'No se creó el usuario');
+          }
+        },
+          error => {
+            this.notifier.notify('error', 'No se creó el usuario');
+          });
+      } else {
+        this.usuarioRepository.editarUsuario(this.usuarioId, value).pipe(take(1)).subscribe(data => {
+          if (data.status == "success") {
+            this.notifier.notify('success', 'Usuario actualizado');
+            this.bsModalRef.hide();
+          } else {
+            this.notifier.notify('error', 'No se actualizó el usuario');
+          }
+        },  
+          error => {
+            this.notifier.notify('error', 'No se actualizó el usuario');
+          });
+      }
+    })
   }
 
 }
