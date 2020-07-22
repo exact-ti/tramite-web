@@ -23,7 +23,9 @@ export class TrackingComponent implements OnInit {
 
   ngOnInit(): void {
     this.envioRepository.listarDetalle(this.envioId).pipe(take(1)).subscribe(data => this.detalle = data);
-    this.envioRepository.listarSeguimientos(this.envioId).pipe(take(1)).subscribe(data => this.seguimientos = data);
+    this.envioRepository.listarSeguimientos(this.envioId).pipe(take(1)).subscribe(data => 
+      this.seguimientos =  data.sort((b, a) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime())
+      );
   }
 
 }

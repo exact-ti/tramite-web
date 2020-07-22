@@ -25,6 +25,7 @@ export class UtilsService {
         return d instanceof Date && !isNaN(d.getTime());
     }
 
+
     public getJsDateFromExcel(serial) {
         var utc_days = Math.floor(serial - 25568);
         var utc_value = utc_days * 86400;

@@ -9,6 +9,22 @@ const APP_ROUTES: Routes = [
         path: 'areas',
         loadChildren: './areas/areas.module#AreasModule'
     },
+    { 
+        path: 'interconexiones',
+        loadChildren: './interconexiones/interconexiones.module#InterconexionesModule'
+    },    
+    { 
+        path: 'palomares',
+        loadChildren: './palomares/palomares.module#PalomaresModule'
+    },
+    { 
+        path: 'usuarios',
+        loadChildren: './usuarios/usuarios.module#UsuariosModule'
+    },
+    { 
+        path: 'buzones-genericos',
+        loadChildren: './buzones-genericos/buzones-genericos.module#BuzonesGenericosModule'
+    },
 ];
 
 export const APP_ROUTING = RouterModule.forChild(APP_ROUTES);

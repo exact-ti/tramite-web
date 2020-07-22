@@ -9,8 +9,8 @@
 <form [formGroup]="turnoRecorridoForm" (ngSubmit)="submit(turnoRecorridoForm.value)">
     <div class="modal-body pr-3">
         <div class="form-group">
-            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control" formControlName="nombre"
-                placeholder="Ingrese el nombre">
+            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
+                formControlName="nombre" placeholder="Ingrese el nombre">
             <span *ngIf="turnoRecorridoForm.get('nombre').invalid && turnoRecorridoForm.get('nombre').dirty"
                 class="text-danger small">
                 El nombre del turno recorrido es obligatorio
@@ -49,13 +49,14 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <ng-select [items]=areas bindLabel="nombre" [(ngModel)]="area" [ngModelOptions]="{standalone: true}" placeholder="Selecciona el área">
+                    <ng-select [items]=areas bindLabel="nombre" [(ngModel)]="area" [ngModelOptions]="{standalone: true}"
+                        placeholder="Selecciona el área">
                     </ng-select>
                 </div>
             </div>
             <div class="col-2">
-                <button type="button" class="btn btn-primary float-right"
-                    (click)="agregarArea(area)"><i class="fas fa-plus"></i></button>
+                <button type="button" class="btn btn-primary float-right" (click)="agregarArea(area)"><i
+                        class="fas fa-plus"></i></button>
             </div>
         </div>
         <div *ngIf="areasSeleccionadas.length > 0; else mensaje" class="row" dndDropzone dndEffectAllowed="copyMove"

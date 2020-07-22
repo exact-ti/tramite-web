@@ -1,0 +1,10 @@
+<div class="my-4 mb-2">
+    <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
+</div>
+
+<div *ngIf="palomares.length !== 0; else mensaje" class="center  " style = "overflow-x: scroll;">
+       <div class="smart-table-container">
+        <ng2-smart-table [settings]="settings" [source]="dataPalomares"></ng2-smart-table>
+      </div>
+</div>
+ 
