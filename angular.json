@@ -23,16 +23,15 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [                     
-              "node_modules/angular-notifier/styles.css",     
-              "src/styles.scss" ,
+            "styles": [
+              "node_modules/angular-notifier/styles.css",
+              "src/styles.scss",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"            
-              
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {
@@ -127,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "tramiteApp"
+    }
+  },
+  "defaultProject": "tramiteApp",
+  "cli": {
+    "analytics": false
+  }
 }
