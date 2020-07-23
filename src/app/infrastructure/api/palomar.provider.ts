@@ -13,6 +13,7 @@ import { Palomar } from 'src/app/core/model/palomar.model';
 export class PalomarProvider extends IPalomarRepository{
 
 
+
     constructor(
         private client: RequesterService,
         private utdRepository: IUtdRepository
@@ -22,13 +23,17 @@ export class PalomarProvider extends IPalomarRepository{
     }
 
     private prefix: string = "/servicio-tramite";
-    private myBool: boolean = true;
     private palomaresSaved: Palomar[];
+    private palomaresMantenimiento: Palomar[];
+
+    listarDetallePalomar(id: string): Observable<any> {
+        return this.client.get(this.prefix + "/palomares/" + id);
+    }
 
     listarPalomares(): Observable<any> {
         if (!this.palomaresSaved) {
             return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() + "/tipospalomares/" + TipoPalomarEnum.AREA +"/palomares").pipe(map((response: any) => {                
-                this.palomaresSaved = response.map((element)=> new Palomar(element.id, element.descripcion));
+                this.palomaresSaved = response.map((element)=> new Palomar(element.id, element.descripcion,null,null,null,null));
                 return this.palomaresSaved;
             }))));
 
@@ -37,9 +42,36 @@ export class PalomarProvider extends IPalomarRepository{
         }
     }
 
+    listarPalomaresPrincipal(): Observable<any> {
+            return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() +"/palomares").pipe(map((response: any) => {                
+                this.palomaresMantenimiento = response.map((element)=> new Palomar(element.id, element.descripcion,element.ubicacion,element.tipoPalomar,element.destino,element.activo));
+                return this.palomaresMantenimiento;
+            }))));
+    }    
 
     listarPalomaresSave(): Palomar[] {
         return this.palomaresSaved;
     }
+
+    registrarPalomar(palomar: any): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.post(this.prefix + "/utds/" + utd.id.toString() + "/palomares", this.transformar(palomar))));
+    }
+
+    editarPalomar(id: String, palomar: any): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.put(this.prefix + "/palomares/" + id.toString(), this.transformar(palomar))));
+    }
+
+    transformar(palomar: any) {
+        let palomares : String[]= [];
+        palomar.areas.map((area) => {
+            palomares.push(area.id);
+        })
+        return {
+            ubicacion: palomar.ubicacion,
+            areas: palomares,
+            activo: palomar.activo,
+        }
+    }
+
 
 }

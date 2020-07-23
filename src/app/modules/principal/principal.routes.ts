@@ -1,10 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
-import { ModificarAreaComponent } from './modificar-area.component';
+import { PrincipalComponent } from './principal.component';
 
 const APP_ROUTES: Routes = [
     { 
         path: '', 
-        component: ModificarAreaComponent
+        component: PrincipalComponent
     },
 ];
 

@@ -24,6 +24,7 @@ export class NuevaAreaComponent implements OnInit {
     private sedeRepository: ISedeRepository, private palomarRepository: IPalomarRepository, private utilsService: UtilsService,
     private areaRepository: IAreaRepository, private notifier: NotifierService
   ) { }
+  
   agregarForm: FormGroup;
   titulo: String;
   area: Area;
@@ -92,18 +93,6 @@ export class NuevaAreaComponent implements OnInit {
 
   }
 
-/*
- (change)="somethingChanged(agregarForm.get('codigo').value)"
-  somethingChanged(codigo) {
-    if (codigo.length == 0) {
-      this.respuesta= false;
-    } else {
-      this.areaRepository.verificarExistencia(codigo).pipe(take(1)).subscribe(
-        (data) => {
-          this.respuesta=data;
-    })
-  }
-}*/
 private existenciaAreaValidator({ value }: AbstractControl): Observable<ValidationErrors | null> {
   if (value.length == 0) {
     return of(null);
@@ -126,8 +115,6 @@ private existenciaAreaValidator({ value }: AbstractControl): Observable<Validati
     }
 
   }
-
-
 }
 
   onSubmit(form: any) {
@@ -141,19 +128,19 @@ private existenciaAreaValidator({ value }: AbstractControl): Observable<Validati
       area.activo = this.agregarForm.get('activo').value;
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
-          mensaje: "¿Está seguro que desea crear?"
+          mensaje: this.tipoModalId==1?"¿Está seguro que desea crear el área?":"¿Está seguro que desea modificar el área?"
         }
       });
       if (this.area == null) {
         bsModalRef.content.confirmarEvent.subscribe(() => {
           this.modificarAreaSubscription = this.areaRepository.crearArea(area).subscribe(
             area => {
-              this.notifier.notify('success', 'Se ha creado el area correctamente');
+              this.notifier.notify('success', 'Se ha creado el área correctamente');
               this.bsModalRef.hide();
               this.areaCreadoEvent.emit(area);
             },
             error => {
-              this.notifier.notify('error', 'No se registro el area');
+              this.notifier.notify('error', 'No se registro el área');
             }
           );
         })

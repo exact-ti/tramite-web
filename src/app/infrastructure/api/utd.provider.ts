@@ -10,6 +10,7 @@ import { map, flatMap, last } from 'rxjs/operators';
 @Injectable()
 export class UtdProvider extends IUtdRepository{
 
+
     constructor(
         private client: RequesterService
     ){
@@ -43,6 +44,17 @@ export class UtdProvider extends IUtdRepository{
             return of(this.utdSeleccionado);
         }
     }
+
+    listarUtdsActivos(): Observable<any> {
+        return this.client.get(this.prefix + "/utds/items");
+    }
+
+    seleccionarUtd(utd: any): any {
+        this.utdSeleccionado=utd;
+        return this.utdSeleccionado;
+    }
+
+
 
 
 }

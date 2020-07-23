@@ -1,0 +1,105 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">{{ titulo}}</h6>
+</div>
+
+<form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+
+  <div class="card-body">
+  <div *ngIf="tipoModalId==2">
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="codigo">Código de bandeja</label>
+          <input class="form-control" type="text" name="codigo" id="codigo" formControlName="codigo"  [attr.disabled]="true" onkeyup="this.value = this.value.toUpperCase();">
+          <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched"
+            class="text-danger small">
+            Es necesario ingresar el código de  bandeja
+          </span>
+<!--           <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched && !validarLongitud(agregarForm.get('codigo').value)"
+            class="text-danger small">
+            El código ya se encuentra en el sistema
+           </span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="ubicacion">Ubicación</label>
+            <input class="form-control" type="text" name="ubicacion" id="ubicacion" formControlName="ubicacion" onkeyup="this.value = this.value.toUpperCase();">
+            <span *ngIf="!agregarForm.get('ubicacion').valid && agregarForm.get('ubicacion').touched"
+              class="text-danger small">
+              Es necesario ingresar la ubicación
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="tipo">Tipo Palomar</label>
+            <input class="form-control" type="text" name="tipo" id="tipo" formControlName="tipo" [attr.disabled]="true" onkeyup="this.value = this.value.toUpperCase();">
+            <span *ngIf="!agregarForm.get('tipo').valid && agregarForm.get('tipo').touched"
+              class="text-danger small">
+              Es necesario ingresar la ubicación
+            </span>
+          </div>
+        </div>
+      </div>  
+<div *ngIf="tipoPalomar">
+      <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <ng-select [items]=areas bindLabel="nombre" [(ngModel)]="area" [ngModelOptions]="{standalone: true}" onkeyup="this.value = this.value.toUpperCase();" placeholder="Selecciona el área">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary float-right"
+                (click)="agregarArea(area)"><i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+    <div *ngIf="areasSeleccionadas.length > 0; else mensaje" class="row" dndDropzone dndEffectAllowed="copyMove"
+        (dndDrop)="onDrop($event, areasSeleccionadas)">
+        <div class="col-6 dndPlaceholder" dndPlaceholderRef>
+        </div>
+        <div class="col-6" *ngFor="let area of areasSeleccionadas">
+            <app-area-card [area]="area" (onClose)="removerArea(area)"></app-area-card>
+        </div>
+    </div> 
+  </div>
+    <ng-template #mensaje>
+      <div class="row">
+          <div class="col">
+              <div class="alert alert-warning" role="alert">
+                  No hay áreas asociadas al palomar
+              </div>
+          </div>
+      </div>
+  </ng-template>
+      <div *ngIf="tipoModalId==2">
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="activo">Estado</label>
+              <select class="form-control" id="activo" formControlName="activo">
+                <option value="true">ACTIVADO
+                </option>
+                <option value="false" *ngIf="areasSeleccionadas.length == 0">DESACTIVADO
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success"
+      [disabled]="agregarForm.invalid || !palomarFormInitialState.activo" ><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
+    </button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+  </div>
+</form>
