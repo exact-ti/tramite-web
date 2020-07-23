@@ -58,6 +58,9 @@ import { IDashboardRepository } from './core/repository/dashboard.repository';
 import { DashboardProvider } from './infrastructure/api/dashboard.provider';
 import { BuzonesGenericosModule } from './modules/mantenimiento/buzones-genericos/buzones-genericos.module';
 import { PrincipalModule } from './modules/principal/principal.module';
+import { DefaultPageGuard } from './guard/default-page-guard';
+import { SharedModule } from './modules/shared/shared.module';
+import { HomeComponent } from './modules/home/home.component';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -77,25 +80,15 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     TreeViewComponent,
     NuevaAreaComponent,
     ModificarBuzonUtdComponent,
+    HomeComponent,
   ],
   imports: [
+    APP_ROUTING,
     NotifierModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    RegistroEnvioModule,
-    EnviosActivosModule,
-    DashboardModule,
-    PrincipalModule,
-    ConfirmacionEnviosModule,
-    TurnosRecorridosModule,
-    InterconexionesModule,
-    PalomaresModule,
-    MantenimientoModule,
-    AreasModule,
-    UsuariosModule,
-    BuzonesGenericosModule,
-    APP_ROUTING,
+    SharedModule,
   ],
   providers: [
     RequesterService,
@@ -127,10 +120,9 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IInterconexionRepository, useClass: InterconexionProvider},
     {provide: IPerfilRepository, useClass: PerfilProvider},
     {provide: IDashboardRepository, useClass: DashboardProvider},
-
-
   ],
   bootstrap: [AppComponent],
+  
   schemas: [CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA],
 

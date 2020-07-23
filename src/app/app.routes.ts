@@ -1,15 +1,20 @@
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
+import { DefaultPageGuard } from './guard/default-page-guard';
+import { HomeComponent } from './modules/home/home.component';
 
 const APP_ROUTES: Routes = [
-
     {
-        path: 'generar-envio',
-        loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
+        path: '',
+        component: HomeComponent      
+        //canActivate: [DefaultPageGuard]
     },
     {
         path: 'envios-activos',
         loadChildren: './modules/envios-activos/envios-activos.module#EnviosActivosModule'
+    },
+    {
+        path: 'generar-envio',
+        loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
     },
     {
         path: 'recepcion',
@@ -30,7 +35,8 @@ const APP_ROUTES: Routes = [
     {
         path: '**',
         pathMatch: 'prefix',
-        redirectTo: 'envios-activos'
+        redirectTo: '',        
+        //canActivate: [DefaultPageGuard]
     },
 ];
 
