@@ -1,5 +1,5 @@
 {
-    "mode": "dev",
+    "mode": "test",
 
     "dev": {
         "login_url": "http://localhost:4300",

@@ -1,12 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
-import { DefaultPageGuard } from './guard/default-page-guard';
 import { HomeComponent } from './modules/home/home.component';
 
 const APP_ROUTES: Routes = [
     {
         path: '',
         component: HomeComponent      
-        //canActivate: [DefaultPageGuard]
     },
     {
         path: 'envios-activos',
