@@ -17,7 +17,7 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
     },
     {
-        path: 'recepcion',
+        path: 'confirmar-envios',
         loadChildren: './modules/confirmacion-envios/confirmacion-envios.module#ConfirmacionEnviosModule'
     },
     {
