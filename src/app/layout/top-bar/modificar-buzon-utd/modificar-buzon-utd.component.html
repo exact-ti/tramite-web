@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">
+        {{ perfilSeleccionado.id == 2 ? 'ESCOGE UN NUEVO BUZÓN' : 'ESCOGE UNA NUEVA UTD' }}</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+<div class="modal-body pr-3">
+    <div class="col-12">
+        <ul class="list-group list-group-mine">
+            <li class="list-group-item text-center d-inline-block" *ngFor="let item of items" (click)="seleccionarItem(item)">
+                <div class="col-12"  >{{item.nombre}}</div>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -39,8 +39,31 @@ export class MenuProvider extends IMenuRepository {
         return respuesta.map((elemento: any) => new Menu(elemento.id, elemento.nombre, elemento.orden, elemento.icono, elemento.link, elemento.home, this.convertirRespuesta(elemento.menuHijos)));
     }
 
-    public listarNombreByRuta(ruta: string): string{
-        return this.menu.find(item => item.link == ruta).nombre;
+    public listarNombreByRuta(ruta: string): Observable<String>{
+        if (ruta == "/") {
+            return this.listarMenuPrincipal().pipe(map(menu => menu.nombre));   
+        }
+        return this.listarMenu().pipe(map(menu => this.listarOpciones(menu).find(item => item.link == ruta).nombre));
+    }
+
+    public listarMenuPrincipal(): Observable<Menu> {
+        return this.listarMenu().pipe(map(menus => menus.find(menu => menu.home)));
+    }
+
+    public listarOpciones(menu: Menu[]): Menu[]{
+
+        let menus: Menu[] = [];
+
+        for (let index = 0; index < menu.length; index++) {
+            if (menu[index].hijos && menu[index].hijos.length > 0) {
+                let menus2 = [...this.listarOpciones(menu[index].hijos)];
+                menus2.forEach(menu2 => menus.push(menu2));
+            }else{
+                menus.push(menu[index]);
+            }            
+        }
+
+        return menus;
     }
 
 

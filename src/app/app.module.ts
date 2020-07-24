@@ -29,12 +29,9 @@ import { IAreaRepository } from './core/repository/area.repository';
 import { AreaProvider } from './infrastructure/api/area.provider';
 import { IEnvioRepository } from './core/repository/envio.repository';
 import { EnvioProvider } from './infrastructure/api/envio.provider';
-import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
-import { AreasModule } from './modules/mantenimiento/areas/areas.module';
 import { IUtdRepository } from './core/repository/utd.repository';
 import { UtdProvider } from './infrastructure/api/utd.provider';
 import { NuevaAreaComponent } from './modules/mantenimiento/areas/nueva-area/nueva-area.component';
-import { ModificarAreaComponent } from './modules/mantenimiento/areas/modificar-area/modificar-area.component';
 import { IPalomarRepository } from './core/repository/palomar.repository';
 import { PalomarProvider } from './infrastructure/api/palomar.provider';
 import { ISedeRepository } from './core/repository/sede.repository';
@@ -46,18 +43,34 @@ import { ITurnoRecorridoRepository } from './core/repository/turno-recorrido.rep
 import { TurnoRecorridoProvider } from './infrastructure/api/turno-recorrido.provider';
 import { IUsuarioRepository } from './core/repository/usuario.repository';
 import { UsuarioProvider } from './infrastructure/api/usuario.provider';
+import { InterconexionProvider } from './infrastructure/api/interconexion.provider';
+import { IInterconexionRepository } from './core/repository/interconexion.repository';
+import { InterconexionesModule } from './modules/mantenimiento/interconexiones/interconexiones.module';
+import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.module';
+import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
+import { AreasModule } from './modules/mantenimiento/areas/areas.module';
+import { UsuariosModule } from './modules/mantenimiento/usuarios/usuarios.module';
+import { ModificarBuzonUtdComponent } from './layout/top-bar/modificar-buzon-utd/modificar-buzon-utd.component';
+import { PerfilProvider } from './infrastructure/api/perfil.provider';
+import { IPerfilRepository } from './core/repository/perfil.repository';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { IDashboardRepository } from './core/repository/dashboard.repository';
+import { DashboardProvider } from './infrastructure/api/dashboard.provider';
+import { BuzonesGenericosModule } from './modules/mantenimiento/buzones-genericos/buzones-genericos.module';
+import { PrincipalModule } from './modules/principal/principal.module';
+import { DefaultPageGuard } from './guard/default-page-guard';
+import { SharedModule } from './modules/shared/shared.module';
+import { HomeComponent } from './modules/home/home.component';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
       map((x: any) => {
         let modo: string = x.mode;
-        let objeto: any = x[modo];
+        let objeto: any = x[modo]; 
         AppConfig.Inicializar(objeto.login_url, objeto.api);
       })
   ).subscribe();
 }
-
-
 
 @NgModule({
   declarations: [
@@ -66,18 +79,16 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     TopBarComponent,
     TreeViewComponent,
     NuevaAreaComponent,
-    ModificarAreaComponent,
+    ModificarBuzonUtdComponent,
+    HomeComponent,
   ],
   imports: [
+    APP_ROUTING,
     NotifierModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    RegistroEnvioModule,
-    EnviosActivosModule,
-    ConfirmacionEnviosModule,
-    TurnosRecorridosModule,
-    APP_ROUTING,
+    SharedModule,
   ],
   providers: [
     RequesterService,
@@ -106,9 +117,12 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: ISedeRepository, useClass: SedeProvider},
     {provide: ITurnoRecorridoRepository, useClass: TurnoRecorridoProvider},
     {provide: IUsuarioRepository, useClass: UsuarioProvider},
-
+    {provide: IInterconexionRepository, useClass: InterconexionProvider},
+    {provide: IPerfilRepository, useClass: PerfilProvider},
+    {provide: IDashboardRepository, useClass: DashboardProvider},
   ],
   bootstrap: [AppComponent],
+  
   schemas: [CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA],
 

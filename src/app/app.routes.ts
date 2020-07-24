@@ -1,18 +1,23 @@
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
+import { DefaultPageGuard } from './guard/default-page-guard';
+import { HomeComponent } from './modules/home/home.component';
 
 const APP_ROUTES: Routes = [
-
     {
-        path: 'generar-envio',
-        loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
+        path: '',
+        component: HomeComponent      
+        //canActivate: [DefaultPageGuard]
     },
     {
         path: 'envios-activos',
         loadChildren: './modules/envios-activos/envios-activos.module#EnviosActivosModule'
     },
     {
-        path: 'recepcion',
+        path: 'generar-envio',
+        loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
+    },
+    {
+        path: 'confirmar-envios',
         loadChildren: './modules/confirmacion-envios/confirmacion-envios.module#ConfirmacionEnviosModule'
     },
     {
@@ -20,9 +25,18 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/mantenimiento/mantenimiento.module#MantenimientoModule'
     },
     {
+        path: 'dashboard',
+        loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
+    },
+    {
+        path: 'home',
+        loadChildren: './modules/principal/principal.module#PrincipalModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
-        redirectTo: 'envios-activos'
+        redirectTo: '',        
+        //canActivate: [DefaultPageGuard]
     },
 ];
 

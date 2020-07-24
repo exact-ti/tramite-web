@@ -71,14 +71,14 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span *ngIf="buzonSeleccionado" class="mr-2 d-none d-lg-inline text-gray-600 small">{{buzonSeleccionado.nombre}}</span>
+                <span *ngIf="dataSeleccionado" class="mr-2 d-none d-lg-inline text-gray-600 small">{{dataSeleccionado.nombre}}</span>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" (click)="modificarData()">
                     <i class="fas fa-exchange-alt mr-2"></i>
-                    Cambiar de buzón
-                </a>
+                    {{textChange}}
+               </a>
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-cog mr-2"></i>
                     Configuración

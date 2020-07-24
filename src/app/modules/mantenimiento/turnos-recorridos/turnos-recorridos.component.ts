@@ -6,6 +6,7 @@ import { ButtonViewComponent } from '../../shared/button-view/button-view.compon
 import { LocalDataSource } from 'ng2-smart-table';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TurnoRecorridoComponent } from './modal/turno-recorrido/turno-recorrido.component';
+import { AppConfig } from 'src/app/app.config';
 
 @Component({
   selector: 'app-turnos-recorridos',
@@ -25,11 +26,12 @@ export class TurnosRecorridosComponent implements OnInit {
 
   ngOnInit(): void {
     this.configurarTabla();
-    this.listarTurnosRecorridos();
+    AppConfig.DespuesDeInicializar(()=> this.listarTurnosRecorridos());    
+    //this.settings.hideSubHeader = false;
+
   }
 
   onAgregar() {
-
     this.mostrarTurnoRecorridoFormulario({
       tipoFormulario: 1,
     });
@@ -52,6 +54,7 @@ export class TurnosRecorridosComponent implements OnInit {
           id: item.id,
           nombre: item.nombre,
           usuario: item.usuario,
+          utd:item.utd,
           horario: item.horaInicio + " - " + item.horaFin, 
           nroAreas: item.cantidadAreas,
         }
@@ -61,9 +64,6 @@ export class TurnosRecorridosComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
       nombre: {
         title: 'Nombre'
       },
@@ -72,6 +72,9 @@ export class TurnosRecorridosComponent implements OnInit {
       },
       horario: {
         title: 'Horario'
+      },
+      utd: {
+        title: 'UTD'
       },
       nroAreas: {
         title: 'Nro Áreas'
