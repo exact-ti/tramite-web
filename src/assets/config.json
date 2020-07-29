@@ -1,13 +1,15 @@
 {
-    "mode": "test",
+    "mode": "dev",
 
     "dev": {
         "login_url": "http://localhost:4300",
-        "api": "http://localhost:8890/api"
+        "api": "http://localhost:8890/api",
+        "integracion_docflow": true
     },
 
     "test": {
         "login_url": "http://www.exact.com.pe:8401",
-        "api": "http://www.exact.com.pe:8890/api"
+        "api": "http://www.exact.com.pe:8890/api",
+        "integracion_docflow": true
     }
 }

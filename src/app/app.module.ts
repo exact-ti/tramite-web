@@ -48,13 +48,16 @@ import { IDashboardRepository } from './core/repository/dashboard.repository';
 import { DashboardProvider } from './infrastructure/api/dashboard.provider';
 import { SharedModule } from './modules/shared/shared.module';
 import { HomeComponent } from './modules/home/home.component';
+import { IDocflowRepository } from './core/repository/docflow.repository';
+import { DocflowProvider } from './infrastructure/api/docflow.provider';
+import { SubmitForm } from './utils/submit-form';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
       map((x: any) => {
         let modo: string = x.mode;
         let objeto: any = x[modo]; 
-        AppConfig.Inicializar(objeto.login_url, objeto.api);
+        AppConfig.Inicializar(objeto.login_url, objeto.api, objeto.integracion_docflow);
       })
   ).subscribe();
 }
@@ -107,6 +110,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IInterconexionRepository, useClass: InterconexionProvider},
     {provide: IPerfilRepository, useClass: PerfilProvider},
     {provide: IDashboardRepository, useClass: DashboardProvider},
+    {provide: IDocflowRepository, useClass: DocflowProvider},
+    SubmitForm,
   ],
   bootstrap: [AppComponent],
   
