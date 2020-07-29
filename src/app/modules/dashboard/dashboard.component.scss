@@ -9,7 +9,7 @@
   bottom: 0;
   position: absolute;
   content: " ";
-  width: 3px;
+  //width: 3px;
   background-color: #eeeeee;
   left: 50%;
   margin-left: -1.5px;
@@ -127,7 +127,8 @@
     content: "";
     background-color: #4e73df;
     left: 50px;
-    width: 80%;
+    right: 50px;
+    //width: 80%;
 }
 .timeline-horizontal .timeline-item {
   display: table-cell;

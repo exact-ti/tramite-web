@@ -4,7 +4,7 @@
         </h2>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 text-center">
             <div style="display:inline-block;width:100%;">
                 <ul class="timeline timeline-horizontal">
                     <div class="page-header">
@@ -50,7 +50,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 text-center">
             <div style="display:inline-block;width:100%;">
                 <ul class="timeline timeline-horizontal">
                     <div class="page-header">
@@ -98,8 +98,29 @@
             </div>
         </div>
     </div>
-    <div class="page-header mt-5">
-        <h2>Mensajería Externa
-        </h2>
+    <div *ngIf="integracionDocflow">
+        <div class="page-header mt-5">
+            <h2>Mensajería Externa</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <ul class="timeline timeline-horizontal">
+                    <div class="page-header">
+                        <h5 align="center">Salidas</h5>
+                    </div>
+                    <li *ngFor="let item of estadosDocflow; let last = last" class="timeline-item"
+                        [ngClass]="{'timeline-item-last': last}" (click) = "detalleIndicadorDocflow(item)">
+                        <div class="ps-top">
+                            <h3><strong>{{item.cantidad}}</strong></h3>
+                        </div>
+                        <div class="timeline-badge primary"></div>
+                        <div class="ps-bot">
+                            <p>{{item.descargo}}</p>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
     </div>
 </div>

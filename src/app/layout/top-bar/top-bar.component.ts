@@ -11,6 +11,9 @@ import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IMenuRepository } from 'src/app/core/repository/menu.repository';
+import { FormGroup } from '@angular/forms';
+import { SubmitForm } from 'src/app/utils/submit-form';
+import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
 
 @Component({
   selector: 'app-top-bar',
@@ -28,6 +31,8 @@ export class TopBarComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private menuRepository: IMenuRepository,
+    private docflowRepository: IDocflowRepository,
+    private submitForm: SubmitForm,
   ) { }
 
   public perfilSeleccionado: any;
@@ -36,17 +41,22 @@ export class TopBarComponent implements OnInit {
   confirmarSubscription: Subscription;
   @Output() BuzonUtdCreadoEvent = new EventEmitter<File>();
   public titulo: String;
+  public integracionDocflow: boolean;
 
 
   async ngOnInit(): Promise<void> {
-    
+
+    AppConfig.DespuesDeInicializar(() => {
+      this.integracionDocflow = AppConfig.INTEGRACION_DOCFLOW;
+    });
+
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd) 
-    ).subscribe(()=>{
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
       AppConfig.DespuesDeInicializar(() => {
         this.menuRepository.listarNombreByRuta(this.router.url.split('?')[0]).subscribe(nombre => this.titulo = nombre);
       });
-      
+
     });
 
 
@@ -54,7 +64,7 @@ export class TopBarComponent implements OnInit {
 /*     AppConfig.DespuesDeInicializar(()=> this.cargarData());    
  */  }
 
-  
+
 
 
   cargarData(): void {
@@ -71,10 +81,10 @@ export class TopBarComponent implements OnInit {
       this.perfilRepository.listarTipoPerfil().subscribe((data) => {
         this.perfilSeleccionado = data;
         if (this.perfilSeleccionado.id == TipoPerfilEnum.CLIENTE) {
-          this.textChange="Cambiar de buzón";
+          this.textChange = "Cambiar de buzón";
           this.cargarBuzones();
         } else {
-          this.textChange="Cambiar de UTD";
+          this.textChange = "Cambiar de UTD";
           this.cargarUtds();
         }
       })
@@ -91,6 +101,27 @@ export class TopBarComponent implements OnInit {
     this.buzonRepository.listarBuzonSeleccionado().subscribe((buzon) => {
       this.dataSeleccionado = buzon;
     })
+  }
+
+  ingresarDocflow() {
+    this.docflowRepository.listarParametrosIngreso().subscribe(respuesta => {
+      if (respuesta.status == "success") {
+        let data = respuesta.data;
+        this.submitForm.submit({
+          method: "POST",
+          action: "https://www.docflowconsultas.com.pe/siddf/webservice/UserLogin", 
+          target: "_blank",
+        }, data);
+      }
+    });
+  }
+
+  private createHiddenElement(name: string, value: string): HTMLInputElement {
+    const hiddenField = document.createElement('input');
+    hiddenField.setAttribute('name', name);
+    hiddenField.setAttribute('value', value);
+    hiddenField.setAttribute('type', 'hidden');
+    return hiddenField;
   }
 
   cerrarSesion(): void {
