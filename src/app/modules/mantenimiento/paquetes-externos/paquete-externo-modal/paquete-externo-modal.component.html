@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">
+        {{ tipoFormulario == 1 ? 'NUEVO PAQUETE EXTERNO' : 'ACTUALIZAR PAQUETE EXTERNO' }}</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+
+<form [formGroup]="paqueteExternoForm" (ngSubmit)="submit(paqueteExternoForm.value)">
+    <div class="modal-body pr-3">
+        <div class="form-group">
+            <input  type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
+                formControlName="nombre" placeholder="Ingrese el nombre">
+            <span *ngIf="paqueteExternoForm.get('nombre').invalid && paqueteExternoForm.get('nombre').dirty"
+                class="text-danger small">
+                El nombre del paquete externo es obligatorio
+            </span>
+        </div>
+        <div *ngIf="tipoFormulario == 2" class="custom-control custom-switch form-group mt-3">
+            <input type="checkbox" class="custom-control-input" id="activo" formControlName="activo">
+            <label class="custom-control-label" for="activo">Activo</label>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" [disabled]="paqueteExternoForm.invalid">Registrar</button>
+    </div>
+</form>
