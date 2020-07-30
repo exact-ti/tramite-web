@@ -1,0 +1,7 @@
+<div class="my-4 mb-5">
+    <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
+
+    <div *ngIf="paquetesExternosDS.count() !== 0" class="center mt-3"  style = "overflow-x: scroll;">
+        <ng2-smart-table [settings]="settings" [source]="paquetesExternosDS"></ng2-smart-table>
+    </div>
+</div>

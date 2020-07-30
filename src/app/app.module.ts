@@ -55,6 +55,8 @@ import { IEstadoEnvioRepository } from './core/repository/estado-envio.repositor
 import { EstadoEnvioProvider } from './infrastructure/api/estado-envio.provider';
 import { IEtapaEnvioRepository } from './core/repository/etapa-envio.repository';
 import { EtapaEnvioProvider } from './infrastructure/api/etapa-envio.provider';
+import { ITipoPaqueteRepository } from './core/repository/tipo-paquete.repository';
+import { TipoPaqueteProvider } from './infrastructure/api/tipo-paquete.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -117,6 +119,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IDocflowRepository, useClass: DocflowProvider},
     {provide: IEstadoEnvioRepository, useClass: EstadoEnvioProvider},
     {provide: IEtapaEnvioRepository, useClass: EtapaEnvioProvider},
+    {provide: ITipoPaqueteRepository, useClass: TipoPaqueteProvider},
     SubmitForm,
   ],
   bootstrap: [AppComponent],

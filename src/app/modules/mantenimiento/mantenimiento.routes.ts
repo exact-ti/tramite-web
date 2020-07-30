@@ -25,6 +25,10 @@ const APP_ROUTES: Routes = [
         path: 'buzones-genericos',
         loadChildren: './buzones-genericos/buzones-genericos.module#BuzonesGenericosModule'
     },
+    { 
+        path: 'paquetes-externos',
+        loadChildren: './paquetes-externos/paquetes-externos.module#PaquetesExternosModule'
+    },
 ];
 
 export const APP_ROUTING = RouterModule.forChild(APP_ROUTES);
