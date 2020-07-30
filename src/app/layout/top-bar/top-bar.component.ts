@@ -54,7 +54,7 @@ export class TopBarComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       AppConfig.DespuesDeInicializar(() => {
-        this.menuRepository.listarNombreByRuta(this.router.url.split('?')[0]).subscribe(nombre => this.titulo = nombre);
+        this.menuRepository.listarNombreByRuta(this.router.url.split('?')[0].split(';')[0]).subscribe(nombre => this.titulo = nombre);
       });
 
     });

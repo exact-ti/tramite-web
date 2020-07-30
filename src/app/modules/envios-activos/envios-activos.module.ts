@@ -4,6 +4,7 @@ import { EnviosActivosComponent } from './envios-activos.component';
 import { APP_ROUTING } from './envios-activos.routes';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
   ]
 })
 export class EnviosActivosModule { }

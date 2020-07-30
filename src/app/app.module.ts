@@ -51,6 +51,10 @@ import { HomeComponent } from './modules/home/home.component';
 import { IDocflowRepository } from './core/repository/docflow.repository';
 import { DocflowProvider } from './infrastructure/api/docflow.provider';
 import { SubmitForm } from './utils/submit-form';
+import { IEstadoEnvioRepository } from './core/repository/estado-envio.repository';
+import { EstadoEnvioProvider } from './infrastructure/api/estado-envio.provider';
+import { IEtapaEnvioRepository } from './core/repository/etapa-envio.repository';
+import { EtapaEnvioProvider } from './infrastructure/api/etapa-envio.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -111,6 +115,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IPerfilRepository, useClass: PerfilProvider},
     {provide: IDashboardRepository, useClass: DashboardProvider},
     {provide: IDocflowRepository, useClass: DocflowProvider},
+    {provide: IEstadoEnvioRepository, useClass: EstadoEnvioProvider},
+    {provide: IEtapaEnvioRepository, useClass: EtapaEnvioProvider},
     SubmitForm,
   ],
   bootstrap: [AppComponent],

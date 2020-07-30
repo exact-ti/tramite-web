@@ -18,10 +18,17 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashboardRepository: IDashboardRepository,
     private docflowRepository: IDocflowRepository,
-    private submitForm: SubmitForm,    
+    private submitForm: SubmitForm,
   ) { }
-  public indicadoresSalida: any;
-  public indicadoresEntrada: any;
+
+  public tiposIndicadores = [
+    {
+      nombre: "Entradas"
+    },
+    {
+      nombre: "Salidas"
+    }
+  ];
 
   ngOnInit(): void {
     AppConfig.DespuesDeInicializar(() => {
@@ -35,8 +42,8 @@ export class DashboardComponent implements OnInit {
 
   private listarIndicadores(): void {
     this.dashboardRepository.listarIndicadores().pipe(take(1)).subscribe((data) => {
-      this.indicadoresSalida = data.data.salida;
-      this.indicadoresEntrada = data.data.entrada;
+      this.tiposIndicadores[0]["indicadores"] = data.data.entrada.sort((a, b) => a.id - b.id);
+      this.tiposIndicadores[1]["indicadores"] = data.data.salida.sort((a, b) => a.id - b.id);
     });
   }
 
@@ -46,7 +53,7 @@ export class DashboardComponent implements OnInit {
     this.docflowRepository.listarIndicadores().pipe(take(1)).subscribe(respuesta => {
       if (respuesta.status == "success") {
         this.estadosDocflow = respuesta.data;
-      }else{
+      } else {
         alert(respuesta.mensaje);
       }
     });
@@ -58,7 +65,7 @@ export class DashboardComponent implements OnInit {
         let data = respuesta.data;
         this.submitForm.submit({
           method: "POST",
-          action: "https://www.docflowconsultas.com.pe/siddf/webservice/GetDataParam", 
+          action: "https://www.docflowconsultas.com.pe/siddf/webservice/GetDataParam",
           target: "_blank",
         }, data);
       }
