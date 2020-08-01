@@ -1,0 +1,7 @@
+<div class="row">
+    <ul class="nav nav-tabs">
+        <li class="nav-item" *ngFor="let item of tabs">
+            <a class="nav-link pointer" [ngClass]="{active: item == tabActiva}" (click)="activarTab(item)">{{item}}</a>
+        </li>
+    </ul>
+</div>
