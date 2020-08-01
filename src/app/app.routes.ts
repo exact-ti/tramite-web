@@ -7,6 +7,10 @@ const APP_ROUTES: Routes = [
         component: HomeComponent      
     },
     {
+        path: 'home',
+        loadChildren: './modules/principal/principal.module#PrincipalModule'
+    },
+    {
         path: 'envios-activos',
         loadChildren: './modules/envios-activos/envios-activos.module#EnviosActivosModule'
     },
@@ -27,8 +31,8 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
     },
     {
-        path: 'home',
-        loadChildren: './modules/principal/principal.module#PrincipalModule'
+        path: 'envios-historicos',
+        loadChildren: './modules/envios-historicos/envios-historicos.module#EnviosHistoricosModule'
     },
     {
         path: '**',
