@@ -8,4 +8,5 @@ export abstract class IEnvioRepository {
     abstract listarDetalle(envioId: number): Observable<any>;
     abstract listarSeguimientos(envioId: number): Observable<any>;
     abstract listarPorEtapasYRangoDeFechasDelBuzon(filtro: string, etapasIds: number[], desde: Date, hasta: Date): Observable<any>;
+    abstract listarReporteGeneral(desde: Date, hasta: Date, estadosIds: number[], origenesIds: number[], destinosIds: number[]): Observable<any>;
 }
