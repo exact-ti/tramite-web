@@ -35,6 +35,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/envios-historicos/envios-historicos.module#EnviosHistoricosModule'
     },
     {
+        path: 'reporte-general',
+        loadChildren: './modules/reporte-general/reporte-general.module#ReporteGeneralModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: '',        

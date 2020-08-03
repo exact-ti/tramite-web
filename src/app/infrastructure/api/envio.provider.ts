@@ -13,6 +13,7 @@ import * as moment from 'moment';
 
 @Injectable()
 export class EnvioProvider extends IEnvioRepository {
+    
    
        
     
@@ -64,6 +65,17 @@ export class EnvioProvider extends IEnvioRepository {
             .set("desde", moment(desde).format("d/MM/yyyy"))
             .set("hasta", moment(hasta).format("d/MM/yyyy"))
         })));
+    }
+
+    listarReporteGeneral(desde: Date, hasta: Date, estadosIds: number[], origenesIds: number[], destinosIds: number[]): Observable<any> {
+        return this.client.get(this.prefix + "/envios", {
+            params: new HttpParams()
+            .set("estadosIds", estadosIds.join(","))
+            .set("origenesIds", origenesIds.join(","))
+            .set("destinosIds", destinosIds.join(","))
+            .set("desde", moment(desde).format("d/MM/yyyy"))
+            .set("hasta", moment(hasta).format("d/MM/yyyy"))
+        });
     }
 
 
