@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">CARGO</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+<div class="modal-body pr-3">
+    <div class="row my-2">
+        <div class="col-5 font-weight-bold">
+            <span class="float-left">Tipo de Cargo:</span>
+        </div>
+        <div class="col">{{cargo.tipoCargo.nombre}}</div>
+    </div>
+    <div class="row my-2">
+        <div class="col-5 font-weight-bold">
+            <span class="float-left">Código:</span>
+        </div>
+        <div class="col">{{paqueteId}}</div>
+    </div>
+    <div class="row my-2">
+        <div class="col-5 font-weight-bold">
+            <span class="float-left">Para:</span>
+        </div>
+        <div class="col">{{destinatario}}</div>
+    </div>
+    <div class="row mt-3">
+        <img [src]="cargo.valor" class="img-fluid img-thumbnail" [alt]="destinatario">
+    </div>
+
+</div>
