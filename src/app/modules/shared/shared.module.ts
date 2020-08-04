@@ -12,6 +12,7 @@ import { TurnoCardComponent } from './turno-card/turno-card.component';
 import { UtdCardComponent } from './utd-card/utd-card.component';
 import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { CargoComponent } from './modals/cargo/cargo.component';
 
 
 
@@ -27,6 +28,7 @@ import { TabsComponent } from './tabs/tabs.component';
     UtdCardComponent,
     UsuarioCardComponent,
     TabsComponent,
+    CargoComponent,
   ],
   imports: [
     CommonModule, 
