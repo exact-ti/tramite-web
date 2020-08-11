@@ -1,0 +1,41 @@
+<form [formGroup]="historicosForm" (ngSubmit)="submit(historicosForm.value)">
+    <div class="row justify-content-around mb-5">
+        <div class="col-xl-4 col-md-5">
+            <div class="form-group row">
+                <label for="example-date-input" class="col-3 col-form-label">Desde</label>
+                <div class="col-9">
+                    <input class="form-control" formControlName="desde" type="date"
+                        [max]="historicosForm.get('hasta').value">
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-5">
+            <div class="form-group row">
+                <label for="example-date-input" class="col-3 col-form-label">Hasta</label>
+                <div class="col-9">
+                    <input class="form-control" formControlName="hasta" type="date"
+                        [min]="historicosForm.get('desde').value">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-primary form-control" [disabled]="historicosForm.invalid"
+                value="Buscar">
+        </div>
+
+    </div>
+</form>
+
+<app-tabs [tabs]="tabs" [tabActiva]="tabActiva" (tabCambiado)="tabCambiado($event)"></app-tabs>
+
+<div class="row mt-4" *ngIf="enviosWrappers.length > 0; else vacio">
+    <div class="col-12 col-sm-8 col-lg-6 col-xl-4 card-parent" *ngFor="let item of enviosWrappers">
+        <app-envio-card [envioWrapper]="item"></app-envio-card>
+    </div>
+</div>
+
+<ng-template #vacio>
+    <div class="alert alert-info mt-3" role="alert">
+        {{ seHizoBusqueda ? sinResultados: ingresoPantalla }}
+    </div>
+</ng-template>

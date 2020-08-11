@@ -11,6 +11,8 @@ import { AreaCardComponent } from './area-card/area-card.component';
 import { TurnoCardComponent } from './turno-card/turno-card.component';
 import { UtdCardComponent } from './utd-card/utd-card.component';
 import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
+import { TabsComponent } from './tabs/tabs.component';
+import { CargoComponent } from './modals/cargo/cargo.component';
 
 
 
@@ -24,7 +26,9 @@ import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
     AreaCardComponent,
     TurnoCardComponent,
     UtdCardComponent,
-    UsuarioCardComponent
+    UsuarioCardComponent,
+    TabsComponent,
+    CargoComponent,
   ],
   imports: [
     CommonModule, 
@@ -38,7 +42,8 @@ import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
     AreaCardComponent,
     TurnoCardComponent,
     UtdCardComponent,
-    UsuarioCardComponent
+    UsuarioCardComponent, 
+    TabsComponent,
   ], 
   providers: [
     BsModalService,

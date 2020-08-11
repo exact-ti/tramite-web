@@ -1,10 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
-import { NuevaAreaComponent } from './nueva-area.component';
+import { EnviosHistoricosComponent } from './envios-historicos.component';
 
 const APP_ROUTES: Routes = [
     { 
         path: '', 
-        component: NuevaAreaComponent
+        component: EnviosHistoricosComponent
     },
 ];
 

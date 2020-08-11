@@ -1,18 +1,25 @@
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
+import { HomeComponent } from './modules/home/home.component';
 
 const APP_ROUTES: Routes = [
-
     {
-        path: 'generar-envio',
-        loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
+        path: '',
+        component: HomeComponent      
+    },
+    {
+        path: 'home',
+        loadChildren: './modules/principal/principal.module#PrincipalModule'
     },
     {
         path: 'envios-activos',
         loadChildren: './modules/envios-activos/envios-activos.module#EnviosActivosModule'
     },
     {
-        path: 'recepcion',
+        path: 'generar-envio',
+        loadChildren: './modules/registro-envio/registro-envio.module#RegistroEnvioModule'
+    },
+    {
+        path: 'confirmar-envios',
         loadChildren: './modules/confirmacion-envios/confirmacion-envios.module#ConfirmacionEnviosModule'
     },
     {
@@ -24,13 +31,18 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
     },
     {
-        path: 'home',
-        loadChildren: './modules/principal/principal.module#PrincipalModule'
+        path: 'envios-historicos',
+        loadChildren: './modules/envios-historicos/envios-historicos.module#EnviosHistoricosModule'
+    },
+    {
+        path: 'reporte-general',
+        loadChildren: './modules/reporte-general/reporte-general.module#ReporteGeneralModule'
     },
     {
         path: '**',
         pathMatch: 'prefix',
-        redirectTo: 'envios-activos'
+        redirectTo: '',        
+        //canActivate: [DefaultPageGuard]
     },
 ];
 

@@ -1,12 +1,18 @@
 <div class="row">
+    <div class="form-group">
+        <ng-select [items]=estadosEnvios bindLabel="nombre" multiple="true" [(ngModel)]="estadosSeleccionados" placeholder="Selecciona el estado" (change)="listarEnvios()"></ng-select>
+    </div>
+
+</div>
+<div class="row">
     <ul class="nav nav-tabs">
         <li class="nav-item" *ngFor="let item of tabs">
-            <a class="nav-link pointer" [ngClass]="{active: item == tabActiva}" (click) = "activarTab(item)" >{{item}}</a>
+            <a class="nav-link pointer" [ngClass]="{active: item == tabActiva}" (click)="activarTab(item)">{{item}}</a>
         </li>
     </ul>
 </div>
 <div class="row mt-4">
     <div class="col-12 col-sm-8 col-lg-6 col-xl-4 card-parent" *ngFor="let item of enviosWrappers">
         <app-envio-card [envioWrapper]="item"></app-envio-card>
-    </div>    
+    </div>
 </div>

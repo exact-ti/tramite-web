@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { take, filter } from 'rxjs/operators';
 import { LocalStorage } from 'src/app/core/repository/local-storage';
 import { AppConfig } from 'src/app/app.config';
 import { IBuzonRepository } from 'src/app/core/repository/buzon.repository';
@@ -8,9 +8,16 @@ import { IUtdRepository } from 'src/app/core/repository/utd.repository';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModificarBuzonUtdComponent } from './modificar-buzon-utd/modificar-buzon-utd.component';
 import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Subscription } from 'rxjs';
+<<<<<<< HEAD
 import { Router, ActivatedRoute } from '@angular/router';
+=======
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { IMenuRepository } from 'src/app/core/repository/menu.repository';
+import { FormGroup } from '@angular/forms';
+import { SubmitForm } from 'src/app/utils/submit-form';
+import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
+>>>>>>> 1afc30b67f584ffc3f5dbe9c39febc9efc1c7a8c
 
 @Component({
   selector: 'app-top-bar',
@@ -24,7 +31,12 @@ export class TopBarComponent implements OnInit {
     private utdRepository: IUtdRepository,
     private perfilRepository: IPerfilRepository,
     private localStorageService: LocalStorage,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private menuRepository: IMenuRepository,
+    private docflowRepository: IDocflowRepository,
+    private submitForm: SubmitForm,
   ) { }
 
   public perfilSeleccionado: any;
@@ -32,12 +44,31 @@ export class TopBarComponent implements OnInit {
   public textChange: any;
   confirmarSubscription: Subscription;
   @Output() BuzonUtdCreadoEvent = new EventEmitter<File>();
+  public titulo: String;
+  public integracionDocflow: boolean;
 
 
   async ngOnInit(): Promise<void> {
+
+    AppConfig.DespuesDeInicializar(() => {
+      this.integracionDocflow = AppConfig.INTEGRACION_DOCFLOW;
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      AppConfig.DespuesDeInicializar(() => {
+        this.menuRepository.listarNombreByRuta(this.router.url.split('?')[0].split(';')[0]).subscribe(nombre => this.titulo = nombre);
+      });
+
+    });
+
+
     await this.cargarPerfil();
 /*     AppConfig.DespuesDeInicializar(()=> this.cargarData());    
  */  }
+
+
 
 
   cargarData(): void {
@@ -54,10 +85,10 @@ export class TopBarComponent implements OnInit {
       this.perfilRepository.listarTipoPerfil().subscribe((data) => {
         this.perfilSeleccionado = data;
         if (this.perfilSeleccionado.id == TipoPerfilEnum.CLIENTE) {
-          this.textChange="Cambiar de buzón";
+          this.textChange = "Cambiar de buzón";
           this.cargarBuzones();
         } else {
-          this.textChange="Cambiar de UTD";
+          this.textChange = "Cambiar de UTD";
           this.cargarUtds();
         }
       })
@@ -74,6 +105,27 @@ export class TopBarComponent implements OnInit {
     this.buzonRepository.listarBuzonSeleccionado().subscribe((buzon) => {
       this.dataSeleccionado = buzon;
     })
+  }
+
+  ingresarDocflow() {
+    this.docflowRepository.listarParametrosIngreso().subscribe(respuesta => {
+      if (respuesta.status == "success") {
+        let data = respuesta.data;
+        this.submitForm.submit({
+          method: "POST",
+          action: "https://www.docflowconsultas.com.pe/siddf/webservice/UserLogin", 
+          target: "_blank",
+        }, data);
+      }
+    });
+  }
+
+  private createHiddenElement(name: string, value: string): HTMLInputElement {
+    const hiddenField = document.createElement('input');
+    hiddenField.setAttribute('name', name);
+    hiddenField.setAttribute('value', value);
+    hiddenField.setAttribute('type', 'hidden');
+    return hiddenField;
   }
 
   cerrarSesion(): void {

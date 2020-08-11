@@ -7,10 +7,14 @@ import { IBuzonRepository } from 'src/app/core/repository/buzon.repository';
 import { flatMap } from 'rxjs/operators';
 import { Buzon } from 'src/app/core/model/buzon.model';
 import { Envio } from 'src/app/core/model/envio.model';
+import { HttpParams } from '@angular/common/http';
+import * as moment from 'moment';
 
 
 @Injectable()
 export class EnvioProvider extends IEnvioRepository {
+    
+   
        
     
     constructor(
@@ -33,8 +37,10 @@ export class EnvioProvider extends IEnvioRepository {
         
     }
 
-    listarActivosDelBuzon(filtro: string): Observable<any> {
-        return this.buzonRepository.listarBuzonSeleccionado().pipe(flatMap((buzon: Buzon) => this.client.get(this.prefix + "/buzones/" + buzon.id.toString() + "/envios/activos/" + filtro.toLowerCase())));
+    listarActivosDelBuzon(filtro: string, etapasIds: number[]): Observable<any> {
+        return this.buzonRepository.listarBuzonSeleccionado().pipe(flatMap((buzon: Buzon) => this.client.get(this.prefix + "/buzones/" + buzon.id.toString() + "/envios/" + filtro.toLowerCase(), {
+            params: new HttpParams().set("etapasIds", etapasIds.join(","))
+        })));
     }
 
     listarPorConfirmarDelBuzon(): Observable<any> {
@@ -51,5 +57,26 @@ export class EnvioProvider extends IEnvioRepository {
     listarSeguimientos(envioId: number): Observable<any> {
         return this.client.get(this.prefix + "/envios/" + envioId.toString() + "/seguimientos");
     } 
+
+    listarPorEtapasYRangoDeFechasDelBuzon(filtro: string, etapasIds: number[], desde: Date, hasta: Date): Observable<any> {
+        return this.buzonRepository.listarBuzonSeleccionado().pipe(flatMap((buzon: Buzon) => this.client.get(this.prefix + "/buzones/" + buzon.id.toString() + "/envios/" + filtro.toLowerCase(), {
+            params: new HttpParams()
+            .set("etapasIds", etapasIds.join(","))
+            .set("desde", moment(desde).format("d/MM/yyyy"))
+            .set("hasta", moment(hasta).format("d/MM/yyyy"))
+        })));
+    }
+
+    listarReporteGeneral(desde: Date, hasta: Date, estadosIds: number[], origenesIds: number[], destinosIds: number[]): Observable<any> {
+        return this.client.get(this.prefix + "/envios", {
+            params: new HttpParams()
+            .set("estadosIds", estadosIds.join(","))
+            .set("origenesIds", origenesIds.join(","))
+            .set("destinosIds", destinosIds.join(","))
+            .set("desde", moment(desde).format("d/MM/yyyy"))
+            .set("hasta", moment(hasta).format("d/MM/yyyy"))
+        });
+    }
+
 
 }

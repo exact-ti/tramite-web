@@ -32,7 +32,7 @@
     <div class="row my-2">
         <div class="col-3 font-weight-bold">
             <span class="float-left">Destino:</span>
-    </div>
+        </div>
         <div class="col">{{detalle.destino}}</div>
     </div>
     <div class="row my-2" *ngIf="detalle.observacion && detalle.observacion.length > 0">
@@ -42,11 +42,19 @@
         <div class="col">{{detalle.observacion}}</div>
     </div>
     <div class="row mt-3">
-        <ul class="timeline">
+        <ul class="timeline w-100">
             <li *ngFor="let item of seguimientos">
                 <div class="col-12">{{item.fecha | date: 'dd/MM/yy HH:mm'}}</div>
                 <div class="col-12">{{item.estado}}</div>
-                <div class="col-12 font-weight-bold">{{item.ubicacion}}</div>
+                <div class="col-12">{{item.ubicacion}}</div>
+                <div *ngIf="item.cargo" class="col-12">
+                    <span *ngIf="item.cargo.tipoCargo.id == 1">
+                        Recibido con DNI : {{item.cargo.valor}}
+                    </span>
+                    <button *ngIf="item.cargo.tipoCargo.id == 2" (click)="abrirCargo(item)" class="btn btn-link">
+                        <i class="fas fa-file-signature"></i> Cargo
+                    </button>
+                </div>
             </li>
         </ul>
     </div>

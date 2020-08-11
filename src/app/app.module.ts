@@ -5,9 +5,6 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { APP_ROUTING } from './app.routes';
-import { RegistroEnvioModule } from './modules/registro-envio/registro-envio.module';
-import { EnviosActivosModule } from './modules/envios-activos/envios-activos.module';
-import { ConfirmacionEnviosModule } from './modules/confirmacion-envios/confirmacion-envios.module';
 import { LocalStorageService } from './infrastructure/storage/local-storage.service';
 import { LocalStorage } from './core/repository/local-storage'
 import { AppConfig } from './app.config';
@@ -38,33 +35,35 @@ import { ISedeRepository } from './core/repository/sede.repository';
 import { SedeProvider } from './infrastructure/api/sede.provider';
 import { UtilsService } from './utils/utils';
 import { NotifierModule } from 'angular-notifier';
-import { TurnosRecorridosModule } from './modules/mantenimiento/turnos-recorridos/turnos-recorridos.module';
 import { ITurnoRecorridoRepository } from './core/repository/turno-recorrido.repository';
 import { TurnoRecorridoProvider } from './infrastructure/api/turno-recorrido.provider';
 import { IUsuarioRepository } from './core/repository/usuario.repository';
 import { UsuarioProvider } from './infrastructure/api/usuario.provider';
 import { InterconexionProvider } from './infrastructure/api/interconexion.provider';
 import { IInterconexionRepository } from './core/repository/interconexion.repository';
-import { InterconexionesModule } from './modules/mantenimiento/interconexiones/interconexiones.module';
-import { PalomaresModule } from './modules/mantenimiento/palomares/palomares.module';
-import { MantenimientoModule } from './modules/mantenimiento/mantenimiento.module';
-import { AreasModule } from './modules/mantenimiento/areas/areas.module';
-import { UsuariosModule } from './modules/mantenimiento/usuarios/usuarios.module';
 import { ModificarBuzonUtdComponent } from './layout/top-bar/modificar-buzon-utd/modificar-buzon-utd.component';
 import { PerfilProvider } from './infrastructure/api/perfil.provider';
 import { IPerfilRepository } from './core/repository/perfil.repository';
-import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { IDashboardRepository } from './core/repository/dashboard.repository';
 import { DashboardProvider } from './infrastructure/api/dashboard.provider';
-import { BuzonesGenericosModule } from './modules/mantenimiento/buzones-genericos/buzones-genericos.module';
-import { PrincipalModule } from './modules/principal/principal.module';
+import { SharedModule } from './modules/shared/shared.module';
+import { HomeComponent } from './modules/home/home.component';
+import { IDocflowRepository } from './core/repository/docflow.repository';
+import { DocflowProvider } from './infrastructure/api/docflow.provider';
+import { SubmitForm } from './utils/submit-form';
+import { IEstadoEnvioRepository } from './core/repository/estado-envio.repository';
+import { EstadoEnvioProvider } from './infrastructure/api/estado-envio.provider';
+import { IEtapaEnvioRepository } from './core/repository/etapa-envio.repository';
+import { EtapaEnvioProvider } from './infrastructure/api/etapa-envio.provider';
+import { ITipoPaqueteRepository } from './core/repository/tipo-paquete.repository';
+import { TipoPaqueteProvider } from './infrastructure/api/tipo-paquete.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
       map((x: any) => {
         let modo: string = x.mode;
         let objeto: any = x[modo]; 
-        AppConfig.Inicializar(objeto.login_url, objeto.api);
+        AppConfig.Inicializar(objeto.login_url, objeto.api, objeto.integracion_docflow);
       })
   ).subscribe();
 }
@@ -77,25 +76,15 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     TreeViewComponent,
     NuevaAreaComponent,
     ModificarBuzonUtdComponent,
+    HomeComponent,
   ],
   imports: [
+    APP_ROUTING,
     NotifierModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    RegistroEnvioModule,
-    EnviosActivosModule,
-    DashboardModule,
-    PrincipalModule,
-    ConfirmacionEnviosModule,
-    TurnosRecorridosModule,
-    InterconexionesModule,
-    PalomaresModule,
-    MantenimientoModule,
-    AreasModule,
-    UsuariosModule,
-    BuzonesGenericosModule,
-    APP_ROUTING,
+    SharedModule,
   ],
   providers: [
     RequesterService,
@@ -127,10 +116,14 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IInterconexionRepository, useClass: InterconexionProvider},
     {provide: IPerfilRepository, useClass: PerfilProvider},
     {provide: IDashboardRepository, useClass: DashboardProvider},
-
-
+    {provide: IDocflowRepository, useClass: DocflowProvider},
+    {provide: IEstadoEnvioRepository, useClass: EstadoEnvioProvider},
+    {provide: IEtapaEnvioRepository, useClass: EtapaEnvioProvider},
+    {provide: ITipoPaqueteRepository, useClass: TipoPaqueteProvider},
+    SubmitForm,
   ],
   bootstrap: [AppComponent],
+  
   schemas: [CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA],
 

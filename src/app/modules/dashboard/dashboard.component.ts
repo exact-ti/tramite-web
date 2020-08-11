@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IDashboardRepository } from 'src/app/core/repository/dashboard.repository';
 import { AppConfig } from 'src/app/app.config';
 import { take } from 'rxjs/operators';
+import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
+import { SubmitForm } from 'src/app/utils/submit-form';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,38 +12,63 @@ import { take } from 'rxjs/operators';
 })
 export class DashboardComponent implements OnInit {
 
+  public integracionDocflow: boolean;
+  public estadosDocflow = [];
+
   constructor(
-    private dashboardRepository: IDashboardRepository
+    private dashboardRepository: IDashboardRepository,
+    private docflowRepository: IDocflowRepository,
+    private submitForm: SubmitForm,
   ) { }
-  public indicadoresSalida: any/* = {
-    creados: 0,
-    enProceso: 0,
-    enRuta: 0,
-    entregados: 0,
-  } */;
-  public indicadoresEntrada: any/* = {
-    creados: 0,
-    enProceso: 0,
-    enRuta: 0,
-    entregados: 0,
-  } */;
+
+  public tiposIndicadores = [
+    {
+      nombre: "Entradas"
+    },
+    {
+      nombre: "Salidas"
+    }
+  ];
 
   ngOnInit(): void {
-    AppConfig.DespuesDeInicializar(()=> this.listarIndicadores());    
+    AppConfig.DespuesDeInicializar(() => {
+      this.integracionDocflow = AppConfig.INTEGRACION_DOCFLOW;
+      this.listarIndicadores();
+      if (this.integracionDocflow) {
+        this.listarIndicadoresDocflow();
+      }
+    });
   }
 
   private listarIndicadores(): void {
     this.dashboardRepository.listarIndicadores().pipe(take(1)).subscribe((data) => {
-      this.indicadoresSalida=data.data.salida;
-      this.indicadoresEntrada=data.data.entrada;
-/*       this.indicadoresEntrada.enProceso=data.entrada.enProceso;
-      this.indicadoresEntrada.enRuta=data.entrada.enRuta;
-      this.indicadoresEntrada.entregados=data.entrada.entregados; */
-
-/*       this.indicadoresSalida.enProceso=data.entrada.enProceso;
-      this.indicadoresSalida.enRuta=data.entrada.enRuta;
-      this.indicadoresSalida.entregados=data.entrada.entregados; */
+      this.tiposIndicadores[0]["indicadores"] = data.data.entrada.sort((a, b) => a.id - b.id);
+      this.tiposIndicadores[1]["indicadores"] = data.data.salida.sort((a, b) => a.id - b.id);
     });
   }
 
+
+
+  private listarIndicadoresDocflow(): void {
+    this.docflowRepository.listarIndicadores().pipe(take(1)).subscribe(respuesta => {
+      if (respuesta.status == "success") {
+        this.estadosDocflow = respuesta.data;
+      } else {
+        alert(respuesta.mensaje);
+      }
+    });
+  }
+
+  public detalleIndicadorDocflow(item): void {
+    this.docflowRepository.listarParametrosIndicadorDetalle(item.tipoDescargo).subscribe(respuesta => {
+      if (respuesta.status == "success") {
+        let data = respuesta.data;
+        this.submitForm.submit({
+          method: "POST",
+          action: "https://www.docflowconsultas.com.pe/siddf/webservice/GetDataParam",
+          target: "_blank",
+        }, data);
+      }
+    });
+  }
 }

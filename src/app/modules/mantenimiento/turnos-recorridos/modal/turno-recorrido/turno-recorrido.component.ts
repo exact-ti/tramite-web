@@ -19,7 +19,8 @@ export class TurnoRecorridoComponent implements OnInit {
   constructor(
     public bsModalRef: BsModalRef,
     public areaRepository: IAreaRepository,
-    public usuarioRepository: IUsuarioRepository, private modalService: BsModalService,
+    public usuarioRepository: IUsuarioRepository, 
+    private modalService: BsModalService,
     public turnoRecorridoRepository: ITurnoRecorridoRepository,
     private notifier: NotifierService
   ) { }
@@ -63,7 +64,7 @@ export class TurnoRecorridoComponent implements OnInit {
         horaFin: data.horaFin,
         activo: data.activo
       };
-      this.areasSeleccionadas = this.areas.filter(area => data.areas.findIndex(area2 => area2.id == area.id) > -1);
+      this.areasSeleccionadas =  data.areas.sort((a,b)=> a.orden - b.orden).map(area => this.areas.filter(area2 => area2.id == area.id)[0]);
       this.areasSeleccionadasInitialState = [...this.areasSeleccionadas];
       this.inicializarForm();
     }
@@ -194,6 +195,7 @@ export class TurnoRecorridoComponent implements OnInit {
 
       const index = list.indexOf(item);
       list.splice(index, 1);
+      this.turnoRecorridoForm.updateValueAndValidity();
     }
   }
 
