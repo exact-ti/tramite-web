@@ -22,14 +22,13 @@ export class UsuarioProvider extends IUsuarioRepository{
     }
 
     private prefix: string = "/servicio-tramite";
-    private prefixUsuario: string = "/servicio-usuario";
 
     listarOperativosDeUTD(): Observable<any[]> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/usuarios")));
     }
 
     listarUsuariosMantenimiento(): Observable<any[]> {
-        return this.client.get(this.prefixUsuario + "/usuarios/");
+        return this.client.get(this.prefix + "/usuarios/");
     }
 
     listarPerfilesDeUsuario(): Observable<any[]> {
@@ -68,7 +67,7 @@ export class UsuarioProvider extends IUsuarioRepository{
             }),
             perfilId: usuario.perfil.id,
             password: usuario.contrasena,
-            areaId:usuario.area==null?null:usuario.area.id,
+            areaId:usuario.area == null ? null:usuario.area.id,
             activo: usuario.activo,
         }
     }

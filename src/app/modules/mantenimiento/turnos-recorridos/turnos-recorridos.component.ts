@@ -57,6 +57,7 @@ export class TurnosRecorridosComponent implements OnInit {
           utd:item.utd,
           horario: item.horaInicio + " - " + item.horaFin, 
           nroAreas: item.cantidadAreas,
+          estado: item.activo ? 'ACTIVO': 'INACTIVO',
         }
       }));
     });
@@ -78,6 +79,9 @@ export class TurnosRecorridosComponent implements OnInit {
       },
       nroAreas: {
         title: 'Nro Áreas'
+      },
+      estado: {
+        title: 'Estado'
       },
       btnEditar: {
         title: 'Editar',

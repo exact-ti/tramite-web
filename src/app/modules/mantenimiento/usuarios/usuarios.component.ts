@@ -49,16 +49,25 @@ export class UsuariosComponent implements OnInit {
   }
 
   listarUsuarios(): void {
-    this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(data => {
-      this.usuariosDS.load(data.map(item => {
-        return {
-          id: item.id,
-          nombre:item.nombre,
-          usuario: item.username,
-          correo: item.correo,
-          perfil: item.perfil
-        }
-      }));
+    this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(rpta => {
+      
+      if (rpta.status == "success") {
+        this.usuariosDS.load(rpta.data.map(item => {
+          return {
+            id: item.id,
+            nombre:item.nombre,
+            usuario: item.username,
+            correo: item.correo,
+            perfil: item.perfil, 
+            tipoPerfil: item.tipoPerfil, 
+            ubicacion: item.ubicacion,
+          }
+        }));
+      }else{
+        alert(rpta.mensaje);
+      }
+
+      
     });
   }
 
@@ -76,8 +85,14 @@ export class UsuariosComponent implements OnInit {
       correo: {
         title: 'Correo'
       },
+      tipoPerfil: {
+        title: 'Tipo Perfil'
+      },
       perfil: {
         title: 'Perfil'
+      },
+      ubicacion: {
+        title: 'Ubicación'
       },
       btnEditar: {
         title: 'Editar',
