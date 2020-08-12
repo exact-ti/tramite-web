@@ -3,12 +3,8 @@
 
     "dev": {
         "login_url": "http://localhost:4300",
-<<<<<<< HEAD
-        "api": "http://localhost:8890/api"
-=======
         "api": "http://localhost:8890/api",
         "integracion_docflow": true
->>>>>>> 1afc30b67f584ffc3f5dbe9c39febc9efc1c7a8c
     },
 
     "test": {

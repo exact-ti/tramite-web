@@ -1,53 +1,96 @@
-<div class="container">
-    <div class="page-header mb-5">
+<div class="container-fluid">
+    <div class="page-header mb-5 mt-5">
         <h2>Mensajería interna
         </h2>
     </div>
     <div class="row">
-        <div class="col-md-6 text-center" *ngFor="let tipoIndicador of tiposIndicadores">
-            <div style="display:inline-block;width:100%;">
-                <ul class="timeline timeline-horizontal">
-                    <div class="page-header">
-                        <h5 align="center">{{tipoIndicador.nombre}}
-                        </h5>
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6" *ngFor="let tipoIndicador of tiposIndicadores">
+            <div className="container timeline-container">
+                <div class="page-header">
+                    <h3 align="center">{{tipoIndicador.nombre}}
+                    </h3>
+                </div>
+                <div class="intro">
+                    <div class="main-heading">
+                        <div class="three-col top">
+                            <div class="col" *ngFor="let item of tipoIndicador.indicadores">
+                                <a
+                                    [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id}]">
+                                    <div class="sub-heading">
+                                        <div class="picup">
+                                            <p class="classp">{{item.cantidad}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <li class="timeline-item" *ngFor="let item of tipoIndicador.indicadores">
-                        <a [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id}]">
-                            <div class="ps-top">
-                                <h3><strong>{{item.cantidad}}</strong></h3>
+                    <div class="main-heading">
+                        <div class="three-col bottom">
+                            <div className="wrapper-bottom">
+
+                                <div class="col" *ngFor="let item of tipoIndicador.indicadores">
+                                    <a
+                                        [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id}]">
+                                        <div class="timeline-dot">
+                                        </div>
+                                        <div class="sub-heading">
+                                            <div class="picbottom">
+                                                <p class="classpbotton">{{item.nombre}}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
                             </div>
-                            <div class="timeline-badge primary"></div>
-                            <div class="ps-bot">
-                                <p>{{item.nombre}}</p>
-                            </div>
-                        </a>
-                    </li>                    
-                </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div *ngIf="integracionDocflow">
+    <div>
         <div class="page-header mt-5">
-            <h2>Mensajería Externa</h2>
+            <h2>Mensajería externa</h2>
         </div>
         <div class="row">
-            <div class="col-md-6 text-center">
-                <ul class="timeline timeline-horizontal">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <ul class="timeline timeline-horizontal" style="padding-left: 0px;">
                     <div class="page-header">
-                        <h5 align="center">Salidas</h5>
+                        <h3 align="center">Salidas</h3>
                     </div>
-                    <li *ngFor="let item of estadosDocflow; let last = last" class="timeline-item"
-                        [ngClass]="{'timeline-item-last': last}" (click)="detalleIndicadorDocflow(item)">
-                        <div class="ps-top">
-                            <h3><strong>{{item.cantidad}}</strong></h3>
+                    <div class="intro">
+                        <div class="main-heading">
+                            <div class="three-col top">
+                                <div class="col" *ngFor="let item of estadosDocflow; let last = last"
+                                    [ngClass]="{'timeline-item-last': last}" (click)="detalleIndicadorDocflow(item)">
+                                    <div class="sub-heading">
+                                        <div class="picup">
+                                            <p class="classp">{{item.cantidad}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="timeline-badge primary"></div>
-                        <div class="ps-bot">
-                            <p>{{item.descargo}}</p>
+                        <div class="main-heading">
+                            <div class="three-col bottom">
+                                <div className="wrapper-bottom">
+                                    <div class="col" *ngFor="let item of estadosDocflow; let last = last"
+                                        [ngClass]="{'timeline-item-last': last}"
+                                        (click)="detalleIndicadorDocflow(item)">
+                                        <div class="timeline-dot">
+                                        </div>
+                                        <div class="sub-heading">
+                                            <div class="picbottom">
+                                                <p class="classpbotton">{{item.descargo}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </li>
+                    </div>
                 </ul>
-
             </div>
         </div>
     </div>

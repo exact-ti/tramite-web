@@ -9,15 +9,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModificarBuzonUtdComponent } from './modificar-buzon-utd/modificar-buzon-utd.component';
 import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
 import { Subscription } from 'rxjs';
-<<<<<<< HEAD
-import { Router, ActivatedRoute } from '@angular/router';
-=======
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IMenuRepository } from 'src/app/core/repository/menu.repository';
 import { FormGroup } from '@angular/forms';
 import { SubmitForm } from 'src/app/utils/submit-form';
 import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
->>>>>>> 1afc30b67f584ffc3f5dbe9c39febc9efc1c7a8c
 
 @Component({
   selector: 'app-top-bar',
