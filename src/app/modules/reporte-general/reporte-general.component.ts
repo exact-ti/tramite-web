@@ -26,6 +26,7 @@ export class ReporteGeneralComponent implements OnInit {
   estados = [];
   enviosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
+  registros = [];
 
   ngOnInit(): void {
     this.configurarTabla();
@@ -67,7 +68,7 @@ export class ReporteGeneralComponent implements OnInit {
     let destinosIds = JSON.stringify(value.utdsDestinos) == JSON.stringify(this.utds) ? [] : value.utdsDestinos.map(item => item.id);
     this.envioRepository.listarReporteGeneral(value.desde, value.hasta, estadosIds, origenesIds, destinosIds).pipe(take(1)).subscribe(rpta => {
       if (rpta.status == "success") {
-        this.enviosDS.load(rpta.data.map(item => {
+        this.registros = rpta.data.map(item => {
           return {
             id: item.id,
             paqueteId: item.paqueteId,
@@ -90,10 +91,13 @@ export class ReporteGeneralComponent implements OnInit {
             estado: item.estado,
             utdResponsable: item.utdResponsable,
           }
-        }));
+        });
       } else {
+        this.registros = [];
+        
         console.log(rpta.mensaje);
       }
+      this.enviosDS.load(this.registros);
     })
   }
 
