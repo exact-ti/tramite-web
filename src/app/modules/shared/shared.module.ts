@@ -13,6 +13,7 @@ import { UtdCardComponent } from './utd-card/utd-card.component';
 import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { CargoComponent } from './modals/cargo/cargo.component';
+import { ExportComponent } from './export/export.component';
 
 
 
@@ -29,6 +30,7 @@ import { CargoComponent } from './modals/cargo/cargo.component';
     UsuarioCardComponent,
     TabsComponent,
     CargoComponent,
+    ExportComponent,
   ],
   imports: [
     CommonModule, 
@@ -44,6 +46,7 @@ import { CargoComponent } from './modals/cargo/cargo.component';
     UtdCardComponent,
     UsuarioCardComponent, 
     TabsComponent,
+    ExportComponent,
   ], 
   providers: [
     BsModalService,

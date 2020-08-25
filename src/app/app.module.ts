@@ -57,10 +57,11 @@ import { IEtapaEnvioRepository } from './core/repository/etapa-envio.repository'
 import { EtapaEnvioProvider } from './infrastructure/api/etapa-envio.provider';
 import { ITipoPaqueteRepository } from './core/repository/tipo-paquete.repository';
 import { TipoPaqueteProvider } from './infrastructure/api/tipo-paquete.provider';
-import { INotificacionRepository } from './core/repository/notificacion.repository';
 import { NotificacionProvider } from './infrastructure/api/notificacion.provider';
 import { SseService } from './infrastructure/api/core/sse.service';
+import { ExcelService } from './utils/excel-service';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
+import { INotificacionRepository } from './core/repository/notificacion.repository';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -110,6 +111,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IBuzonRepository, useClass: BuzonProvider},
     ErrorHandle,
     UtilsService,
+    ExcelService,
     {provide: IConfiguracionRepository, useClass: ConfiguracionProvider},
     {provide: IPaqueteRepository, useClass: PaqueteProvider},
     {provide: IAreaRepository, useClass: AreaProvider},
