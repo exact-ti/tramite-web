@@ -55,6 +55,7 @@ export class TurnoRecorridoComponent implements OnInit {
   async inicializar() {
     this.operativos = await this.listarOperativos();
     this.areas = await this.listarAreas();
+    this.areas = this.areas
     if (this.tipoFormulario == 2) {
       var data = await this.listarDetalleTurnoRecorrido();
       this.turnoRecorridoFormInitialState = {
@@ -85,7 +86,7 @@ export class TurnoRecorridoComponent implements OnInit {
   }
 
   listarAreas() {
-    return this.areaRepository.listarAreasDeUTD(false).pipe(take(1)).toPromise();
+    return this.areaRepository.listarAreasDeUTDParaTurnoRecorrido().pipe(take(1)).toPromise();
   }
 
   agregarArea(area: any) {

@@ -49,23 +49,34 @@ export class UsuariosComponent implements OnInit {
   }
 
   listarUsuarios(): void {
-    this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(data => {
-      this.usuariosDS.load(data.map(item => {
-        return {
-          id: item.id,
-          nombre:item.nombre,
-          usuario: item.username,
-          correo: item.correo,
-          perfil: item.perfil
-        }
-      }));
+    this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(rpta => {
+      
+      if (rpta.status == "success") {
+        this.usuariosDS.load(rpta.data.map(item => {
+          return {
+            id: item.id,
+            codigo: item.codigo,
+            nombre:item.nombre,
+            usuario: item.username,
+            correo: item.correo,
+            perfil: item.perfil, 
+            tipoPerfil: item.tipoPerfil, 
+            ubicacion: item.ubicacion,
+            estado: item.activo ? 'ACTIVO' : 'INACTIVO',
+          }
+        }));
+      }else{
+        alert(rpta.mensaje);
+      }
+
+      
     });
   }
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        show: false,
+      codigo: {
+        title: 'Código'
       },
       nombre: {
         title: 'Nombre'
@@ -76,8 +87,17 @@ export class UsuariosComponent implements OnInit {
       correo: {
         title: 'Correo'
       },
+      tipoPerfil: {
+        title: 'Tipo Perfil'
+      },
       perfil: {
         title: 'Perfil'
+      },
+      ubicacion: {
+        title: 'Ubicación'
+      },
+      estado: {
+        title: 'Estado'
       },
       btnEditar: {
         title: 'Editar',

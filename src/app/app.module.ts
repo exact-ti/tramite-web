@@ -57,6 +57,10 @@ import { IEtapaEnvioRepository } from './core/repository/etapa-envio.repository'
 import { EtapaEnvioProvider } from './infrastructure/api/etapa-envio.provider';
 import { ITipoPaqueteRepository } from './core/repository/tipo-paquete.repository';
 import { TipoPaqueteProvider } from './infrastructure/api/tipo-paquete.provider';
+import { INotificacionRepository } from './core/repository/notificacion.repository';
+import { NotificacionProvider } from './infrastructure/api/notificacion.provider';
+import { SseService } from './infrastructure/api/core/sse.service';
+import { CustomDatePipe } from './pipes/custom-date.pipe';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -77,6 +81,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     NuevaAreaComponent,
     ModificarBuzonUtdComponent,
     HomeComponent,
+    CustomDatePipe,
   ],
   imports: [
     APP_ROUTING,
@@ -88,6 +93,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
   ],
   providers: [
     RequesterService,
+    SseService,
     {
       provide: APP_INITIALIZER,
       useFactory: cargarConfiguracion,
@@ -120,6 +126,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IEstadoEnvioRepository, useClass: EstadoEnvioProvider},
     {provide: IEtapaEnvioRepository, useClass: EtapaEnvioProvider},
     {provide: ITipoPaqueteRepository, useClass: TipoPaqueteProvider},
+    {provide: INotificacionRepository, useClass: NotificacionProvider},
     SubmitForm,
   ],
   bootstrap: [AppComponent],

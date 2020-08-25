@@ -21,20 +21,20 @@ export class AreasComponent implements OnInit {
     private areaRepository: IAreaRepository
   ) { }
 
-  public areas: any[]= [];
+  public areas: any[] = [];
   public enviosWrappers: any[] = [];
-  public areaModal : Area;
-  public modalTipoId : number;
-  public mensaje : String;
+  public areaModal: Area;
+  public modalTipoId: number;
+  public mensaje: String;
   settings = UtilsService.tableSettings;
   dataAreas: LocalDataSource = new LocalDataSource();
 
   ngOnInit(): void {
-    AppConfig.DespuesDeInicializar(()=> this.inicializarAreas());    
+    AppConfig.DespuesDeInicializar(() => this.inicializarAreas());
     this.generarColumnas();
     this.settings.hideSubHeader = false;
   }
-  
+
   @Output() areaCreadoEvent = new EventEmitter<File>();
 
 
@@ -57,7 +57,10 @@ export class AreasComponent implements OnInit {
       },
       palomar: {
         title: 'Palomar'
-      },      
+      },
+      estado: {
+        title: 'Estado'
+      },
       buttonModificar: {
         title: 'Editar',
         type: 'custom',
@@ -72,10 +75,9 @@ export class AreasComponent implements OnInit {
     }
   }
 
-  listarAreas() {
-    this.dataAreas.reset();
-    this.areaRepository.listarAreasbySede().subscribe(
-      areas => {
+  inicializarAreas(): void {
+    this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(
+      (areas) => {
         this.areas = areas;
         let dataAreas = [];
         areas.forEach(
@@ -83,10 +85,11 @@ export class AreasComponent implements OnInit {
             dataAreas.push({
               codigobandeja: area.id,
               nombre: area.nombre,
-              ubicacion:area.ubicacion,
-              sede:area.sede.descripcion,
-              tiposede:area.tipoSede,
-              //palomar:area.palomar.descripcion,
+              ubicacion: area.ubicacion,
+              sede: area.sede.descripcion,
+              tiposede: area.tipoSede,
+              palomar: area.palomar.descripcion,
+              estado: area.activo ? 'ACTIVO' : 'INACTIVO',
             })
           }
         )
@@ -95,52 +98,30 @@ export class AreasComponent implements OnInit {
     )
   }
 
-  inicializarAreas(): void {
-      this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(
-        (areas) => {
-          this.areas = areas;
-          let dataAreas = [];
-          areas.forEach(
-            area => {
-              dataAreas.push({
-                codigobandeja: area.id,
-                nombre: area.nombre,
-                ubicacion:area.ubicacion,
-                sede:area.sede.descripcion,
-                tiposede:area.tipoSede,
-                palomar:area.palomar.descripcion,
-              })
-            }
-          )
-          this.dataAreas.load(dataAreas);
-        }
-      )
-  } 
-  
 
 
   onAgregar() {
-    this.modalTipoId=1;
-    this.agregarArea(null,this.modalTipoId);
+    this.modalTipoId = 1;
+    this.agregarArea(null, this.modalTipoId);
   }
 
-  onEditar(row){
-    this.modalTipoId=2;
-    this.agregarArea(row,this.modalTipoId);
+  onEditar(row) {
+    this.modalTipoId = 2;
+    this.agregarArea(row, this.modalTipoId);
   }
 
 
-  agregarArea(row,modalId) {
-    if(row!=null){
+  agregarArea(row, modalId) {
+    if (row != null) {
       this.areaModal = this.areas.find(area => area.id == row.codigobandeja);
-    }else{
-      this.areaModal=null
+    } else {
+      this.areaModal = null
     }
     let bsModalRef: BsModalRef = this.modalService.show(NuevaAreaComponent, {
       initialState: {
         tipoModalId: modalId,
-        area:  this.areaModal,
-        titulo: this.areaModal==null ? 'NUEVA ÁREA' : 'MODIFICAR ÁREA'+" "+ row.nombre.toUpperCase()
+        area: this.areaModal,
+        titulo: this.areaModal == null ? 'NUEVA ÁREA' : 'MODIFICAR ÁREA' + " " + row.nombre.toUpperCase()
       },
       class: 'modal-md',
       keyboard: false,
@@ -148,7 +129,7 @@ export class AreasComponent implements OnInit {
     });
     bsModalRef.content.areaCreadoEvent.subscribe(() =>
       this.inicializarAreas()
-    ) 
+    )
   }
 
 }

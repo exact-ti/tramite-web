@@ -5,7 +5,7 @@ export abstract class IUsuarioRepository {
     
     abstract listarOperativosDeUTD(): Observable<any[]>;
 
-    abstract listarUsuariosMantenimiento(): Observable<any[]>;
+    abstract listarUsuariosMantenimiento(): Observable<any>;
 
     abstract listarPerfilesDeUsuario(): Observable<any[]>;
 

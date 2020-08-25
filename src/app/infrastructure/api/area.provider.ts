@@ -9,8 +9,7 @@ import { Utd } from 'src/app/core/model/utd.model';
 
 @Injectable()
 export class AreaProvider extends IAreaRepository{
-
-        
+            
 
     constructor(
         private client: RequesterService,
@@ -69,6 +68,12 @@ export class AreaProvider extends IAreaRepository{
     listarAreasItem(): Observable<any[]> {
         return this.client.get(this.prefix + "/areas/items");
     }
+
+    listarAreasDeUTDParaTurnoRecorrido(): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/areasparaturnorecorrido")));
+    }
+
+    
 
 
 }

@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 
 @Injectable()
-
 export class UtilsService {
 
     constructor() { }
@@ -64,5 +63,32 @@ export class UtilsService {
             class: 'table table-bordered'
           }
     }
+
+    public deepEqual(object1, object2): boolean {
+        const keys1 = Object.keys(object1);
+        const keys2 = Object.keys(object2);
+      
+        if (keys1.length !== keys2.length) {
+          return false;
+        }
+      
+        for (const key of keys1) {
+          const val1 = object1[key];
+          const val2 = object2[key];
+          const areObjects = this.isObject(val1) && this.isObject(val2);
+          if (
+            areObjects && !this.deepEqual(val1, val2) ||
+            !areObjects && val1 !== val2
+          ) {
+            return false;
+          }
+        }
+      
+        return true;
+      }
+      
+      private isObject(object): boolean {
+        return object != null && typeof object === 'object';
+      }
 
 }
