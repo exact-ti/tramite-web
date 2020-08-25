@@ -59,6 +59,7 @@ export class UsuarioProvider extends IUsuarioRepository{
 
     transformar(usuario: any) {
         return {
+            codigo: usuario.codigo,
             username: usuario.username,
             nombre: usuario.nombre,
             correo: usuario.correo,

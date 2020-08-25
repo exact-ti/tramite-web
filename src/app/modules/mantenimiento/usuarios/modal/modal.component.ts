@@ -8,6 +8,7 @@ import { take } from 'rxjs/operators';
 import { IPerfilRepository } from 'src/app/core/repository/perfil.repository';
 import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
 import { NotifierService } from 'angular-notifier';
+import { UtilsService } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-modal',
@@ -22,9 +23,11 @@ export class ModalComponent implements OnInit {
     public usuarioRepository: IUsuarioRepository,
     public perfilRepository: IPerfilRepository,
     public utdRepository: IUtdRepository, private modalService: BsModalService,
-    private notifier: NotifierService) { }
+    private notifier: NotifierService, 
+    private utils: UtilsService) { }
   tipoFormulario: number;
   usuarioFormInitialState: any = {
+    codigo: '',
     nombre: '',
     username: '',
     correo: '',
@@ -34,11 +37,12 @@ export class ModalComponent implements OnInit {
     area: null,
     activo: true,
   };
+
   show_password: boolean;
 
   usuarioId: number;
   usuarioForm: FormGroup;
-  mostrar: any;
+  tipoPerfil: any;
   tiposPerfil: any[] = [];
   perfiles: any[] = [];
   areas: any[] = [];
@@ -46,7 +50,7 @@ export class ModalComponent implements OnInit {
   utdsSeleccionadas: any[] = [];
   utdsSeleccionadasInitialState: any[] = [];
   utd: any;
-  showAreaOrUtd: boolean = true;
+  showUTD: boolean = true;
   ngOnInit(): void {
     this.show_password = false;
     this.inicializarForm();
@@ -58,6 +62,7 @@ export class ModalComponent implements OnInit {
 
   inicializarForm(): void {
     this.usuarioForm = new FormGroup({
+      codigo: new FormControl(this.usuarioFormInitialState.codigo, Validators.required),
       nombre: new FormControl(this.usuarioFormInitialState.nombre, Validators.required),
       username: new FormControl(this.usuarioFormInitialState.username, Validators.required),
       correo: new FormControl(this.usuarioFormInitialState.correo, [
@@ -82,19 +87,20 @@ export class ModalComponent implements OnInit {
       var dataRespuesta = await this.listarDetalleUsuario();
       var data = dataRespuesta.data;
       this.usuarioFormInitialState = {
+        codigo: data.codigo,
         nombre: data.nombre,
         username: data.username,
         correo: data.correo,
-        contrasena: data.password,
+        contrasena: '',
         perfil: data.perfil,
         tipoPerfil: data.perfil.tipoPerfil,
         area: data.area != null ? this.areas.find(area => area.id == data.area.id) : null,
         activo: data.estado
       }
       if (data.perfil.tipoPerfil.id == 1) {
-        this.showAreaOrUtd = true;
+        this.showUTD = true;
       } else {
-        this.showAreaOrUtd = false;
+        this.showUTD = false;
       }
       this.perfiles = await this.listarPerfiles(data.perfil.tipoPerfil.id);
       this.utdsSeleccionadas = data.utds != null ? this.utds.filter(utd => data.utds.findIndex(utd2 => utd2.id == utd.id) > -1) : [];
@@ -117,9 +123,9 @@ export class ModalComponent implements OnInit {
 
   async onTipoUsuarioSelectedChanged(tipoPerfil: any) {
     if (tipoPerfil.id == 1) {
-      this.showAreaOrUtd = true;
+      this.showUTD = true;
     } else {
-      this.showAreaOrUtd = false;
+      this.showUTD = false;
     }
     this.perfiles = await this.listarPerfiles(tipoPerfil.id);
     this.usuarioForm.updateValueAndValidity();
@@ -140,27 +146,25 @@ export class ModalComponent implements OnInit {
 
 
   private formValidator(form: FormGroup): ValidationErrors | null {
-    if (this.showAreaOrUtd == true) {
+    if (this.showUTD == true) {
       if (this.utdsSeleccionadas.length == 0) {
         return {
           noUtds: true
         }
       }
-      if (JSON.stringify(this.usuarioFormInitialState) == JSON.stringify(this.usuarioForm.value)) {
+
+    } else {
+      this.tipoPerfil = this.usuarioForm.get("tipoPerfil").value;
+      if (this.tipoPerfil != null && this.tipoPerfil.id == 2 && this.usuarioForm.get("area").value == null) {
         return {
-          noCambio: true
+          noArea: true
         }
       }
-    } else {
-      this.mostrar = this.usuarioForm.get("tipoPerfil").value;
-      if (this.mostrar != null) {
-        if (this.mostrar.id == 2) {
-          if (this.usuarioForm.get("area").value == null) {
-            return {
-              noArea: true
-            }
-          }
-        }
+    }
+
+    if (this.utils.deepEqual(this.usuarioFormInitialState, this.usuarioForm.value) && (!this.showUTD || this.utils.deepEqual(this.utdsSeleccionadas, this.utdsSeleccionadasInitialState)) ) {
+      return {
+        noCambio: true
       }
     }
     return null;
@@ -177,7 +181,7 @@ export class ModalComponent implements OnInit {
 
   agregarUtd(utd: any) {
     if (utd) {
-      if (this.utdsSeleccionadas.findIndex(utdsSeleccionadas => utdsSeleccionadas == utd) == -1) {
+      if (this.utdsSeleccionadas.findIndex(utdSeleccionada => utdSeleccionada == utd) == -1) {
         this.utdsSeleccionadas.push(utd);
         this.usuarioForm.updateValueAndValidity();
       } else {
@@ -217,7 +221,7 @@ export class ModalComponent implements OnInit {
           } else {
             this.notifier.notify('error', 'No se actualizó el usuario');
           }
-        },  
+        },
           error => {
             this.notifier.notify('error', 'No se actualizó el usuario');
           });

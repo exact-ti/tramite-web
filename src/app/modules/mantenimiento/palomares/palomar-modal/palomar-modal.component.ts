@@ -53,6 +53,7 @@ export class PalomarModalComponent implements OnInit {
     }
     this.cargarDatosVista();
   }
+  
   @Output() palomarCreadoEvent = new EventEmitter<any>();
 
 

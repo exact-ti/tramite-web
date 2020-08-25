@@ -55,12 +55,14 @@ export class UsuariosComponent implements OnInit {
         this.usuariosDS.load(rpta.data.map(item => {
           return {
             id: item.id,
+            codigo: item.codigo,
             nombre:item.nombre,
             usuario: item.username,
             correo: item.correo,
             perfil: item.perfil, 
             tipoPerfil: item.tipoPerfil, 
             ubicacion: item.ubicacion,
+            estado: item.activo ? 'ACTIVO' : 'INACTIVO',
           }
         }));
       }else{
@@ -73,8 +75,8 @@ export class UsuariosComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        show: false,
+      codigo: {
+        title: 'Código'
       },
       nombre: {
         title: 'Nombre'
@@ -93,6 +95,9 @@ export class UsuariosComponent implements OnInit {
       },
       ubicacion: {
         title: 'Ubicación'
+      },
+      estado: {
+        title: 'Estado'
       },
       btnEditar: {
         title: 'Editar',

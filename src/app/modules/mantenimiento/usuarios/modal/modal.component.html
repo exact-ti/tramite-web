@@ -9,6 +9,15 @@
 <form [formGroup]="usuarioForm" (ngSubmit)="submit(usuarioForm.value)">
     <div class="modal-body pr-3">
         <div class="form-group">
+            <label for="codigo">Código</label>
+            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
+                formControlName="codigo" placeholder="Ingrese el código">
+            <span *ngIf="usuarioForm.get('codigo').invalid && usuarioForm.get('codigo').dirty"
+                class="text-danger small">
+                El código del usuario es obligatorio
+            </span>
+        </div>
+        <div class="form-group">
             <label for="codigo">Nombre</label>
             <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
                 formControlName="nombre" placeholder="Ingrese el nombre">
@@ -71,7 +80,7 @@
                 El perfil es obligatorio
             </span>
         </div>
-        <div *ngIf="showAreaOrUtd">
+        <div *ngIf="showUTD">
             <label for="codigo">UTD</label>
             <div class="row">
                 <div class="col">
@@ -103,7 +112,7 @@
                 </div>
             </ng-template>
         </div>
-        <div *ngIf="!showAreaOrUtd">
+        <div *ngIf="!showUTD">
             <div class="form-group">
                 <label for="area">ÁREA</label>
                 <ng-select [items]=areas bindLabel="descripcion" formControlName="area"
