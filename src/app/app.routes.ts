@@ -39,10 +39,13 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/reporte-general/reporte-general.module#ReporteGeneralModule'
     },
     {
+        path: 'reporte-interconexiones',
+        loadChildren: './modules/reporte-interconexiones/reporte-interconexiones.module#ReporteInterconexionesModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: '',        
-        //canActivate: [DefaultPageGuard]
     },
 ];
 

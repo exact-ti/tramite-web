@@ -62,6 +62,8 @@ import { SseService } from './infrastructure/api/core/sse.service';
 import { ExcelService } from './utils/excel-service';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { INotificacionRepository } from './core/repository/notificacion.repository';
+import { ILoteRepository } from './core/repository/lote.repository';
+import { LoteProvider } from './infrastructure/api/lote.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -129,6 +131,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IEtapaEnvioRepository, useClass: EtapaEnvioProvider},
     {provide: ITipoPaqueteRepository, useClass: TipoPaqueteProvider},
     {provide: INotificacionRepository, useClass: NotificacionProvider},
+    {provide: ILoteRepository, useClass: LoteProvider},
     SubmitForm,
   ],
   bootstrap: [AppComponent],
