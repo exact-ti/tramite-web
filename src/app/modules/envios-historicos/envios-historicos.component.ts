@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
 import { take } from 'rxjs/operators';
+import { MensajeEnum } from 'src/app/enum/mensaje.enum';
 
 @Component({
   selector: 'app-envios-historicos',
@@ -19,8 +20,7 @@ export class EnviosHistoricosComponent implements OnInit {
   enviosWrappers: any[] = [];
   seHizoBusqueda: boolean = false;
 
-  sinResultados = "No se encontraron resultados";
-  ingresoPantalla = "Realice la búsqueda";
+  mensajeEnum = MensajeEnum;
 
   historicosForm: FormGroup;
 

@@ -7,6 +7,7 @@ import { take } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
 import { UtilsService } from 'src/app/utils/utils';
 import * as moment from 'moment-timezone';
+import { MensajeEnum } from 'src/app/enum/mensaje.enum';
 
 @Component({
   selector: 'app-reporte-general',
@@ -21,6 +22,8 @@ export class ReporteGeneralComponent implements OnInit {
     public envioRepository: IEnvioRepository,
   ) { }
 
+  mensajeEnum = MensajeEnum;
+  seHizoBusqueda: boolean = false;
   reporteGeneralForm: FormGroup;
   utds = [];
   estados = [];
@@ -93,12 +96,12 @@ export class ReporteGeneralComponent implements OnInit {
           }
         });
       } else {
-        this.registros = [];
-        
+        this.registros = [];        
         console.log(rpta.mensaje);
       }
       this.enviosDS.load(this.registros);
-    })
+    });
+    this.seHizoBusqueda = true;
   }
 
 

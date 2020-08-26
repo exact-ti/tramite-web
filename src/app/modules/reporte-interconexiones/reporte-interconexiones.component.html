@@ -1,0 +1,38 @@
+<app-export [cabecera] = "settings.columns" [registros] = "registros" *ngIf="lotesDS.count() !== 0"></app-export>
+<form [formGroup]="reporteInterconexionesForm" (ngSubmit)="submit(reporteInterconexionesForm.value)">
+    <div class="row justify-content-around">
+        <div class="col-12">
+            <div class="form-group row">
+                <label for="example-date-input" class="col col-form-label">Desde:</label>
+                <div class="col-11">
+                    <input class="form-control" formControlName="desde" type="date"
+                        [max]="reporteInterconexionesForm.get('hasta').value">
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group row">
+                <label for="example-date-input" class="col col-form-label">Hasta:</label>
+                <div class="col-11">
+                    <input class="form-control" formControlName="hasta" type="date"
+                        [min]="reporteInterconexionesForm.get('desde').value">
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="form-group row">
+        <button class="col btn btn-primary" [disabled] = "reporteInterconexionesForm.invalid" type="submit">
+            Buscar
+        </button>
+    </div>    
+</form>
+
+<div *ngIf="lotesDS.count() !== 0; vacio" class="center mt-3"  style = "overflow-x: scroll;">
+    <ng2-smart-table [settings]="settings" [source]="lotesDS"></ng2-smart-table>
+</div>
+
+<ng-template #vacio>
+    <div class="alert alert-info mt-3" role="alert">
+        {{ seHizoBusqueda ? mensajeEnum.SIN_RESULTADOS: mensajeEnum.REALICE_BUSQUEDA }}
+    </div>
+</ng-template>
