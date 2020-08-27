@@ -2,5 +2,5 @@ import { Observable } from 'rxjs';
 
 export abstract class ILoteRepository{
 
-    abstract listarReporteLotes(desde: Date, hasta: Date): Observable<any>;
+    abstract listarReporteLotes(desde: string, hasta: string): Observable<any>;
 }

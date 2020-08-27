@@ -47,7 +47,7 @@ export class EnviosHistoricosComponent implements OnInit {
     }
   }
 
-  public listarEnvios(desde: Date, hasta: Date): void {
+  public listarEnvios(desde: string, hasta: string): void {
     this.envioRepository.listarPorEtapasYRangoDeFechasDelBuzon(this.tabActiva, [5], desde, hasta).pipe(take(1)).subscribe((data) => {
       this.enviosWrappers.filter
       this.enviosWrappers = data.data.map((elemento) => {
