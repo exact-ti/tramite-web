@@ -43,6 +43,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/reporte-interconexiones/reporte-interconexiones.module#ReporteInterconexionesModule'
     },
     {
+        path: 'reporte-recorridos',
+        loadChildren: './modules/reporte-recorridos/reporte-recorridos.module#ReporteRecorridosModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: '',        

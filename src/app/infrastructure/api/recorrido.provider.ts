@@ -1,26 +1,26 @@
-import { ILoteRepository } from 'src/app/core/repository/lote.repository';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequesterService } from './core/requester.service';
 import { HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
+import { IRecorridoRepository } from 'src/app/core/repository/recorrido.repository';
 import { UtilsService } from 'src/app/utils/utils';
 
 
 @Injectable()
-export class LoteProvider extends ILoteRepository {
+export class RecorridoProvider extends IRecorridoRepository {
     
     constructor(
         private client: RequesterService,
-        private utils: UtilsService,
+        private utils: UtilsService
     ){
         super();
     }
 
     private prefix: string = "/servicio-tramite";
     
-    listarReporteLotes(desde: string, hasta: string): Observable<any> {
-        return this.client.get(this.prefix + "/lotes", {
+    listarReporteRecorridos(desde: string, hasta: string): Observable<any> {
+        return this.client.get(this.prefix + "/recorridos", {
             params: new HttpParams()
             .set("desde", this.utils.parseDate(desde))
             .set("hasta", this.utils.parseDate(hasta))
