@@ -23,7 +23,7 @@ export class ModalComponent implements OnInit {
     public usuarioRepository: IUsuarioRepository,
     public perfilRepository: IPerfilRepository,
     public utdRepository: IUtdRepository, private modalService: BsModalService,
-    private notifier: NotifierService, 
+    private notifier: NotifierService,
     private utils: UtilsService) { }
   tipoFormulario: number;
   usuarioFormInitialState: any = {
@@ -103,8 +103,13 @@ export class ModalComponent implements OnInit {
         this.showUTD = false;
       }
       this.perfiles = await this.listarPerfiles(data.perfil.tipoPerfil.id);
-      this.utdsSeleccionadas = data.utds != null ? this.utds.filter(utd => data.utds.findIndex(utd2 => utd2.id == utd.id) > -1) : [];
-      this.utdsSeleccionadasInitialState = [...this.utdsSeleccionadas];
+      this.utdsSeleccionadas = data.utds ? data.utds.map(utd => {
+        return {
+          seleccionado: utd.principal,
+          data: utd
+        }
+      }) : [];
+      this.utdsSeleccionadasInitialState = this.utils.copy(this.utdsSeleccionadas);
       this.inicializarForm();
     }
   }
@@ -152,7 +157,11 @@ export class ModalComponent implements OnInit {
           noUtds: true
         }
       }
-
+      if (this.utdsSeleccionadas.findIndex(wrapper => wrapper.data.principal) < 0) {
+        return {
+          noPrincipal: true
+        }
+      }
     } else {
       this.tipoPerfil = this.usuarioForm.get("tipoPerfil").value;
       if (this.tipoPerfil != null && this.tipoPerfil.id == 2 && this.usuarioForm.get("area").value == null) {
@@ -162,11 +171,12 @@ export class ModalComponent implements OnInit {
       }
     }
 
-    if (this.utils.deepEqual(this.usuarioFormInitialState, this.usuarioForm.value) && (!this.showUTD || this.utils.deepEqual(this.utdsSeleccionadas, this.utdsSeleccionadasInitialState)) ) {
+    if (this.utils.deepEqual(this.usuarioFormInitialState, this.usuarioForm.value) && (!this.showUTD || this.utils.deepEqual(this.utdsSeleccionadas, this.utdsSeleccionadasInitialState))) {
       return {
         noCambio: true
       }
     }
+
     return null;
   }
 
@@ -181,19 +191,42 @@ export class ModalComponent implements OnInit {
 
   agregarUtd(utd: any) {
     if (utd) {
-      if (this.utdsSeleccionadas.findIndex(utdSeleccionada => utdSeleccionada == utd) == -1) {
-        this.utdsSeleccionadas.push(utd);
+      if (this.utdsSeleccionadas.findIndex(utdSeleccionada => utdSeleccionada.data.id == utd.id) == -1) {
+        this.utdsSeleccionadas.push({
+          seleccionado: false,
+          data: {
+            id: utd.id,
+            nombre: utd.descripcion,
+          },
+          principal: false,
+        });
         this.usuarioForm.updateValueAndValidity();
       } else {
-        alert('No puedes agregar un área que ya está en la lista');
+        this.notifier.notify('warning', 'No puedes agregar una UTD que ya está en la lista');
       }
     }
     this.utd = null;
   }
 
 
+  toggleSeleccionar(wrapper): void {
+    if (!wrapper.seleccionado) {
+      this.utdsSeleccionadas.forEach(utd => {
+        utd.seleccionado = false;
+        utd.data.principal = false;
+      });
+      wrapper.seleccionado = true;
+      wrapper.data.principal = true;
+
+    } else {
+      wrapper.seleccionado = false;
+      wrapper.data.principal = false;
+    }
+    this.usuarioForm.updateValueAndValidity();
+  }
+
   submit(value: any) {
-    value.utds = this.utdsSeleccionadas;
+    value.utds = this.utdsSeleccionadas.map(wrapper => wrapper.data);
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
         mensaje: this.tipoFormulario == 1 ? "¿Está seguro que desea crear?" : "¿Está seguro que desea modificar?"

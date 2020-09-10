@@ -9,11 +9,13 @@ import { take, map } from 'rxjs/operators';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
 import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
 import { ErrorHandle } from 'src/app/utils/error-handle';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-registro-envio',
   templateUrl: './registro-envio.component.html',
-  styleUrls: ['./registro-envio.component.scss']
+  styleUrls: ['./registro-envio.component.scss'], 
+  
 })
 export class RegistroEnvioComponent implements OnInit {
 
@@ -24,6 +26,7 @@ export class RegistroEnvioComponent implements OnInit {
     private areaRepository: IAreaRepository,
     private envioRepository: IEnvioRepository,
     private errorHandle: ErrorHandle,
+    private notifier: NotifierService,
   ) { }
 
   public caracteresMinimosBusqueda: number | string = 0;
@@ -55,13 +58,14 @@ export class RegistroEnvioComponent implements OnInit {
           'observacion': ''
         });
         this.filtroDestinatario = "";        
-        alert('Envio registrado correctamente');
+        this.notifier.notify('success','Envio registrado correctamente');
         this.listarDestinatariosFrecuentes();
       }
     }, error => {
       if (error.status === 500) {
         this.errorHandle.handleServerError(error);
       } else {
+        this.notifier.notify('error','Error del servidor no controlado, comuníquese con el administrador.');
         console.log(error);
       }
 
@@ -108,7 +112,7 @@ export class RegistroEnvioComponent implements OnInit {
 
 
   private existenciaPaqueteValidator({ value }: AbstractControl): Observable<ValidationErrors | null> {
-    return this.paqueteRepository.verificarSiEsParaUso(1, value).pipe(take(1), map((existe: boolean) => {
+    return this.paqueteRepository.verificarSiEsParaUso(1, value, false).pipe(take(1), map((existe: boolean) => {
       if (!existe) {
         return {
           noExiste: true
@@ -123,7 +127,7 @@ export class RegistroEnvioComponent implements OnInit {
     if (value.length == 0) {
       return of(null);
     } else {
-      return this.areaRepository.verificarExistencia(value).pipe(take(1), map((existe: boolean) => {
+      return this.areaRepository.verificarExistencia(value, false).pipe(take(1), map((existe: boolean) => {
         if (!existe) {
           return {
             noExiste: true

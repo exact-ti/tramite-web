@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 import { BuzonCardComponent } from './buzon-card/buzon-card.component';
 import { EnvioCardComponent } from './envio-card/envio-card.component';
@@ -14,8 +16,10 @@ import { UsuarioCardComponent } from './usuario-card/usuario-card.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { CargoComponent } from './modals/cargo/cargo.component';
 import { ExportComponent } from './export/export.component';
-
-
+import { ValidInputComponent } from './valid-input/valid-input.component';
+import { ValidSelectComponent } from './valid-select/valid-select.component';
+import { ActivoSwitchComponent } from './activo-switch/activo-switch.component';
+import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 
 @NgModule({
   declarations: [
@@ -31,11 +35,16 @@ import { ExportComponent } from './export/export.component';
     TabsComponent,
     CargoComponent,
     ExportComponent,
+    ValidInputComponent,
+    ValidSelectComponent,
+    ActivoSwitchComponent,
+    CustomDatePipe,
   ],
   imports: [
     CommonModule, 
     ModalModule.forRoot(),
-    
+    NgSelectModule,
+    FormsModule,
   ],
   exports: [
     BuzonCardComponent, 
@@ -47,9 +56,14 @@ import { ExportComponent } from './export/export.component';
     UsuarioCardComponent, 
     TabsComponent,
     ExportComponent,
+    ValidInputComponent,
+    ValidSelectComponent,
+    ActivoSwitchComponent,
+    CustomDatePipe,
   ], 
   providers: [
     BsModalService,
+    CustomDatePipe,
   ], 
   entryComponents: [
     TrackingComponent,

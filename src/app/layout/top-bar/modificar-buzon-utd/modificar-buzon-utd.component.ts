@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
 import { AppConfig } from 'src/app/app.config';
-import { take, filter } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -22,8 +22,7 @@ export class ModificarBuzonUtdComponent implements OnInit {
     private buzonRepository: IBuzonRepository,
     private utdRepository: IUtdRepository,
     private modalService: BsModalService,
-    private notifier: NotifierService,private router: Router, 
-    private route: ActivatedRoute
+    private notifier: NotifierService, private router: Router,
   ) { }
 
   confirmarSubscription: Subscription;
@@ -33,14 +32,14 @@ export class ModificarBuzonUtdComponent implements OnInit {
   envioId: number;
   detalle: any = {};
   items: any[] = [];
-  perfilSeleccionado: any;
+  tipoPerfil: any;
   dataSeleccionado: any;
   ngOnInit(): void {
     AppConfig.DespuesDeInicializar(() => this.cargarDatos());
   }
 
   cargarDatos(): void {
-    if (this.perfilSeleccionado.id == TipoPerfilEnum.CLIENTE) {
+    if (this.tipoPerfil.id == TipoPerfilEnum.CLIENTE) {
       this.cargarBuzones();
     } else {
       this.cargarUtds();
@@ -60,23 +59,24 @@ export class ModificarBuzonUtdComponent implements OnInit {
   }
 
   cerrar() {
-
     this.bsModalRef.hide();
   }
 
   go(vista) {
-    this.router.navigate(['/'+vista]/* , { relativeTo: this.route } */);
+    this.router.navigate(['/' + vista]/* , { relativeTo: this.route } */);
   }
 
 
   seleccionarItem(value: any) {
+
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
-        mensaje: this.perfilSeleccionado.id == 1 ? "¿Está seguro que desea modificar su buzón?" : "¿Está seguro que desea modificar su UTD?"
+        mensaje: this.tipoPerfil.id == 1 ? "¿Está seguro que desea modificar su buzón?" : "¿Está seguro que desea modificar su UTD?"
       }
     });
+
     bsModalRef.content.confirmarEvent.pipe(take(1)).subscribe(() => {
-      if (this.perfilSeleccionado.id == 1) {
+      if (this.tipoPerfil.id == 1) {
         this.utdRepository.seleccionarUtd(value)
         this.notifier.notify('success', 'Se ha modificado la UTD correctamente');
       } else {
@@ -84,11 +84,12 @@ export class ModificarBuzonUtdComponent implements OnInit {
         this.notifier.notify('success', 'Se ha modificado el buzón correctamente');
       }
       this.BuzonUtdCreadoEvent.emit();
-      setTimeout(()=>{
+      setTimeout(() => {
         this.bsModalRef.hide();
       }, 100);
-      this.go(this.perfilSeleccionado.id ==TipoPerfilEnum.CLIENTE?"dashboard":"home");
+      this.go(this.tipoPerfil.id == TipoPerfilEnum.CLIENTE ? "dashboard" : "home");
     });
+
   }
 }
 

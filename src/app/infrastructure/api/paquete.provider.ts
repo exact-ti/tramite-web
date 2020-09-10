@@ -15,10 +15,10 @@ export class PaqueteProvider extends IPaqueteRepository{
 
     private prefix: string = "/servicio-tramite"
 
-    verificarSiEsParaUso(tipoPaqueteId: number, paqueteId: string): Observable<boolean> {
+    verificarSiEsParaUso(tipoPaqueteId: number, paqueteId: string, showSpinner = true): Observable<boolean> {
         return this.client.get(this.prefix + "/tipospaquetes/" + tipoPaqueteId.toString() + "/paquetes/parauso", {
             params: new HttpParams().set("codigo", paqueteId)
-        });
+        }, showSpinner);
     }
 
 }

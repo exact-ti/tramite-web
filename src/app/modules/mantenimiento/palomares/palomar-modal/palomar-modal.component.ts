@@ -70,6 +70,7 @@ export class PalomarModalComponent implements OnInit {
     if (area) {
       if (this.areasSeleccionadas.findIndex (areaSeleccionada => areaSeleccionada == area) == -1) {
         this.areasSeleccionadas.push(area);
+        this.agregarForm.controls['activo'].setValue(true);
         this.agregarForm.updateValueAndValidity();
       } else {
         alert('No puedes agregar un área que ya está en la lista');
@@ -88,7 +89,7 @@ export class PalomarModalComponent implements OnInit {
         codigo: data.id,
         tipo: data.tipoPalomar,
         ubicacion: data.ubicacion,
-        activo:  String(data.activo)
+        activo: data.activo,
       };
       this.tipoPalomar=this.validarTipoPalomar(data.tipoPalomar);
       if(this.tipoPalomar){
@@ -124,7 +125,7 @@ export class PalomarModalComponent implements OnInit {
     }
 
     if (this.areasSeleccionadas.length == 0 && this.tipoModalId==2) {
-      if(form.value.activo.toString()=="true"){
+      if(form.value.activo){
         return {
           noAreas: true
         }

@@ -1,8 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 import { AppComponent } from './app.component';
 import { APP_ROUTING } from './app.routes';
 import { LocalStorageService } from './infrastructure/storage/local-storage.service';
@@ -60,7 +63,6 @@ import { TipoPaqueteProvider } from './infrastructure/api/tipo-paquete.provider'
 import { NotificacionProvider } from './infrastructure/api/notificacion.provider';
 import { SseService } from './infrastructure/api/core/sse.service';
 import { ExcelService } from './utils/excel-service';
-import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { INotificacionRepository } from './core/repository/notificacion.repository';
 import { ILoteRepository } from './core/repository/lote.repository';
 import { LoteProvider } from './infrastructure/api/lote.provider';
@@ -86,15 +88,17 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     NuevaAreaComponent,
     ModificarBuzonUtdComponent,
     HomeComponent,
-    CustomDatePipe,
+    
   ],
-  imports: [
+  imports: [    
+    BrowserModule,
+    BrowserAnimationsModule,
     APP_ROUTING,
     NotifierModule,
-    ReactiveFormsModule,
-    BrowserModule,
+    ReactiveFormsModule,    
     HttpClientModule,
     SharedModule,
+    NgxSpinnerModule
   ],
   providers: [
     RequesterService,

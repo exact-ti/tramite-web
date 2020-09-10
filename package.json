@@ -32,6 +32,7 @@
     "ng2-smart-table": "^1.6.0",
     "ngx-bootstrap": "^5.6.1",
     "ngx-drag-drop": "^2.0.0",
+    "ngx-spinner": "^10.0.1",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.4",
     "rxjs-compat": "^6.5.5",

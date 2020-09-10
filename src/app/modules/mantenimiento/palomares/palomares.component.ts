@@ -93,7 +93,7 @@ export class PalomaresComponent implements OnInit {
               ubicacion:palomar.ubicacion,
               tipo:palomar.tipoPalomar,
               destino:palomar.destino,
-              estado:palomar.activo ==true ? "ACTIVO" : "DESACTIVADO",
+              estado:palomar.activo == true ? "ACTIVO" : "DESACTIVADO",
             })
           }
         )

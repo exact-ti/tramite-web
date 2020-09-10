@@ -1,0 +1,17 @@
+<div class="form-group position-relative">
+    <label *ngIf="label" [for]="id">{{label}}</label>
+    <input (input) = "onInput($event.target.value)"
+    [id]="id"
+    [value]="value"
+    [disabled]="isDisabled"
+    [type]="tipo" class="form-control"
+    [ngClass]="{'is-invalid': invalid, 'is-valid': valid}"
+    [name]="nombre"
+    [placeholder]="placeholder">
+    <i [@inOutAnimation] *ngIf="valid" class="fas fa-check-circle text-success icono"></i>
+    <i [@inOutAnimation] *ngIf="invalid" class="fas fa-times-circle text-danger icono"></i>
+    <span *ngIf="invalid"
+        class="text-danger small">
+        {{mensajeInvalido}}
+    </span>
+</div>
