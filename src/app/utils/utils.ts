@@ -96,4 +96,19 @@ export class UtilsService {
     return moment(date, "YYYY/MM/DD").format("DD/MM/yyyy");
   }
 
+  public copy(aObject) {
+    if (!aObject) {
+      return aObject;
+    }
+  
+    let v;
+    let bObject = Array.isArray(aObject) ? [] : {};
+    for (const k in aObject) {
+      v = aObject[k];
+      bObject[k] = (typeof v === "object") ? this.copy(v) : v;
+    }
+  
+    return bObject;
+  }
+
 }

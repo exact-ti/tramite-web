@@ -3,7 +3,8 @@ import { Palomar } from './palomar.model';
 
 export class Area {
     constructor(
-        public id: string,
+        public id: number,
+        public codigo: string,
         public nombre: string,
         public sede: Sede,
         public palomar:Palomar,

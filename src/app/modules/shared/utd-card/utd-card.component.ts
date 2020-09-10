@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class UtdCardComponent implements OnInit {
 
   constructor() { }
-  @Input() utd: any;
+  @Input() utdWrapper: any;
   @Output() onClose = new EventEmitter();
   mostrar : any;
   ngOnInit(): void {

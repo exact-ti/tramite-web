@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="small text-gray-500">{{notificacion.fecha | customDatePipe: 'DD/MM/yyyy HH:mm'}} 
+                            <div class="small text-gray-500">{{notificacion.fecha | customDatePipe: 'L LT'}} 
                                 <span *ngIf="notificacion.estado.id == 1" class="small text-danger">
                                     Nuevo!
                                 </span>

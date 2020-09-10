@@ -8,42 +8,35 @@
 
 <form [formGroup]="turnoRecorridoForm" (ngSubmit)="submit(turnoRecorridoForm.value)">
     <div class="modal-body pr-3">
-        <div class="form-group">
-            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
-                formControlName="nombre" placeholder="Ingrese el nombre">
-            <span *ngIf="turnoRecorridoForm.get('nombre').invalid && turnoRecorridoForm.get('nombre').dirty"
-                class="text-danger small">
-                El nombre del turno recorrido es obligatorio
-            </span>
-        </div>
-        <div class="form-group">
-            <ng-select [items]=operativos bindLabel="descripcion" formControlName="operativo"
-                placeholder="Selecciona el operativo"></ng-select>
-            <span *ngIf="turnoRecorridoForm.get('operativo').invalid && turnoRecorridoForm.get('operativo').dirty"
-                class="text-danger small">
-                El operativo es obligatorio
-            </span>
-        </div>
+        <app-valid-input placeholder="Nombre"
+            [valid]="turnoRecorridoForm.get('nombre').valid && turnoRecorridoForm.get('nombre').touched"
+            [invalid]="turnoRecorridoForm.get('nombre').invalid && turnoRecorridoForm.get('nombre').touched"
+            mensajeInvalido="El nombre del turno recorrido es obligatorio" tipo="text" nombre="nombre"
+            formControlName="nombre">
+        </app-valid-input>
+        <app-valid-select [items]="operativos" atributo="descripcion" placeholder="Operativo"
+            [valid]="turnoRecorridoForm.get('operativo').valid && !turnoRecorridoForm.get('operativo').pristine"
+            [invalid]="turnoRecorridoForm.get('operativo').invalid && !turnoRecorridoForm.get('operativo').pristine"
+            mensajeInvalido="El operativo es obligatorio" formControlName="operativo">
+        </app-valid-select>
+
         <div class="row">
             <div class="col">
-                <div class="form-group">
-                    <input type="time" class="form-control" formControlName="horaInicio" placeholder="Hora inicio">
-                    <span
-                        *ngIf="turnoRecorridoForm.get('horaInicio').invalid && turnoRecorridoForm.get('horaInicio').dirty"
-                        class="text-danger small">
-                        La hora inicial es obligatoria
-                    </span>
-                </div>
+                <app-valid-input placeholder="Nombre"
+                    [valid]="turnoRecorridoForm.get('horaInicio').valid && turnoRecorridoForm.get('horaInicio').touched"
+                    [invalid]="turnoRecorridoForm.get('horaInicio').invalid && turnoRecorridoForm.get('horaInicio').touched"
+                    mensajeInvalido="La hora inicial es obligatoria" tipo="time" nombre="horaInicio"
+                    formControlName="horaInicio">
+                </app-valid-input>
 
             </div>
             <div class="col">
-                <div class="form-group">
-                    <input type="time" class="form-control" formControlName="horaFin" placeholder="Hora fin">
-                    <span *ngIf="turnoRecorridoForm.get('horaFin').invalid && turnoRecorridoForm.get('horaFin').dirty"
-                        class="text-danger small">
-                        La hora final es obligatoria
-                    </span>
-                </div>
+                <app-valid-input placeholder="Nombre"
+                    [valid]="turnoRecorridoForm.get('horaFin').valid && turnoRecorridoForm.get('horaFin').touched"
+                    [invalid]="turnoRecorridoForm.get('horaFin').invalid && turnoRecorridoForm.get('horaFin').touched"
+                    mensajeInvalido="La hora final es obligatoria" tipo="time" nombre="horaFin"
+                    formControlName="horaFin">
+                </app-valid-input>
             </div>
         </div>
         <div class="row">
@@ -84,6 +77,6 @@
 
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-success" [disabled]="turnoRecorridoForm.invalid">Registrar</button>
+        <button type="submit" class="btn btn-success" [disabled]="turnoRecorridoForm.invalid">{{tipoFormulario==1 ? 'Registrar' : 'Actualizar'}}</button>
     </div>
 </form>

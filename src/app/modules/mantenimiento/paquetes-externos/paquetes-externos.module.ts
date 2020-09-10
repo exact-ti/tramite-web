@@ -5,6 +5,7 @@ import { APP_ROUTING } from './paquetes-externos.routes';
 import { PaqueteExternoModalComponent } from './paquete-externo-modal/paquete-externo-modal.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 
 
@@ -16,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     Ng2SmartTableModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
   ]
 })
 export class PaquetesExternosModule { }

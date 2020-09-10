@@ -147,6 +147,10 @@ export class InterconexionModalComponent implements OnInit {
   }
 
   agregarTurno(horaInicio: any,horaFin:any) {
+    if (horaInicio >= horaFin) {
+      this.notifier.notify('warning', 'La hora de inicio no puede se mayor que la de fin');
+      return;
+    }
     this.horaInicio=null;
     this.horaFin=null;
     let intervalo1 = {
@@ -160,7 +164,7 @@ export class InterconexionModalComponent implements OnInit {
         this.turnosSeleccionadas.push(intervalo1);
         this.agregarForm.updateValueAndValidity();
       } else {
-        alert('No puedes agregar un turno que ya está en la lista');
+        this.notifier.notify('warning', 'No puedes agregar un turno que ya está en la lista');
       }
     }
     this.turno = null;

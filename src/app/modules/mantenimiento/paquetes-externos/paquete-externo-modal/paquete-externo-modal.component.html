@@ -8,21 +8,18 @@
 
 <form [formGroup]="paqueteExternoForm" (ngSubmit)="submit(paqueteExternoForm.value)">
     <div class="modal-body pr-3">
-        <div class="form-group">
-            <input  type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
-                formControlName="nombre" placeholder="Ingrese el nombre">
-            <span *ngIf="paqueteExternoForm.get('nombre').invalid && paqueteExternoForm.get('nombre').dirty"
-                class="text-danger small">
-                El nombre del paquete externo es obligatorio
-            </span>
+        <app-valid-input placeholder="Nombre"
+            [valid]="paqueteExternoForm.get('nombre').valid && paqueteExternoForm.get('nombre').touched"
+            [invalid]="paqueteExternoForm.get('nombre').invalid && paqueteExternoForm.get('nombre').touched"
+            mensajeInvalido="El nombre del paquete externo es obligatorio" tipo="text" nombre="nombre"
+            formControlName="nombre">
+        </app-valid-input>
+        <div *ngIf="tipoFormulario == 2">
+            <app-activo-switch formControlName="activo">
+            </app-activo-switch>
         </div>
-        <div *ngIf="tipoFormulario == 2" class="custom-control custom-switch form-group mt-3">
-            <input type="checkbox" class="custom-control-input" id="activo" formControlName="activo">
-            <label class="custom-control-label" for="activo">Activo</label>
-        </div>
-
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-success" [disabled]="paqueteExternoForm.invalid">Registrar</button>
+        <button type="submit" class="btn btn-success" [disabled]="paqueteExternoForm.invalid">{{tipoFormulario==1 ? 'Registrar' : 'Actualizar'}}</button>
     </div>
 </form>

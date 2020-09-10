@@ -7,48 +7,18 @@
   <div class="card-body">
     <div class="form-row">
       <div class="col">
-        <div class="form-group">
-          <label for="nombre">Nombre</label>
-          <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-          <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched && validarLongitud(agregarForm.get('nombre').value)" class="text-danger small">
-            Es necesario ingresar el nombre de la interconexión
-          </span>
-          <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched && !validarLongitud(agregarForm.get('nombre').value)" 
-          class="text-danger small">
-          El nombre ya se encuentra en el sistema
-         </span>
-        </div>
+        <app-valid-input placeholder="Nombre" [valid]="agregarForm.get('nombre').valid && agregarForm.get('nombre').dirty"
+            [invalid]="agregarForm.get('nombre').invalid && agregarForm.get('nombre').dirty"
+            [mensajeInvalido]="validarLongitud(agregarForm.get('nombre').value) ? 'Es necesario ingresar el nombre de la interconexión': 'El nombre ya se encuentra en el sistema'" tipo="text" nombre="nombre" formControlName="nombre">
+        </app-valid-input>
       </div>
     </div>
-
-<!--     <div class="form-row">
-      <div class="col">
-        <div class="form-group">
-          <label for="destino">Destino</label>
-          <ng-select [items]=destinos bindLabel="descripcion" ng-change="update()" [(ngModel)]="destino"
-            [ngModelOptions]="{standalone: true}" placeholder="Selecciona el destino">
-          </ng-select>
-          <span *ngIf="!agregarForm.get('destino').valid && agregarForm.get('destino').touched"
-            class="text-danger small">
-            Es necesario la elección de una destino
-          </span>
-        </div>
-      </div>
-    </div> -->
-
-    <div class="form-row">
-      <div class="col">
-        <div class="form-group">
-          <label for="destino">Destino</label>
-          <select class="form-control" id="destino" formControlName="destino">
-            <option *ngFor="let destino of destinos" [ngValue]="destino">
-              {{destino.descripcion}}
-            </option>
-          </select>
-        </div>
-      </div>
-    </div>
-
+    <app-valid-select [items]="destinos" [atributo]="'descripcion'" [placeholder]="'Destino'"
+      [valid]="agregarForm.get('destino').valid && !agregarForm.get('destino').pristine"
+      [invalid]="agregarForm.get('destino').invalid && !agregarForm.get('destino').pristine"
+      mensajeInvalido="Es necesaria la elección de un destino" formControlName="destino">
+    </app-valid-select>
+    
     <label for="destino">Turno</label>
     <div class="row">
       <div class="col-5">
@@ -63,12 +33,12 @@
     <div class="row">
       <div class="col-5">
         <div class="form-group">
-          <input type="time" [(ngModel)]="horaInicio" class="form-control"  [ngModelOptions]="{standalone: true}" placeholder="Hora inicio">
+          <input type="time" [(ngModel)]="horaInicio" max="horaFin" class="form-control"  [ngModelOptions]="{standalone: true}" placeholder="Hora inicio">
         </div>
       </div>
       <div class="col-5">
         <div class="form-group">
-          <input type="time" [(ngModel)]="horaFin" class="form-control"   [ngModelOptions]="{standalone: true}"  placeholder="Hora fin">
+          <input type="time" [(ngModel)]="horaFin" min="horaInicio" class="form-control"   [ngModelOptions]="{standalone: true}"  placeholder="Hora fin">
         </div>
       </div>
       <div class="col-2">
@@ -116,7 +86,7 @@
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-success"
-      [disabled]="agregarForm.invalid || !interconexionFormInitialState.activo"><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
+      [disabled]="agregarForm.invalid || !interconexionFormInitialState.activo"><span>{{tipoModalId==1 ? 'Registrar' : 'Actualizar'}}</span>
     </button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
   </div>

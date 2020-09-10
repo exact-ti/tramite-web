@@ -83,7 +83,8 @@ export class AreasComponent implements OnInit {
         areas.forEach(
           area => {
             dataAreas.push({
-              codigobandeja: area.id,
+              id: area.id,
+              codigobandeja: area.codigo,
               nombre: area.nombre,
               ubicacion: area.ubicacion,
               sede: area.sede.descripcion,
@@ -113,7 +114,7 @@ export class AreasComponent implements OnInit {
 
   agregarArea(row, modalId) {
     if (row != null) {
-      this.areaModal = this.areas.find(area => area.id == row.codigobandeja);
+      this.areaModal = this.areas.find(area => area.id == row.id);
     } else {
       this.areaModal = null
     }

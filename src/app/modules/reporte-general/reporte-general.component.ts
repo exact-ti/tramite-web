@@ -8,6 +8,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { UtilsService } from 'src/app/utils/utils';
 import * as moment from 'moment-timezone';
 import { MensajeEnum } from 'src/app/enum/mensaje.enum';
+import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-reporte-general',
@@ -20,6 +21,7 @@ export class ReporteGeneralComponent implements OnInit {
     public utdRepository: IUtdRepository,
     public estadoEnvioRepository: IEstadoEnvioRepository,
     public envioRepository: IEnvioRepository,
+    public customDatePipe: CustomDatePipe,
   ) { }
 
   mensajeEnum = MensajeEnum;
@@ -85,12 +87,12 @@ export class ReporteGeneralComponent implements OnInit {
             sedeDestino: item.sedeDestino,
             areaDestino: item.areaDestino,
             destinatario: item.destinatario,
-            fechaCreacion: !item.fechaCreacion ? '' : moment(item.fechaCreacion).tz('America/Lima').format("DD/MM/yyyy HH:mm"),
-            fechaPrimeraCustodia: !item.fechaPrimeraCustodia ? '' : moment(item.fechaPrimeraCustodia).tz('America/Lima').format("DD/MM/yyyy"),
-            fechaRutaAlUsuario: !item.fechaRutaAlUsuario ? '' : moment(item.fechaRutaAlUsuario).tz('America/Lima').format("DD/MM/yyyy"),
-            fechaEntrega: !item.fechaEntrega ? '' : moment(item.fechaEntrega).tz('America/Lima').format("DD/MM/yyyy"),
-            fechaConfirmado: !item.fechaConfirmado ? '' : moment(item.fechaConfirmado).tz('America/Lima').format("DD/MM/yyyy"),
-            fechaRetirado: !item.fechaRetirado ? '' : moment(item.fechaRetirado).tz('America/Lima').format("DD/MM/yyyy"),
+            fechaCreacion: !item.fechaCreacion ? '' : this.customDatePipe.transform(item.fechaCreacion, 'L LT'),
+            fechaPrimeraCustodia: !item.fechaPrimeraCustodia ? '' : this.customDatePipe.transform(item.fechaPrimeraCustodia, 'L LT'),
+            fechaRutaAlUsuario: !item.fechaRutaAlUsuario ? '' : this.customDatePipe.transform(item.fechaRutaAlUsuario, 'L LT'),
+            fechaEntrega: !item.fechaEntrega ? '' : this.customDatePipe.transform(item.fechaEntrega, 'L LT'),
+            fechaConfirmado: !item.fechaConfirmado ? '' : this.customDatePipe.transform(item.fechaConfirmado, 'L LT'),
+            fechaRetirado: !item.fechaRetirado ? '' : this.customDatePipe.transform(item.fechaRetirado, 'L LT'),
             estado: item.estado,
             utdResponsable: item.utdResponsable,
           }

@@ -8,33 +8,21 @@
 
 <form [formGroup]="buzonForm" (ngSubmit)="submit(buzonForm.value)">
     <div class="modal-body pr-3">
-        <div class="form-group">
-            <label for="codigo">Nombre</label>
-            <input type="text" id="nombre" onkeyup="this.value = this.value.toUpperCase();" class="form-control"
-                formControlName="nombre" placeholder="Ingrese el nombre">
-            <span *ngIf="buzonForm.get('nombre').invalid && buzonForm.get('nombre').dirty"
-                class="text-danger small">
-                El nombre del buzón es obligatorio
-            </span>
-        </div>
-        <div >
-            <div class="form-group">
-                <label for="area">ÁREA</label>
-                <ng-select [items]=areas bindLabel="nombre" formControlName="area"
-                    placeholder="Selecciona el área"></ng-select>
-                <span *ngIf="buzonForm.get('area').invalid && buzonForm.get('area').dirty"
-                    class="text-danger small">
-                    El área es obligatorio
-                </span>
-            </div>
-        </div>
+        <app-valid-input placeholder="Nombre" [valid]="buzonForm.get('nombre').valid && buzonForm.get('nombre').dirty"
+            [invalid]="buzonForm.get('nombre').invalid && buzonForm.get('nombre').dirty"
+            mensajeInvalido="El nombre del buzón es obligatorio" tipo="text" nombre="nombre" formControlName="nombre">
+        </app-valid-input>
+        <app-valid-select [items]="areas" [atributo]="'nombre'" [placeholder]="'Área'"
+            [valid]="buzonForm.get('area').valid && !buzonForm.get('area').pristine"
+            [invalid]="buzonForm.get('area').invalid && !buzonForm.get('area').pristine"
+            mensajeInvalido="Es necesaria la elección de un área" formControlName="area">
+        </app-valid-select>
         <div>
-            <label for="codigo">USUARIO</label>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <ng-select [items]=usuarios bindLabel="nombre" [(ngModel)]="usuario"
-                            [ngModelOptions]="{standalone: true}" placeholder="Selecciona el USUARIO">
+                            [ngModelOptions]="{standalone: true}" placeholder="Usuario">
                         </ng-select>
                     </div>
                 </div>
@@ -61,26 +49,12 @@
             </ng-template>
         </div>
         <div *ngIf="tipoFormulario!=1">
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="activo">Estado</label>
-                        <select class="form-control" id="activo" formControlName="activo">
-                            <option value="true">ACTIVADO
-                            </option>
-                            <option value="false">DESACTIVADO
-                            </option>
-                        </select>
-                        <span *ngIf="!buzonForm.get('activo').value" class="text-danger small">
-                            No se puede modificar si está desactivado
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <app-activo-switch formControlName="activo">
+            </app-activo-switch>
         </div>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-success"
-            [disabled]="buzonForm.invalid">{{tipoFormulario==1 ? 'Guardar' : 'Modificar'}}</button>
+            [disabled]="buzonForm.invalid">{{tipoFormulario==1 ? 'Registrar' : 'Actualizar'}}</button>
     </div>
 </form>

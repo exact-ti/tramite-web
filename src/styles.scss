@@ -23,3 +23,48 @@
     background-color: $blue;
     color: $white;
 }
+
+.icono {
+    position:absolute; 
+    font-size: 1.5rem;
+    right:8px;
+    top:8px;
+}
+
+.form-control.is-valid, 
+.form-control.is-invalid {
+    background-image: none;
+    
+}
+
+.ng-clear-wrapper.ng-star-inserted {
+    padding-right: 1.5rem;
+}
+
+.ng-arrow{
+    opacity: 0;
+}
+
+.is-invalid .ng-select-container {
+    border-color: $red;
+}
+.is-valid .ng-select-container {
+    border-color: $green;
+}
+
+.is-valid.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+    border-color: $green;
+    box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.25);
+}
+
+.is-invalid.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+    border-color: $red;
+        box-shadow: 0 0 0 0.2rem rgba(231, 74, 59, 0.25);
+}
+
+.seleccionado {
+    background-color: $green;
+    color: $white;
+}
+
+

@@ -10,9 +10,6 @@ import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 @Injectable()
 export class UsuarioProvider extends IUsuarioRepository{
 
-
-
-
     constructor(
         private client: RequesterService,
         private utdRepository: IUtdRepository,
@@ -63,9 +60,7 @@ export class UsuarioProvider extends IUsuarioRepository{
             username: usuario.username,
             nombre: usuario.nombre,
             correo: usuario.correo,
-            utds: usuario.utds.map((utd) => {
-                return utd.id
-            }),
+            utds: usuario.utds,
             perfilId: usuario.perfil.id,
             password: usuario.contrasena,
             areaId:usuario.area == null ? null:usuario.area.id,

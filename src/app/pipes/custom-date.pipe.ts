@@ -8,7 +8,7 @@ export class CustomDatePipe implements PipeTransform {
 
   transform(fecha: string, format: string): string {
     let fechaM = moment(fecha).tz('America/Lima');
-    let fechaS = fechaM.format('L LT');
+    let fechaS = fechaM.format(format);
     return fechaS;
   }
 }

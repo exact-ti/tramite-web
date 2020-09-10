@@ -1,0 +1,11 @@
+<div class="custom-control custom-switch form-group mt-3">
+    <input 
+    [value]="value"
+    [disabled]="isDisabled"
+    [(ngModel)]="value"
+    (ngModelChange)="onInput($event)"
+    type="checkbox" 
+    class="custom-control-input" 
+    [id]="id">
+    <label class="custom-control-label" [for]="id">{{ value ? 'Activo': 'Inactivo' }}</label>
+</div>

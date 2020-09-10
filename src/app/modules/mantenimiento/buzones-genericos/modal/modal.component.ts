@@ -140,7 +140,7 @@ export class ModalComponent implements OnInit {
         this.usuariosSeleccionadas.push(usuario);
         this.buzonForm.updateValueAndValidity();
       } else {
-        alert('No puedes agregar un área que ya está en la lista');
+        this.notifier.notify('warning','No puedes agregar un usuario que ya está en la lista');
       }
     }
     this.usuario = null;

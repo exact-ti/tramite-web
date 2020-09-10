@@ -1,0 +1,20 @@
+<div class="form-group position-relative">
+    <label *ngIf="label" [for]="id">{{label}}</label>
+    <ng-select
+    [disabled]="isDisabled"
+    [items]="items"
+    [bindLabel]="atributo" 
+    [id]="id"
+    [placeholder]="placeholder"
+    [ngClass]="{'is-invalid': invalid, 'is-valid': valid}"
+    (change)="onSelected($event)"
+    [ngModel]="value"
+    (ngModelChange)="onChange($event)">    
+    </ng-select>
+    <i [@inOutAnimation] *ngIf="valid" class="fas fa-check-circle text-success icono"></i>
+    <i [@inOutAnimation] *ngIf="invalid" class="fas fa-times-circle text-danger icono"></i>
+    <span *ngIf="invalid"
+        class="text-danger small">
+        {{mensajeInvalido}}
+    </span>
+  </div>

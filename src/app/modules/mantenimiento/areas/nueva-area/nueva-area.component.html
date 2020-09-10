@@ -1,108 +1,46 @@
-     <div class="modal-header">
-        <h6 class="modal-title pull-left font-weight-bold">{{ titulo }}</h6>
+<div class="modal-header">
+  <h6 class="modal-title pull-left font-weight-bold">{{ titulo }}</h6>
+</div>
+
+<form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+  <div class="card-body">
+    <app-valid-input placeholder="Código de bandeja"
+      [valid]="agregarForm.get('codigo').valid && agregarForm.get('codigo').touched"
+      [invalid]="agregarForm.get('codigo').invalid && agregarForm.get('codigo').touched"
+      [mensajeInvalido]="!validarLongitud(agregarForm.get('codigo').value) ? 'El código ya se encuentra en el sistema': 'Es necesario ingresar el código de bandeja' "
+      tipo="text" nombre="codigo" formControlName="codigo">
+    </app-valid-input>
+    <app-valid-input placeholder="Nombre" [valid]="agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+      [invalid]="agregarForm.get('nombre').invalid && agregarForm.get('nombre').touched"
+      [mensajeInvalido]="'Es necesario ingresar el nombre del área'" tipo="text" nombre="nombre"
+      formControlName="nombre">
+    </app-valid-input>
+    <app-valid-input placeholder="Ubicación"
+      [valid]="agregarForm.get('ubicacion').valid && agregarForm.get('ubicacion').touched"
+      [invalid]="agregarForm.get('ubicacion').invalid && agregarForm.get('ubicacion').touched"
+      [mensajeInvalido]="'Es necesario ingresar la ubicación'" tipo="text" nombre="ubicacion"
+      formControlName="ubicacion">
+    </app-valid-input>
+    <app-valid-select [id]="'sede'" [items]="sedes" [atributo]="'descripcion'" [placeholder]="'Sede'"
+      [valid]="agregarForm.get('sede').valid && !agregarForm.get('sede').pristine"
+      [invalid]="agregarForm.get('sede').invalid && !agregarForm.get('sede').pristine"
+      mensajeInvalido="Es necesaria la elección de una sede" formControlName="sede">
+    </app-valid-select>
+    <app-valid-select [id]="'palomar'" [items]="palomares" [atributo]="'descripcion'" [placeholder]="'Palomar'"
+      [valid]="agregarForm.get('palomar').valid && !agregarForm.get('palomar').pristine"
+      [invalid]="agregarForm.get('palomar').invalid && !agregarForm.get('palomar').pristine"
+      mensajeInvalido="Es necesaria la elección de un palomar" formControlName="palomar">
+    </app-valid-select>
+
+    <div *ngIf="tipoModalId==2">
+      <app-activo-switch formControlName="activo">
+      </app-activo-switch>
     </div>
-  
-    <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
-  
-      <div class="card-body">
-      <div *ngIf="tipoModalId==1">
-        <div class="form-row">
-          <div class="col">
-            <div class="form-group">
-              <label for="codigo">Código de bandeja</label>
-              <input class="form-control" type="text" name="codigo" id="codigo" formControlName="codigo">
-              <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched && validarLongitud(agregarForm.get('codigo').value)"
-                class="text-danger small">
-                Es necesario ingresar el código de  bandeja
-              </span>
-              <span *ngIf="!agregarForm.get('codigo').valid && agregarForm.get('codigo').touched && !validarLongitud(agregarForm.get('codigo').value)"
-                class="text-danger small">
-                El código ya se encuentra en el sistema
-               </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-        <div class="form-row">
-            <div class="col">
-              <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-                <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
-                  class="text-danger small">
-                  Es necesario ingresar el nombre del área
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="col">
-              <div class="form-group">
-                <label for="ubicacion">Ubicación</label>
-                <input class="form-control" type="text" name="ubicacion" id="ubicacion" formControlName="ubicacion">
-                <span *ngIf="!agregarForm.get('ubicacion').valid && agregarForm.get('ubicacion').touched"
-                  class="text-danger small">
-                  Es necesario ingresar la ubicación
-                </span>
-              </div>
-            </div>
-          </div>  
-
-        <div class="form-row">
-          <div class="col">
-            <div class="form-group">
-              <label for="sede">Sede</label>
-              <select class="form-control" id="sede" formControlName="sede">
-                <option *ngFor="let sede of sedes" [ngValue]="sede">{{sede.descripcion}}</option>
-              </select>
-              <span *ngIf="!agregarForm.get('sede').valid && agregarForm.get('sede').touched"
-                class="text-danger small">
-                Es necesario la elección de una sede
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col">
-              <div class="form-group">
-                <label for="palomar">Palomar</label>
-                <select class="form-control" id="palomar" formControlName="palomar">
-                  <option *ngFor="let palomar of palomares" [ngValue]="palomar">{{palomar.descripcion}}</option>
-                </select>
-                <span *ngIf="!agregarForm.get('palomar').valid && agregarForm.get('palomar').touched"
-                  class="text-danger small">
-                  Es necesario la elección de un palomar
-                </span>
-              </div>
-            </div>
-          </div>     
-          
-          <div *ngIf="tipoModalId==2">
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="activo">Estado</label>
-                  <select class="form-control" id="activo" formControlName="activo">
-                    <option value="true">ACTIVADO
-                    </option>
-                    <option value="false">DESACTIVADO
-                    </option>
-                  </select>
-                  <span *ngIf="!agregarForm.get('activo').value" class="text-danger small">
-                    No se puede modificar si está desactivado
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success"
-          [disabled]="!agregarForm.valid || agregarForm.pristine"><span>{{tipoModalId==1 ? 'Guardar' : 'Modificar'}}</span>
-        </button>
-        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
-      </div>
-    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success"
+      [disabled]="!agregarForm.valid || agregarForm.pristine"><span>{{tipoModalId==1 ? 'Registrar' : 'Actualizar'}}</span>
+    </button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+  </div>
+</form>
