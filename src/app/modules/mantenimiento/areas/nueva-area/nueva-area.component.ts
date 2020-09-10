@@ -44,7 +44,10 @@ export class NuevaAreaComponent implements OnInit {
       'palomar': new FormControl(null, Validators.required),
       'activo': new FormControl(this.area == null ? true : this.area.activo, Validators.required)
     })
-    this.areaId = this.area.id;
+    if (this.area != null) {
+      this.areaId = this.area.id;
+    }
+    
     this.cargarDatosVista();
   }
   @Output() areaCreadoEvent = new EventEmitter<any>();
