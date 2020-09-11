@@ -26,15 +26,10 @@ export class SedeProvider extends ISedeRepository{
     private sedesSaved: Sede[];
 
     listarSedes(): Observable<any> {
-        if (!this.sedesSaved) {
             return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() + "/sedes").pipe(map((response: any) => {                
                 this.sedesSaved = response.map((element)=> new Sede(element.id, element.descripcion));
                 return this.sedesSaved;
             }))));
-
-        }else{
-            return of(this.sedesSaved);
-        }
     } 
     
     listarSedesSave(): Sede[] {

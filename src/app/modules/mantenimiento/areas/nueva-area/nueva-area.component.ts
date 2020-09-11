@@ -70,13 +70,9 @@ export class NuevaAreaComponent implements OnInit {
       }
     )
 
-    this.palomares = this.palomarRepository.listarPalomaresSave();
-    if (this.palomares && this.area != null) {
-      this.agregarForm.get("palomar").setValue(this.sedes.find(sede => this.area.sede.id === sede.id));
-    }
     this.palomarSubscription = this.palomarRepository.listarPalomares().pipe(take(1)).subscribe(
-      sedesprovider => {
-        this.palomares = sedesprovider;
+      palomares => {
+        this.palomares = palomares;
         if (this.area != null) {
           this.agregarForm.get("palomar").setValue(this.palomares.find(palomar => this.area.palomar.id === palomar.id));
         }
