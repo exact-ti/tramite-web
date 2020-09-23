@@ -15,7 +15,7 @@ import { UtilsService } from 'src/app/utils/utils';
 @Injectable()
 export class EnvioProvider extends IEnvioRepository {
     
-   
+      
        
     
     constructor(
@@ -75,6 +75,14 @@ export class EnvioProvider extends IEnvioRepository {
             .set("estadosIds", estadosIds.join(","))
             .set("origenesIds", origenesIds.join(","))
             .set("destinosIds", destinosIds.join(","))
+            .set("desde", this.utils.parseDate(desde))
+            .set("hasta", this.utils.parseDate(hasta))
+        });
+    }
+
+    listarEnviosRetiradosPorRangoDeFechas(desde: string, hasta: string): Observable<any> {
+        return this.client.get(this.prefix + "/envios/retirados", {
+            params: new HttpParams()
             .set("desde", this.utils.parseDate(desde))
             .set("hasta", this.utils.parseDate(hasta))
         });
