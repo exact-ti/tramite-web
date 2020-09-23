@@ -14,10 +14,6 @@ export class PerfilProvider extends IPerfilRepository {
 
     private tipoPerfil: any;
 
-  /*   private tipoPerfil: any= {
-        id:1,
-        nombre:'EXACT',
-      };   */
     private prefix: string = "/servicio-perfil";
 
     listarTipoPerfil(): Observable<any> {

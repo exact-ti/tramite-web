@@ -47,6 +47,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/reporte-recorridos/reporte-recorridos.module#ReporteRecorridosModule'
     },
     {
+        path: 'reporte-retirados',
+        loadChildren: './modules/reporte-retirados/reporte-retirados.module#ReporteRetiradosModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: '',        
