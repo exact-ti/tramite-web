@@ -29,6 +29,10 @@ const APP_ROUTES: Routes = [
         path: 'paquetes-externos',
         loadChildren: './paquetes-externos/paquetes-externos.module#PaquetesExternosModule'
     },
+    { 
+        path: 'perfiles',
+        loadChildren: './perfiles/perfiles.module#PerfilesModule'
+    },
 ];
 
 export const APP_ROUTING = RouterModule.forChild(APP_ROUTES);

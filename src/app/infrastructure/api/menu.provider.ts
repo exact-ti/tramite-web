@@ -8,7 +8,8 @@ import { ErrorHandle } from 'src/app/utils/error-handle';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class MenuProvider extends IMenuRepository {       
+export class MenuProvider extends IMenuRepository {
+          
 
     constructor(
         private client: RequesterService,
@@ -65,6 +66,13 @@ export class MenuProvider extends IMenuRepository {
 
         return menus;
     }
+
+    listarMenuPorTipoPerfil(tipoPerfilId: number): Observable<any[]> {
+        return this.client.get(this.prefix + "/menus", {
+            params: new HttpParams()
+            .set("tipoPerfilId", tipoPerfilId.toString())
+        })
+    } 
 
 
 
