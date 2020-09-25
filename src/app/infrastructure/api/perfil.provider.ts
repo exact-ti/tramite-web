@@ -7,6 +7,9 @@ import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class PerfilProvider extends IPerfilRepository {
+    
+    
+    
 
     constructor(private client: RequesterService){
         super();
@@ -35,6 +38,24 @@ export class PerfilProvider extends IPerfilRepository {
 
     listarPerfilByTipoPerfilId(tipoPerfil: any): Observable<any[]> {
         return this.client.get(this.prefix + "/tiposperfiles/"+String(tipoPerfil)+"/perfiles");
+    }
+
+    listarPerfiles(incluirInactivos: boolean): Observable<any> {
+        return this.client.get(this.prefix + "/perfiles", {
+            params: new HttpParams().set("incluirInactivos",  String(incluirInactivos))
+        });
+    }
+
+    listarDetallePerfil(perfilId: number): Observable<any> {
+        return this.client.get(this.prefix + "/perfiles/" + perfilId.toString() + "/detalle");
+    }
+
+    registrarPerfil(registro: any): Observable<any> {
+        return this.client.post(this.prefix + "/perfiles", registro);
+    }
+    
+    actualizarPerfil(perfilId: number, registro: any): Observable<any> {
+        return this.client.put(this.prefix + "/perfiles/" + perfilId.toString(), registro)
     }
 
 }

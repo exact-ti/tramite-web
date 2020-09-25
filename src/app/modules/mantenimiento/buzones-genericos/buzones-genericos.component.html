@@ -3,4 +3,9 @@
     <div *ngIf="buzonesDS.count() !== 0" class="center mt-3"  style = "overflow-x: scroll;">
         <ng2-smart-table [settings]="settings" [source]="buzonesDS"></ng2-smart-table>
     </div>
+    <ng-template #mensaje>
+        <div class="alert alert-info mt-3" role="alert">
+            No se han encontrado resultados
+        </div>
+    </ng-template>
 </div>

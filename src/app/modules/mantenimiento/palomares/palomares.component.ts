@@ -20,9 +20,7 @@ export class PalomaresComponent implements OnInit {
   constructor(    private modalService: BsModalService,
     private palomarRepository: IPalomarRepository) { }
 
-    public areas: Area[] = [];
     public palomares: any[]= [];
-    public enviosWrappers: any[] = [];
     public palomarModal : Palomar;
     public modalTipoId : number;
     public mensaje : String;

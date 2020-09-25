@@ -81,7 +81,7 @@ export class PaqueteExternoModalComponent implements OnInit {
   mostrarRespuesta(data): void {
     if (data.status == "success") {
       let accion = this.tipoFormulario == 1 ? 'creado': 'actualizado';
-      this.notifier.notify('success', 'Paquete externo ' +  accion);
+      this.notifier.notify('success', "Se ha " + accion + " el paquete externo correctamente");
       this.bsModalRef.hide();
     }else{
       this.notifier.notify('error', data.mensaje);

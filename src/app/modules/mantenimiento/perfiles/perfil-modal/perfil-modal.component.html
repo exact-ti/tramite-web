@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">
+        {{ tipoFormulario == 1 ? 'NUEVO PERFIL' : 'EDITAR PERFIL' }}</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+
+<form [formGroup]="perfilForm" (ngSubmit)="submit(perfilForm.value)">
+    <div class="modal-body pr-3">
+        <app-valid-input placeholder="Nombre" [valid]="perfilForm.get('nombre').valid && perfilForm.get('nombre').dirty"
+            [invalid]="perfilForm.get('nombre').invalid && perfilForm.get('nombre').dirty"
+            mensajeInvalido="El nombre del buzón es obligatorio" tipo="text" nombre="nombre" formControlName="nombre">
+        </app-valid-input>
+        <app-valid-select [items]="tiposPerfiles" [isDisabled]="tipoFormulario == 2" [atributo]="'nombre'"
+            (change)="onTipoPerfilSelectedChanged($event.detail)" [placeholder]="'Tipo perfil'"
+            [valid]="perfilForm.get('tipoPerfil').valid && !perfilForm.get('tipoPerfil').pristine"
+            [invalid]="perfilForm.get('tipoPerfil').invalid && !perfilForm.get('tipoPerfil').pristine"
+            mensajeInvalido="Es necesaria la elección de un perfil" formControlName="tipoPerfil">
+        </app-valid-select>
+        <div *ngIf="perfilForm.get('tipoPerfil').value; else mensaje">
+            <div>
+                <span>Menú: </span>
+            </div>
+            <div style="max-height: 250px; overflow-y: scroll;">
+                <app-check-tree-view [tree]="menu" (checkedChanged)="onCheckedChanged()"></app-check-tree-view>
+            </div>
+        </div>
+        <ng-template #mensaje>
+            <div class="alert alert-info mt-3" role="alert">
+                Elija el tipo de perfil para mostrar el menú
+            </div>
+        </ng-template>
+        
+        <div *ngIf="tipoFormulario!=1">
+            <app-activo-switch formControlName="activo">
+            </app-activo-switch>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success"
+            [disabled]="perfilForm.invalid">{{tipoFormulario==1 ? 'Registrar' : 'Actualizar'}}</button>
+    </div>
+</form>

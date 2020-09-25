@@ -15,15 +15,15 @@ import { ModalComponent } from './modal/modal.component';
 })
 export class BuzonesGenericosComponent implements OnInit {
 
-  constructor(    
+  constructor(
     private buzonRepository: IBuzonRepository,
     private modalService: BsModalService,) { }
 
-    buzonesDS: LocalDataSource = new LocalDataSource();
-    settings = UtilsService.tableSettings;
-  ngOnInit(): void {    
+  buzonesDS: LocalDataSource = new LocalDataSource();
+  settings = UtilsService.tableSettings;
+  ngOnInit(): void {
     this.configurarTabla();
-    AppConfig.DespuesDeInicializar(()=> this.listarBuzones());    
+    AppConfig.DespuesDeInicializar(() => this.listarBuzones());
     this.settings.hideSubHeader = false;
   }
   listarBuzonesGenericos: any[] = [];
@@ -42,21 +42,21 @@ export class BuzonesGenericosComponent implements OnInit {
       backdrop: "static"
     });
 
-    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String)=> {
+    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String) => {
       this.listarBuzones();
     });
   }
 
   listarBuzones(): void {
     this.buzonRepository.listarBuzonesMantenimiento().pipe(take(1)).subscribe(data => {
-      this.listarBuzonesGenericos=data.data;
+      this.listarBuzonesGenericos = data.data;
       this.buzonesDS.load(this.listarBuzonesGenericos.map(item => {
         return {
           id: item.id,
-          area:item.area,
+          area: item.area,
           nombre: item.nombre,
           usuario: item.cantidadUsuarios,
-          estado: item.activo ? "ACTIVO" : "DESACTIVADO"
+          estado: item.activo ? "ACTIVO" : "INACTIVO"
         }
       }));
     });
@@ -85,7 +85,7 @@ export class BuzonesGenericosComponent implements OnInit {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.mostrarBuzonFormulario({
-              tipoFormulario: 2, 
+              tipoFormulario: 2,
               buzonGenericoId: row.id,
             })
           });
