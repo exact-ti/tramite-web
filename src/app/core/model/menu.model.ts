@@ -7,7 +7,7 @@ export class Menu {
         public icono: string,
         public link: string,
         public home: boolean,
-        public hijos: Menu[],
+        public menuHijos: Menu[],
     ){}
 
 }

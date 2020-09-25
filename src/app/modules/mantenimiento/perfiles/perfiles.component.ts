@@ -82,7 +82,7 @@ export class PerfilesComponent implements OnInit {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.mostrarPerfilFormulario({
-              tipoFormulario: 1,
+              tipoFormulario: 2,
               perfilId: row.id,
             });
           });

@@ -1,0 +1,26 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+        <li class="mat-tree-node">
+            <!-- use a disabled button to provide padding for tree leaf -->
+            <button type="button" mat-icon-button disabled></button>
+            <mat-checkbox class="checklist-leaf-node" [checked]="node.checked" (change)="checkToggle(node)">{{node.nombre}}</mat-checkbox>
+        </li>
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+        <li>
+            <div class="mat-tree-node">
+                <button type="button" mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.nombre">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                </button>
+                <mat-checkbox class="checklist-leaf-node" [checked]="hijosChecked(node)" [indeterminate] = "isIndeterminate(node)" (change)="checkToggle(node)">{{node.nombre}}</mat-checkbox>
+            </div>
+            <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+            </ul>
+        </li>
+    </mat-nested-tree-node>
+</mat-tree>

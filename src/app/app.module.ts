@@ -98,7 +98,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     ReactiveFormsModule,    
     HttpClientModule,
     SharedModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   providers: [
     RequesterService,

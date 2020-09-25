@@ -56,8 +56,8 @@ export class MenuProvider extends IMenuRepository {
         let menus: Menu[] = [];
 
         for (let index = 0; index < menu.length; index++) {
-            if (menu[index].hijos && menu[index].hijos.length > 0) {
-                let menus2 = [...this.listarOpciones(menu[index].hijos)];
+            if (menu[index].menuHijos && menu[index].menuHijos.length > 0) {
+                let menus2 = [...this.listarOpciones(menu[index].menuHijos)];
                 menus2.forEach(menu2 => menus.push(menu2));
             }else{
                 menus.push(menu[index]);
@@ -68,10 +68,10 @@ export class MenuProvider extends IMenuRepository {
     }
 
     listarMenuPorTipoPerfil(tipoPerfilId: number): Observable<any[]> {
-        return this.client.get(this.prefix + "/menus", {
+        return this.client.get(this.prefix + "/menus/tree", {
             params: new HttpParams()
             .set("tipoPerfilId", tipoPerfilId.toString())
-        })
+        });
     } 
 
 

@@ -14,7 +14,7 @@
             <span>{{item.nombre}}</span>
         </a>
         <div [id]="'collapse' + item.id" class="collapse">
-            <ul app-tree-view [menu]="item.hijos" [nivel]="nivel + 1" class="bg-white py-2 collapse-inner rounded">
+            <ul app-tree-view [menu]="item.menuHijos" [nivel]="nivel + 1" class="bg-white py-2 collapse-inner rounded">
             </ul>
         </div>
     </div>

@@ -7,6 +7,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfilModalComponent } from './perfil-modal/perfil-modal.component';
+import {MatSliderModule} from '@angular/material/slider';
 
 
 
@@ -20,6 +21,7 @@ import { PerfilModalComponent } from './perfil-modal/perfil-modal.component';
     Ng2SmartTableModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSliderModule,
   ]
 })
 export class PerfilesModule { }
