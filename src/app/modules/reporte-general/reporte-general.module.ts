@@ -6,7 +6,6 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 
 
 

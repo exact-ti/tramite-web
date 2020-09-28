@@ -51,6 +51,10 @@ const APP_ROUTES: Routes = [
         loadChildren: './modules/reporte-retirados/reporte-retirados.module#ReporteRetiradosModule'
     },
     {
+        path: 'registro-contingencia',
+        loadChildren: './modules/contingencia/contingencia.module#ContingenciaModule'
+    },
+    {
         path: '**',
         pathMatch: 'prefix',
         redirectTo: '',        

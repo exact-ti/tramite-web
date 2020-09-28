@@ -1,0 +1,25 @@
+<div class="form-group">
+    <input type="file" class="form-control-file" id="archContingencia"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        (change)="handleFileInput($event.target.files)">
+</div>
+<div *ngIf="enviosDS.count() !== 0; else vacio">
+    <div class="center mt-3" style="overflow-x: scroll;">
+        <ng2-smart-table [settings]="settings" [source]="enviosDS"></ng2-smart-table>
+    </div>
+    <div class="form-group mt-3">
+        <label for="cargoContingencia">Cargo de Contingencia</label>
+        <input type="file" class="form-control-file" id="cargoContingencia"
+            (change)="handleCargoFile($event.target.files)">
+    </div>
+</div>
+
+<ng-template #vacio>
+    <div class="alert alert-info mt-3" role="alert">
+        Suba el archivo de contingencia
+    </div>
+</ng-template>
+
+<div class="my-4" >
+    <input type="button" (click)="submit()" class="btn btn-success" value="Registrar contingencia" [disabled]="this.enviosDS.count() == 0 || !cargoContingencia">
+</div>
