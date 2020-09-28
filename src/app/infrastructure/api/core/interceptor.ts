@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
     HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent,
-    HttpResponse, HttpUserEvent, HttpErrorResponse, HttpHeaders, HttpEvent
+    HttpResponse, HttpUserEvent, HttpHeaders, 
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LocalStorage } from 'src/app/core/repository/local-storage';
-import { tap, finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
@@ -34,14 +33,12 @@ export class Interceptor implements HttpInterceptor {
     private adicionarHeaders(): void {
         this.headers = new HttpHeaders({
             "Authorization": "Bearer " + this.localStorage.getToken(),
-            'Content-Type': 'application/json',
             'Accept': 'application/json',
         });
 
         this.localStorage.onTokensSaved.subscribe(() => {
             this.headers = new HttpHeaders({
                 "Authorization": "Bearer " + this.localStorage.getToken(),
-                'Content-Type': 'application/json',
                 'Accept': 'application/json',
             });
         });
