@@ -73,7 +73,7 @@ export class PalomarModalComponent implements OnInit {
         this.agregarForm.controls['activo'].setValue(true);
         this.agregarForm.updateValueAndValidity();
       } else {
-        alert('No puedes agregar un área que ya está en la lista');
+        this.notifier.notify("warning", "No puedes agregar un área que ya está en la lista");
       }
     }
     this.area = null;

@@ -44,7 +44,7 @@ export class AreaProvider extends IAreaRepository {
             nombre: area.nombre,
             ubicacion: area.ubicacion,
             sedeId: area.sede.id,
-            palomarId: area.palomar.id,
+            palomarId: area.palomar?.id,
         });
     }
 
@@ -54,7 +54,7 @@ export class AreaProvider extends IAreaRepository {
             nombre: area.nombre,
             ubicacion: area.ubicacion,
             sedeId: area.sede.id,
-            palomarId: area.palomar.id,
+            palomarId: area.palomar?.id,
             activo: area.activo
         });
     }

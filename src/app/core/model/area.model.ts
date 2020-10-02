@@ -11,7 +11,7 @@ export class Area {
         public sedeId: number,
         public palomarId: number,
         public ubicacion:string,
-        public tipoSede:string,
+        public tipoSede:any,
         public activo:boolean
     ){}
 

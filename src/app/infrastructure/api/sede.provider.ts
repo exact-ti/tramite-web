@@ -10,6 +10,7 @@ import { Sede } from 'src/app/core/model/sede.model';
 
 @Injectable()
 export class SedeProvider extends ISedeRepository{
+    
 
 
     constructor(
@@ -34,6 +35,13 @@ export class SedeProvider extends ISedeRepository{
     
     listarSedesSave(): Sede[] {
         return this.sedesSaved;
+    }
+
+    listarItemsSedesDeUtdPorTipoSede(tipoSedeId: number): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() + "/tipossedes/" + tipoSedeId.toString() + "/sedes").pipe(map((response: any) => {                
+            this.sedesSaved = response.data.map((element)=> new Sede(element.id, element.descripcion));
+            return this.sedesSaved;
+        }))));
     }
 
 

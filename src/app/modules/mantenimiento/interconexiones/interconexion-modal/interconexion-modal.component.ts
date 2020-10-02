@@ -208,7 +208,7 @@ export class InterconexionModalComponent implements OnInit {
         noAreas: true
       }
     }
-    if ( JSON.stringify(this.interconexionFormInitialState) ==  JSON.stringify(this.agregarForm.value)){
+    if (JSON.stringify(this.interconexionFormInitialState) ==  JSON.stringify(this.agregarForm.value)){
       if (JSON.stringify(this.turnosSeleccionadasInitialState) == JSON.stringify(this.turnosSeleccionadas)) {
         return {
           noCambio: true
@@ -241,26 +241,34 @@ export class InterconexionModalComponent implements OnInit {
     if (this.tipoModalId == 1) {
       bsModalRef.content.confirmarEvent.subscribe(() => {
         this.modificarpalomarSubscription = this.interconexionRepository.registrarInterconexion(this.transformar(this.agregarForm, this.turnosSeleccionadas)).subscribe(
-          area => {
-            this.notifier.notify('success', 'Se ha creado el area correctamente');
+          rpta => {
+            if (rpta.status == "success") {
+              this.notifier.notify('success', 'Se ha creado la conexión intersucursal correctamente');
             this.bsModalRef.hide();
-            this.interconexionCreadoEvent.emit(area);
+            this.interconexionCreadoEvent.emit(rpta.data);
+            }else{
+              this.notifier.notify(rpta.status == "fail"? "warning":"error", rpta.message);
+            }
           },
           error => {
-            this.notifier.notify('error', 'No se registro el area');
+            this.notifier.notify('error', 'No se registró la conexión intersucursal');
           }
         );
       })
     } else {
       bsModalRef.content.confirmarEvent.subscribe(() => {
         this.modificarpalomarSubscription = this.interconexionRepository.editarInterconexion(this.interconexion.id.toString(), this.transformar(this.agregarForm, this.turnosSeleccionadas)).subscribe(
-          area => {
-            this.notifier.notify('success', 'Se ha modificado la interconexión correctamente');
+          rpta => {
+            if (rpta.status == "success") {
+              this.notifier.notify('success', 'Se ha actualizado la conexión intersucursal correctamente');
             this.bsModalRef.hide();
-            this.interconexionCreadoEvent.emit(area);
+            this.interconexionCreadoEvent.emit(rpta.data);
+            }else{
+              this.notifier.notify(rpta.status == "fail"? "warning":"error", rpta.message);
+            }
           },
           error => {
-            this.notifier.notify('error', 'No se modificó la interconexión');
+            this.notifier.notify('error', 'No se modificó la interconexión intersucursal');
           }
         );
       })

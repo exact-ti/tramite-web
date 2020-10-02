@@ -12,6 +12,7 @@ import { UtilsService } from 'src/app/utils/utils';
 import { NotifierService } from 'angular-notifier';
 import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
 import { IAreaRepository } from 'src/app/core/repository/area.repository';
+import { ITipoSedeRepository } from 'src/app/core/repository/tipo-sede.repository';
 
 @Component({
   selector: 'app-nueva-area',
@@ -21,7 +22,7 @@ import { IAreaRepository } from 'src/app/core/repository/area.repository';
 export class NuevaAreaComponent implements OnInit {
 
   constructor(public bsModalRef: BsModalRef, private modalService: BsModalService,
-    private sedeRepository: ISedeRepository, private palomarRepository: IPalomarRepository, private utilsService: UtilsService,
+    private sedeRepository: ISedeRepository, private tipoSedeRepository: ITipoSedeRepository, private palomarRepository: IPalomarRepository, private utilsService: UtilsService,
     private areaRepository: IAreaRepository, private notifier: NotifierService
   ) { }
   areaId: number;
@@ -31,6 +32,7 @@ export class NuevaAreaComponent implements OnInit {
   probar: String;
   respuesta: boolean = false;
   sedes: Sede[] = [];
+  tiposSedes: any[] = [];
   palomares: Palomar[] = [];
   activo: boolean;
   tipoModalId: number;
@@ -40,14 +42,15 @@ export class NuevaAreaComponent implements OnInit {
       'codigo': new FormControl(this.area == null ? "" : this.area.codigo, Validators.required, this.existenciaAreaValidator.bind(this)),
       'nombre': new FormControl(this.area == null ? "" : this.area.nombre, Validators.required),
       'ubicacion': new FormControl(this.area == null ? "" : this.area.ubicacion, Validators.required),
+      'tipoSede': new FormControl(null, Validators.required),
       'sede': new FormControl(null, Validators.required),
-      'palomar': new FormControl(null, Validators.required),
+      'palomar': new FormControl(null, this.palomarValidation.bind(this)),
       'activo': new FormControl(this.area == null ? true : this.area.activo, Validators.required)
     })
     if (this.area != null) {
       this.areaId = this.area.id;
     }
-    
+
     this.cargarDatosVista();
   }
   @Output() areaCreadoEvent = new EventEmitter<any>();
@@ -56,29 +59,25 @@ export class NuevaAreaComponent implements OnInit {
   palomarSubscription: Subscription;
   modificarAreaSubscription: Subscription;
 
-  cargarDatosVista() {
-    this.sedes = this.sedeRepository.listarSedesSave();
-    if (this.sedes && this.area != null) {
-      this.agregarForm.get("sede").setValue(this.sedes.find(sede => this.area.sede.id === sede.id));
+  async cargarDatosVista() {
+    this.tiposSedes = (await this.tipoSedeRepository.listarTiposSedes().toPromise()).data;
+    this.palomares = await this.palomarRepository.listarPalomares().toPromise();
+    if (this.tipoModalId == 2) {
+      this.agregarForm.get('tipoSede').setValue(this.tiposSedes.find(tipoSede => this.area.tipoSede.id == tipoSede.id));
+      this.sedes = await this.sedeRepository.listarItemsSedesDeUtdPorTipoSede(this.area.tipoSede.id).toPromise();
+      this.agregarForm.get('sede').setValue(this.sedes.find(sede => sede.id == this.area.sede.id));
+      if (this.area.tipoSede.id == 1) {
+        this.agregarForm.get('palomar').setValue(this.palomares.find(palomar => palomar.id == this.area.palomar.id));
+      }
     }
-    this.sedeSubscription = this.sedeRepository.listarSedes().pipe(take(1)).subscribe(
-      sedesprovider => {
-        this.sedes = sedesprovider;
-        if (this.area != null) {
-          this.agregarForm.get("sede").setValue(this.sedes.find(sede => this.area.sede.id === sede.id));
-        }
-      }
-    )
+  }
 
-    this.palomarSubscription = this.palomarRepository.listarPalomares().pipe(take(1)).subscribe(
-      palomares => {
-        this.palomares = palomares;
-        if (this.area != null) {
-          this.agregarForm.get("palomar").setValue(this.palomares.find(palomar => this.area.palomar.id === palomar.id));
-        }
-      }
-    )
-
+  onTipoSedeChanged(tipoSede): void {
+    this.sedeRepository.listarItemsSedesDeUtdPorTipoSede(tipoSede.id).subscribe(data => {
+      this.sedes = data;
+      this.agregarForm.get('sede').setValue(null);
+      this.agregarForm.get('palomar').setValue(null);
+    })
   }
 
   validarLongitud(codigo: String) {
@@ -117,6 +116,15 @@ export class NuevaAreaComponent implements OnInit {
     }
   }
 
+  private palomarValidation({ value }: AbstractControl): ValidationErrors | null {
+    if (this.agregarForm && this.agregarForm.get('tipoSede').value && this.agregarForm.get('tipoSede').value.id == 1 && value == null) {
+      return {
+        required: true
+      }
+    }
+    return null;
+  }
+
   mostrarForm(value) {
     console.log(value);
   }
@@ -138,26 +146,36 @@ export class NuevaAreaComponent implements OnInit {
       if (this.area == null) {
         bsModalRef.content.confirmarEvent.subscribe(() => {
           this.modificarAreaSubscription = this.areaRepository.crearArea(area).subscribe(
-            area => {
-              this.notifier.notify('success', 'Se ha creado el área correctamente');
-              this.bsModalRef.hide();
-              this.areaCreadoEvent.emit(area);
+            rpta => {
+              if (rpta.status == "success") {
+                this.notifier.notify('success', 'Se ha creado el área correctamente');
+                this.bsModalRef.hide();
+                this.areaCreadoEvent.emit(area);
+              } else {
+                this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message);
+              }
+
             },
             error => {
-              this.notifier.notify('error', 'No se registro el área');
+              this.notifier.notify('error', 'No se registró el área');
             }
           );
         })
       } else {
         bsModalRef.content.confirmarEvent.subscribe(() => {
           this.modificarAreaSubscription = this.areaRepository.modificarArea(this.areaId, area).subscribe(
-            area => {
-              this.notifier.notify('success', 'Se ha modificado el área correctamente');
-              this.bsModalRef.hide();
-              this.areaCreadoEvent.emit(area);
+            rpta => {
+              if (rpta.status == "success") {
+                this.notifier.notify('success', 'Se ha actualizado el área correctamente');
+                this.bsModalRef.hide();
+                this.areaCreadoEvent.emit(area);
+              } else {
+                this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message);
+              }
+
             },
             error => {
-              this.notifier.notify('error', 'No se modificó el area');
+              this.notifier.notify('error', 'No se modificó el área');
             }
           );
         })

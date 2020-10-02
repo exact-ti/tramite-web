@@ -70,6 +70,8 @@ import { RecorridoProvider } from './infrastructure/api/recorrido.provider';
 import { IRecorridoRepository } from './core/repository/recorrido.repository';
 import { IContingenciaRepository } from './core/repository/contingencia.repository';
 import { ContingenciaProvider } from './infrastructure/api/contingencia.provider';
+import { TipoSedeProvider } from './infrastructure/api/tipo-sede.provider';
+import { ITipoSedeRepository } from './core/repository/tipo-sede.repository';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -142,6 +144,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: ILoteRepository, useClass: LoteProvider},
     {provide: IRecorridoRepository, useClass: RecorridoProvider},
     {provide: IContingenciaRepository, useClass: ContingenciaProvider},
+    {provide: ITipoSedeRepository, useClass: TipoSedeProvider},
     SubmitForm,
   ],
   bootstrap: [AppComponent],

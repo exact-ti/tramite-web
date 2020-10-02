@@ -21,12 +21,17 @@
       [mensajeInvalido]="'Es necesario ingresar la ubicación'" tipo="text" nombre="ubicacion"
       formControlName="ubicacion">
     </app-valid-input>
+    <app-valid-select [isDisabled]="tipoModalId == 2" (change)="onTipoSedeChanged($event.detail)" [id]="'tipoSede'" [items]="tiposSedes" [atributo]="'descripcion'" [placeholder]="'Tipo de Sede'"
+      [valid]="agregarForm.get('tipoSede').valid && !agregarForm.get('tipoSede').pristine"
+      [invalid]="agregarForm.get('tipoSede').invalid && !agregarForm.get('tipoSede').pristine"
+      mensajeInvalido="Es necesaria la elección de un tipo de sede" formControlName="tipoSede">
+    </app-valid-select>
     <app-valid-select [id]="'sede'" [items]="sedes" [atributo]="'descripcion'" [placeholder]="'Sede'"
       [valid]="agregarForm.get('sede').valid && !agregarForm.get('sede').pristine"
       [invalid]="agregarForm.get('sede').invalid && !agregarForm.get('sede').pristine"
       mensajeInvalido="Es necesaria la elección de una sede" formControlName="sede">
     </app-valid-select>
-    <app-valid-select [id]="'palomar'" [items]="palomares" [atributo]="'descripcion'" [placeholder]="'Palomar'"
+    <app-valid-select *ngIf="agregarForm.get('tipoSede') && agregarForm.get('tipoSede').value && agregarForm.get('tipoSede').value.id == 1" [id]="'palomar'" [items]="palomares" [atributo]="'descripcion'" [placeholder]="'Palomar'"
       [valid]="agregarForm.get('palomar').valid && !agregarForm.get('palomar').pristine"
       [invalid]="agregarForm.get('palomar').invalid && !agregarForm.get('palomar').pristine"
       mensajeInvalido="Es necesaria la elección de un palomar" formControlName="palomar">

@@ -4,6 +4,9 @@
 .seleccionado {
     background-color: $green;
     color: $white;
+    .text-primary {
+        color: white;
+    }
 }
 
 #paquete:hover{

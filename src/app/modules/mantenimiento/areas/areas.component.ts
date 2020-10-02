@@ -88,8 +88,8 @@ export class AreasComponent implements OnInit {
               nombre: area.nombre,
               ubicacion: area.ubicacion,
               sede: area.sede.descripcion,
-              tiposede: area.tipoSede,
-              palomar: area.palomar.descripcion,
+              tiposede: area.tipoSede.id,
+              palomar: area.palomar?.descripcion,
               estado: area.activo ? 'ACTIVO' : 'INACTIVO',
             })
           }
