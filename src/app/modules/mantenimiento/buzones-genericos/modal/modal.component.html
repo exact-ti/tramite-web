@@ -35,7 +35,7 @@
                 <div class="col-10 dndPlaceholder" dndPlaceholderRef>
                 </div>
                 <div class="col-10" *ngFor="let usuario of usuariosSeleccionadas">
-                    <app-usuario-card [usuario]="usuario" (onClose)="removerUsuario(usuario)"></app-usuario-card>
+                    <app-usuario-card [wrapper]="usuario" (click)="seleccionarToggle(usuario)" (onClose)="removerUsuario(usuario)"></app-usuario-card>
                 </div>
             </div>
             <ng-template #mensaje>

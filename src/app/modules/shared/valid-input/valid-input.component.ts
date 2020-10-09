@@ -76,7 +76,7 @@ export class ValidInputComponent implements OnInit, ControlValueAccessor  {
   }
 
   onInput(value: string): void {
-    this.value = value.toUpperCase();
+    this.value = value;
     this.onTouch();
     this.onChange(this.value);
   }

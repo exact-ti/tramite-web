@@ -147,6 +147,10 @@ export class InterconexionModalComponent implements OnInit {
   }
 
   agregarTurno(horaInicio: any,horaFin:any) {
+    if (!horaInicio || !horaFin || horaInicio == "" || horaFin == "") {
+      this.notifier.notify('warning', 'Ingresa correctamente las horas de los turnos');
+        return;
+    }
     if (horaInicio >= horaFin) {
       this.notifier.notify('warning', 'La hora de inicio no puede se mayor que la de fin');
       return;
@@ -157,7 +161,6 @@ export class InterconexionModalComponent implements OnInit {
       horaInicio:'',
       horaFin:'',     
     }
-    if (horaInicio || horaFin) {
       intervalo1.horaInicio = horaInicio+":00";
       intervalo1.horaFin = horaFin+":00";
       if (this.validarTurnos(intervalo1.horaInicio,intervalo1.horaFin)) {
@@ -165,8 +168,8 @@ export class InterconexionModalComponent implements OnInit {
         this.agregarForm.updateValueAndValidity();
       } else {
         this.notifier.notify('warning', 'No puedes agregar un turno que ya está en la lista');
+        return;
       }
-    }
     this.turno = null;
   }
 

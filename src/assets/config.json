@@ -10,6 +10,6 @@
     "test": {
         "login_url": "http://www.exact.com.pe:8401",
         "api": "http://www.exact.com.pe:8891",
-        "integracion_docflow": false
+        "integracion_docflow": true
     }
 }

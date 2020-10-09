@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AppComponent } from './app.component';
@@ -72,6 +72,7 @@ import { IContingenciaRepository } from './core/repository/contingencia.reposito
 import { ContingenciaProvider } from './infrastructure/api/contingencia.provider';
 import { TipoSedeProvider } from './infrastructure/api/tipo-sede.provider';
 import { ITipoSedeRepository } from './core/repository/tipo-sede.repository';
+import { CambiarPasswordModalComponent } from './layout/top-bar/cambiar-password-modal/cambiar-password-modal.component';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -92,6 +93,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     NuevaAreaComponent,
     ModificarBuzonUtdComponent,
     HomeComponent,
+    CambiarPasswordModalComponent,
     
   ],
   imports: [    
@@ -99,6 +101,7 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     BrowserAnimationsModule,
     APP_ROUTING,
     NotifierModule,
+    FormsModule,
     ReactiveFormsModule,    
     HttpClientModule,
     SharedModule,

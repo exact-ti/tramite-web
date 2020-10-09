@@ -14,6 +14,7 @@ import { IMenuRepository } from 'src/app/core/repository/menu.repository';
 import { SubmitForm } from 'src/app/utils/submit-form';
 import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
 import { INotificacionRepository } from 'src/app/core/repository/notificacion.repository';
+import { CambiarPasswordModalComponent } from './cambiar-password-modal/cambiar-password-modal.component';
 
 declare var $: any;
 
@@ -201,6 +202,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
 
   listarCantidadNotificacionesPendientes(): number {
     return this.notificaciones.filter(notificacion => notificacion.estado.id == 1).length;
+  }
+
+  cambiarPassword(): void {
+    this.modalService.show(CambiarPasswordModalComponent);
   }
 
 }

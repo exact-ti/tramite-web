@@ -9,6 +9,7 @@ import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 
 @Injectable()
 export class UsuarioProvider extends IUsuarioRepository{
+    
 
     constructor(
         private client: RequesterService,
@@ -19,6 +20,7 @@ export class UsuarioProvider extends IUsuarioRepository{
     }
 
     private prefix: string = "/servicio-tramite";
+    private prefixUsuario: string = "/servicio-usuario";
 
     listarOperativosDeUTD(): Observable<any[]> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/usuarios")));
@@ -66,6 +68,13 @@ export class UsuarioProvider extends IUsuarioRepository{
             areaId:usuario.area == null ? null:usuario.area.id,
             activo: usuario.activo,
         }
+    }
+
+    cambiarPassword(passwordActual: string, passwordNuevo: string): Observable<any> {
+        return this.client.put(this.prefixUsuario + "/usuarios/autenticado/password", {
+            passwordActual,
+            passwordNuevo
+        });
     }
 
 }

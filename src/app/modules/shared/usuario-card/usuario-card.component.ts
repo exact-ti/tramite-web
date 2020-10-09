@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class UsuarioCardComponent implements OnInit {
 
   constructor() { }
-  @Input() usuario: any;
+  @Input() wrapper: any;
   @Output() onClose = new EventEmitter();
   mostrar : any;
   ngOnInit(): void {

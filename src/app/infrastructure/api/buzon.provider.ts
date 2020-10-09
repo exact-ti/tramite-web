@@ -94,6 +94,7 @@ export class BuzonProvider extends IBuzonRepository {
             usuariosIds: buzon.usuarios.map((usuario) => {
                 return usuario.id
             }),
+            representanteId: buzon.representante.id,
             areaId:buzon.area.id,
             activo: buzon.activo,
             tipoBuzonId:TipoBuzonEnum.GENERICO

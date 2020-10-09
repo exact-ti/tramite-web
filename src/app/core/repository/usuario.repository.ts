@@ -19,4 +19,6 @@ export abstract class IUsuarioRepository {
 
     abstract listarUsuariosConBuzon(): Observable<any>;
 
+    abstract cambiarPassword(passwordActual: string, passwordNuevo: string): Observable<any>;
+
 }

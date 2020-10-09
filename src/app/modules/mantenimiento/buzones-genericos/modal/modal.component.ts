@@ -7,6 +7,7 @@ import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 import { IBuzonRepository } from 'src/app/core/repository/buzon.repository';
 import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
 import { NotifierService } from 'angular-notifier';
+import { UtilsService } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-modal',
@@ -18,7 +19,8 @@ export class ModalComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef,
     public areaRepository: IAreaRepository,
     public usuarioRepository: IUsuarioRepository,
-    public buzonRepository: IBuzonRepository, private modalService: BsModalService, private notifier: NotifierService
+    public buzonRepository: IBuzonRepository, private modalService: BsModalService, private notifier: NotifierService, 
+    private utilsService: UtilsService,
   ) { }
 
   tipoFormulario: number;
@@ -66,8 +68,13 @@ export class ModalComponent implements OnInit {
         activo: data.activo
       }
 
-      this.usuariosSeleccionadas = data.usuarios != null ? this.usuarios.filter(utd => data.usuarios.findIndex(utd2 => utd2.id == utd.id) > -1) : [];
-      this.usuariosSeleccionadasInitialState = [...this.usuariosSeleccionadas];
+      this.usuariosSeleccionadas = data.usuarios != null ? data.usuarios.map(usuarioBuzon => {
+        return {
+          seleccionado: usuarioBuzon.representante,
+          data: usuarioBuzon
+        }
+      }) : [];
+      this.usuariosSeleccionadasInitialState = this.utilsService.copy(this.usuariosSeleccionadas);
       this.inicializarForm();
     }
   }
@@ -75,6 +82,22 @@ export class ModalComponent implements OnInit {
 
   listarAreas() {
     return this.areaRepository.listarAreasDeUTD(true).pipe(take(1)).toPromise();
+  }
+
+  seleccionarToggle(wrapper: any){
+    if (!wrapper.seleccionado) {
+      this.usuariosSeleccionadas.forEach(usuario => {
+        usuario.seleccionado = false;
+        usuario.data.representante = false;
+      });
+      wrapper.seleccionado = true;
+      wrapper.data.representante = true;
+
+    } else {
+      wrapper.seleccionado = false;
+      wrapper.data.representante = false;
+    }
+    this.buzonForm.updateValueAndValidity();
   }
 
 
@@ -87,11 +110,11 @@ export class ModalComponent implements OnInit {
   }
 
   private formValidator(form: FormGroup): ValidationErrors | null {
-    /*          if (this.usuariosSeleccionadas.length == 0) {
-              return {
-                noUsuarios: true
-              }
-            }  */
+    if(this.usuariosSeleccionadas.length > 0 && this.usuariosSeleccionadas.findIndex(usuario => usuario.data.representante) == -1){
+      return {
+        noRepresentante: true
+      }
+    }
     if (this.buzonForm) {
       if (this.buzonFormInitialState.nombre == this.buzonForm.value.nombre) {
         if (this.buzonFormInitialState.activo == this.buzonForm.value.activo) {
@@ -126,7 +149,7 @@ export class ModalComponent implements OnInit {
   }
 
   removerUsuario(usuario: any) {
-    this.usuariosSeleccionadas.splice(this.usuariosSeleccionadas.findIndex(usuarioSeleccionada => usuarioSeleccionada == usuario), 1);
+    this.usuariosSeleccionadas.splice(this.usuariosSeleccionadas.findIndex(usuarioSeleccionada => usuarioSeleccionada.data.id == usuario.id), 1);
     this.buzonForm.updateValueAndValidity();
   }
 
@@ -136,8 +159,11 @@ export class ModalComponent implements OnInit {
 
   agregarUsuario(usuario: any) {
     if (usuario) {
-      if (this.usuariosSeleccionadas.findIndex(usuariosSeleccionadas => usuariosSeleccionadas == usuario) == -1) {
-        this.usuariosSeleccionadas.push(usuario);
+      if (this.usuariosSeleccionadas.findIndex(usuarioSeleccionado => usuarioSeleccionado.data.id == usuario.id) == -1) {
+        this.usuariosSeleccionadas.push({
+          seleccionado: false,
+          data: usuario,
+        });
         this.buzonForm.updateValueAndValidity();
       } else {
         this.notifier.notify('warning','No puedes agregar un usuario que ya está en la lista');
@@ -148,7 +174,8 @@ export class ModalComponent implements OnInit {
 
 
   submit(value: any) {
-    value.usuarios = this.usuariosSeleccionadas;
+    value.usuarios = this.usuariosSeleccionadas.map(usuarioSeleccionado => usuarioSeleccionado.data);
+    value.representante = this.usuariosSeleccionadas.find(usuarioSeleccionado => usuarioSeleccionado.data.representante).data;
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
         mensaje: this.tipoFormulario == 1 ? "¿Está seguro que desea crear un nuevo buzón?" : "¿Está seguro que desea modificar el buzón?"

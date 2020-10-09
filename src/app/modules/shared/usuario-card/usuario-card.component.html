@@ -1,19 +1,16 @@
-<div class="card mb-2">
+<div class="card mb-2" [ngClass]="{seleccionado: wrapper.seleccionado}">
     <button class="hidden-close close" (click) = "close()">
         <span aria-hidden="true" class="text-white">&times;</span>
     </button>
-<!--     <button type="button" class="close" aria-label="Close" (click) = "close()">
-        <span aria-hidden="true">&times;</span>
-      </button> -->
     <div class="card-body">
         <div class="row">
             <div class="col-8">
                 <span class="align-middle">
-                    <span class="font-weight-bold align-middle">{{usuario.nombre}}</span>
+                    <span class="font-weight-bold align-middle">{{wrapper.data.nombre}}</span>
                 </span>
             </div>
             <div class="col-4">
-                <span class="font-weight align-middle">{{usuario.area}}</span>
+                <span class="font-weight align-middle">{{wrapper.data.area}}</span>
             </div>
         </div>
     </div>
