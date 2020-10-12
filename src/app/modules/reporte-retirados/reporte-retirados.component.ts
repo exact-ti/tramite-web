@@ -4,6 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { take } from 'rxjs/operators';
 import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
 import { MensajeEnum } from 'src/app/enum/mensaje.enum';
+import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 import { UtilsService } from 'src/app/utils/utils';
 
 @Component({
@@ -14,7 +15,8 @@ import { UtilsService } from 'src/app/utils/utils';
 export class ReporteRetiradosComponent implements OnInit {
 
   constructor(
-    private envioRepository: IEnvioRepository
+    private envioRepository: IEnvioRepository,
+    public customDatePipe: CustomDatePipe,
   ) { }
 
   mensajeEnum = MensajeEnum;
@@ -27,6 +29,7 @@ export class ReporteRetiradosComponent implements OnInit {
   ngOnInit(): void {
     this.configurarTabla();
     this.inicializarForm();
+    this.settings.hideSubHeader = false;
   }
 
   inicializarForm(): void {
@@ -54,8 +57,8 @@ export class ReporteRetiradosComponent implements OnInit {
             sedeDestino: element.sedeDestino,
             areaDestino: element.areaDestino,
             destinatario: element.destinatario,
-            fechaCreacion: element.fechaCreacion,
-            fechaRetirado: element.fechaRetirado,
+            fechaCreacion: !element.fechaCreacion ? '' : this.customDatePipe.transform(element.fechaCreacion, 'L LT'),
+            fechaRetirado: !element.fechaRetirado ? '' : this.customDatePipe.transform(element.fechaRetirado, 'L LT'),
             usuarioRetiro: element.usuarioRetiro,
             observacion: element.observacion,
           }
@@ -71,9 +74,9 @@ export class ReporteRetiradosComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
+/*       id: {
         title: 'ID'
-      },
+      }, */
       paqueteId: {
         title: 'Sobre'
       },
@@ -87,7 +90,7 @@ export class ReporteRetiradosComponent implements OnInit {
         title: 'Sede Origen'
       },
       areaOrigen: {
-        title: 'Area Origen'
+        title: 'Área Origen'
       },
       remitente: {
         title: 'Remitente'
@@ -102,7 +105,7 @@ export class ReporteRetiradosComponent implements OnInit {
         title: 'Sede Destino'
       },
       areaDestino: {
-        title: 'Area Destino'
+        title: 'Área Destino'
       },
       destinatario: {
         title: 'Destinatario'

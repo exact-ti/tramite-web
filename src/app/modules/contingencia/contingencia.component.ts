@@ -46,9 +46,7 @@ export class ContingenciaComponent implements OnInit {
         this.notifier.notify('warning', 'El formato del archivo ' + file.name + ' no es correcto');
         $('#archContingencia').val('');
       }
-
       this.excelService.getSheet(file, 'Contingencia').pipe(take(1)).subscribe(data => {
-        
         this.envios = this.obtenerEnvios(data, file.name);
         if (this.envios) {
           this.enviosDS.load(this.envios);
@@ -65,15 +63,15 @@ export class ContingenciaComponent implements OnInit {
     }
   }
 
-  submit(): void{
+  submit(): void {
     this.contingenciaRepository.registrarContingencia(this.envios, this.cargoContingencia).pipe(take(1)).subscribe(rpta => {
       if (rpta.status == 'success') {
         this.notifier.notify("success", "Se ha registrado la contingencia correctamente");
         this.resetForm();
-      }else if(!rpta.data){
-        this.notifier.notify(rpta.status == "fail"? "warning": "error", rpta.message);
-      }else{
-        this.notifier.notify(rpta.status == "fail"? "warning": "error", rpta.message + ": " + rpta.data.join(', '));
+      } else if (!rpta.data) {
+        this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message);
+      } else {
+        this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message + ": " + rpta.data.join(', '));
       }
     });
   }
@@ -94,7 +92,7 @@ export class ContingenciaComponent implements OnInit {
     $('#archContingencia').val('');
   }
 
-  obtenerEnvios(sheet, fileName) : any[] {
+  obtenerEnvios(sheet, fileName): any[] {
     if (!sheet) {
       this.showError('No existe la hoja Contingencia en el archivo ' + fileName);
       return;
@@ -125,11 +123,17 @@ export class ContingenciaComponent implements OnInit {
     let paquetes = envios.map(envio => envio.paqueteId);
     paquetes = paquetes.slice().sort();
     let repetidos = [];
-    for (let i = 0; i < paquetes.length - 2; i++) {
+
+    for (let i = 0; i < paquetes.length; i++) {
       if (paquetes[i + 1] == paquetes[i]) {
         repetidos.push(paquetes[i]);
+      } else {
+        if (i>0 && paquetes[i - 1] == paquetes[i]) {
+          repetidos.push(paquetes[i]);
+        }
       }
     }
+
     if (repetidos.length > 0) {
       this.showError('Los siguientes paquetes se repiten: ' + repetidos.join(', '));
       return;
