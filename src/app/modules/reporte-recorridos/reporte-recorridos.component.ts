@@ -5,6 +5,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { UtilsService } from 'src/app/utils/utils';
 import { IRecorridoRepository } from 'src/app/core/repository/recorrido.repository';
 import { take } from 'rxjs/operators';
+import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-reporte-recorridos',
@@ -15,6 +16,7 @@ export class ReporteRecorridosComponent implements OnInit {
 
   constructor(
     private recorridoRepository: IRecorridoRepository,
+    private customDatePipe: CustomDatePipe,
   ) { }
   mensajeEnum = MensajeEnum;
   seHizoBusqueda: boolean = false;
@@ -48,9 +50,9 @@ export class ReporteRecorridosComponent implements OnInit {
             horaFinBase: element.horaFinBase,
             utdOrigen: element.utd,
             usuarioCreacion: element.usuarioCreacion,
-            fechaCreacion: element.fechaCreacion,
-            fechaInicio: element.fechaInicio,
-            fechaFin: element.fechaFin,
+            fechaCreacion: !element.fechaCreacion? '': this.customDatePipe.transform(element.fechaCreacion, 'L LT'),
+            fechaInicio: !element.fechaInicio? '': this.customDatePipe.transform(element.fechaInicio, 'L LT'),
+            fechaFin: !element.fechaFin? '': this.customDatePipe.transform(element.fechaFin, 'L LT'),
             estado: element.estado,            
           }
         });
@@ -77,7 +79,7 @@ export class ReporteRecorridosComponent implements OnInit {
       horaFinBase: {
         title: 'Hora Fin Base',
       },
-      utd: {
+      utdOrigen: {
         title: 'UTD'
       },
       usuarioCreacion: {
