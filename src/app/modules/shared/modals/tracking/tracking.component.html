@@ -47,6 +47,7 @@
                 <div class="col-12">{{item.fecha | date: 'dd/MM/yy HH:mm'}}</div>
                 <div class="col-12">{{item.estado}}</div>
                 <div class="col-12">{{item.ubicacion}}</div>
+                <div class="col-12 small font-italic text-info" *ngIf="item.observacion && item.observacion.length > 0" >{{item.observacion}}</div>
                 <div *ngIf="item.cargo" class="col-12">
                     <span *ngIf="item.cargo.tipoCargo.id == 1">
                         Recibido con DNI : {{item.cargo.valor}}
