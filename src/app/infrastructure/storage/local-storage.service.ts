@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class LocalStorageService extends LocalStorage {
     
+    
     deleteTokens(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('refresh_token');
@@ -17,6 +18,10 @@ export class LocalStorageService extends LocalStorage {
     
     getToken(): string {
         return localStorage.getItem('token');
+    }
+
+    getRefreshToken(): string {
+        return localStorage.getItem('refresh_token');
     }
 
     isTokensSaved(): boolean {

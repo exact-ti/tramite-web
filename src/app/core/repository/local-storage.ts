@@ -6,6 +6,7 @@ export abstract class LocalStorage {
     abstract saveTokens(token: string, refreshToken: string): void;
     abstract isTokensSaved(): boolean;
     abstract getToken(): string;
+    abstract getRefreshToken(): string;
     abstract deleteTokens(): void;
     
 }

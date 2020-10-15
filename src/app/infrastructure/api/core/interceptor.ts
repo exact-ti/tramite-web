@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
 import {
     HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent,
-    HttpResponse, HttpUserEvent, HttpHeaders, 
+    HttpResponse, HttpUserEvent, HttpHeaders, HttpErrorResponse, HttpClient, 
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { LocalStorage } from 'src/app/core/repository/local-storage';
-import { NgxSpinnerService } from 'ngx-spinner';
+import 'rxjs/add/operator/catch';
+import { AppConfig } from 'src/app/app.config';
+import { flatMap } from 'rxjs/operators';
+import { NotifierService } from 'angular-notifier';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
 
     headers: HttpHeaders;
+    notificacionExpirado = false;
 
     constructor(
+        private client: HttpClient,
         private localStorage: LocalStorage,
-        private spinner: NgxSpinnerService,
+        private notifier: NotifierService,
     ) {
-        this.adicionarHeaders();
-
+        this.adicionarHeaders();    
     }
 
 
@@ -26,7 +30,37 @@ export class Interceptor implements HttpInterceptor {
         authReq = req.clone({
             headers: this.headers
         });
-        return next.handle(authReq);
+        return next.handle(authReq).catch((err: HttpErrorResponse) => {
+            console.log(err);
+            if (err.error.status == 894) {
+                this.ponerRefreshTokenEnHeader();
+                return this.client.post(AppConfig.API + "/servicio-auth/auth/refresh", null).pipe(flatMap(rpta => {
+                    if (rpta["status"] == "success") {
+                        console.log(rpta);
+                        this.localStorage.saveTokens(rpta["data"]["access_token"], rpta["data"]["refresh_token"]);
+                        authReq = req.clone({
+                            headers: new HttpHeaders({
+                                "Authorization": "Bearer " + this.localStorage.getToken(),
+                                'Accept': 'application/json',
+                            })
+                        });
+                        return next.handle(authReq);
+                    }else{
+                        if (!this.notificacionExpirado) {
+                            this.notifier.notify("info", "Su sesión ha expirado");
+                            this.notificacionExpirado = true;    
+                        }                        
+                        setTimeout(() => {
+                            window.location.href = AppConfig.LOGIN_URL;
+                        }, 2 * 1000);                        
+                        return throwError(err); 
+                    }                           
+                }));
+            }else{
+                return throwError(err);
+            }
+            
+        });
     }
 
 
@@ -42,6 +76,14 @@ export class Interceptor implements HttpInterceptor {
                 'Accept': 'application/json',
             });
         });
+    }
+
+    private ponerRefreshTokenEnHeader(): void {
+        this.headers = new HttpHeaders({
+            "Authorization": "Bearer " + this.localStorage.getRefreshToken(),
+            'Accept': 'application/json',
+        });
+
     }
 
 }
