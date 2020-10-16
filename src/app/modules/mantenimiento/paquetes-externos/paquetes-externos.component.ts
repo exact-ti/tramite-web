@@ -20,6 +20,7 @@ export class PaquetesExternosComponent implements OnInit {
     public modalService: BsModalService,
   ) { }
 
+  paquetesExternos = [];
   paquetesExternosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
 
@@ -32,7 +33,9 @@ export class PaquetesExternosComponent implements OnInit {
   }
 
   listarPaquetesExternos(): void {
+    this.paquetesExternos = [];
     this.tipoPaqueteRepository.listarTiposPaquetes(false, true).pipe(take(1)).subscribe(data => {
+      this.paquetesExternos = data;
       this.paquetesExternosDS.load(data.map(item => {
         return {
           id: item.id,

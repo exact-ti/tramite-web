@@ -26,7 +26,7 @@ export class BuzonesGenericosComponent implements OnInit {
     AppConfig.DespuesDeInicializar(() => this.listarBuzones());
     this.settings.hideSubHeader = false;
   }
-  listarBuzonesGenericos: any[] = [];
+  buzones: any[] = [];
 
   onAgregar() {
     this.mostrarBuzonFormulario({
@@ -48,9 +48,10 @@ export class BuzonesGenericosComponent implements OnInit {
   }
 
   listarBuzones(): void {
+    this.buzones = [];
     this.buzonRepository.listarBuzonesMantenimiento().pipe(take(1)).subscribe(data => {
-      this.listarBuzonesGenericos = data.data;
-      this.buzonesDS.load(this.listarBuzonesGenericos.map(item => {
+      this.buzones = data.data;
+      this.buzonesDS.load(this.buzones.map(item => {
         return {
           id: item.id,
           area: item.area,

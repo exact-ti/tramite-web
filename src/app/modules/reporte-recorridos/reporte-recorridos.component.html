@@ -27,7 +27,7 @@
     </div>    
 </form>
 
-<div *ngIf="recorridosDS.count() !== 0; else vacio" class="center mt-3"  style = "overflow-x: scroll;">
+<div *ngIf="registros.length !== 0; else vacio" class="center mt-3"  style = "overflow-x: scroll;">
     <ng2-smart-table [settings]="settings" [source]="recorridosDS"></ng2-smart-table>
 </div>
 

@@ -68,6 +68,7 @@ export class ReporteGeneralComponent implements OnInit {
   }
 
   submit(value): void {
+    this.registros = [];
     let estadosIds = JSON.stringify(value.estados) == JSON.stringify(this.estados) ? [] : value.estados.map(item => item.id);
     let origenesIds = JSON.stringify(value.utdsOrigenes) == JSON.stringify(this.utds) ? [] : value.utdsOrigenes.map(item => item.id);
     let destinosIds = JSON.stringify(value.utdsDestinos) == JSON.stringify(this.utds) ? [] : value.utdsDestinos.map(item => item.id);
@@ -112,9 +113,9 @@ export class ReporteGeneralComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
+/*    id: {
         title: 'ID'
-      },
+      }, */
       paqueteId: {
         title: 'Sobre'
       },

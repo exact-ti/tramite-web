@@ -90,7 +90,6 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     SideBarComponent,
     TopBarComponent,
     TreeViewComponent,
-    NuevaAreaComponent,
     ModificarBuzonUtdComponent,
     HomeComponent,
     CambiarPasswordModalComponent,

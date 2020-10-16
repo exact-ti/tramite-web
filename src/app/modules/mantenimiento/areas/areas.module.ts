@@ -5,11 +5,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_ROUTING } from './areas.routes';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NuevaAreaComponent } from './nueva-area/nueva-area.component';
 
 
 
 @NgModule({
-  declarations: [AreasComponent],
+  declarations: [
+    AreasComponent, 
+    NuevaAreaComponent
+  ],
   imports: [
     CommonModule,
     APP_ROUTING,

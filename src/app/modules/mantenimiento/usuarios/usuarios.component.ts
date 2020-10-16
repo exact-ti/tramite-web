@@ -19,6 +19,7 @@ export class UsuariosComponent implements OnInit {
     private usuarioRepository: IUsuarioRepository,
     private modalService: BsModalService,) { }
 
+    usuarios = [];
     usuariosDS: LocalDataSource = new LocalDataSource();
     settings = UtilsService.tableSettings;
   
@@ -49,9 +50,11 @@ export class UsuariosComponent implements OnInit {
   }
 
   listarUsuarios(): void {
+    this.usuarios = [];
     this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(rpta => {
       
       if (rpta.status == "success") {
+        this.usuarios = rpta.data;
         this.usuariosDS.load(rpta.data.map(item => {
           return {
             id: item.id,

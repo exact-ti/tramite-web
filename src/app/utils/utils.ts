@@ -59,7 +59,7 @@ export class UtilsService {
       edit: false,
       delete: false,
     },
-    hideSubHeader: true,
+    hideSubHeader: false,
     attr: {
       class: 'table table-bordered'
     }

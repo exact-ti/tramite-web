@@ -2,7 +2,7 @@
   <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
 </div>
 
-<div *ngIf="dataAreas.count() !== 0; else mensaje" class="center  " style="overflow-x: scroll;">
+<div *ngIf="areas.length !== 0; else mensaje" class="center  " style="overflow-x: scroll;">
   <div class="smart-table-container">
     <ng2-smart-table [settings]="settings" [source]="dataAreas"></ng2-smart-table>
   </div>

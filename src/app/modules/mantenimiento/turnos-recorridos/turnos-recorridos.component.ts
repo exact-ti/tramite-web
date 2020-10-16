@@ -20,6 +20,7 @@ export class TurnosRecorridosComponent implements OnInit {
     private modalService: BsModalService,
   ) { }
 
+  turnosRecorridos = [];
   turnosRecorridosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
 
@@ -48,7 +49,9 @@ export class TurnosRecorridosComponent implements OnInit {
   }
 
   listarTurnosRecorridos(): void {
+    this.turnosRecorridos = [];
     this.turnoRecorridoRepository.listarTurnosRecorridosDeUTD().pipe(take(1)).subscribe(data => {
+      this.turnosRecorridos = data;
       this.turnosRecorridosDS.load(data.map(item => {
         return {
           id: item.id,

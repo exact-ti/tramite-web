@@ -19,6 +19,7 @@ export class PerfilesComponent implements OnInit {
     private modalService: BsModalService,
   ) { }
 
+  perfiles = [];
   perfilesDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
 
@@ -34,7 +35,9 @@ export class PerfilesComponent implements OnInit {
   }
 
   listarPerfiles(): void {
+    this.perfiles = [];
     this.perfilRepository.listarPerfiles(true).pipe(take(1)).subscribe(data => {
+      this.perfiles = data;
       this.perfilesDS.load(data.map(item => {
         return {
           id: item.id,
