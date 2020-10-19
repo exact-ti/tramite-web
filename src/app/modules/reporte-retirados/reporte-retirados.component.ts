@@ -40,6 +40,7 @@ export class ReporteRetiradosComponent implements OnInit {
   }
 
   submit(value): void {
+    this.retiradosDS.reset();
     this.registros = [];
     this.envioRepository.listarEnviosRetiradosPorRangoDeFechas(value.desde, value.hasta).pipe(take(1)).subscribe(rpta => {
       if (rpta.status == "success") {

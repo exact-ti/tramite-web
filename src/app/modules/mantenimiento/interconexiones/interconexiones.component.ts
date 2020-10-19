@@ -65,6 +65,8 @@ export class InterconexionesComponent implements OnInit {
   }
 
   inicializarInterconexiones(): void {
+    this.interconexiones = [];
+    this.dataInterconexiones.reset();
     this.interconexionRepository.listarInterconexionesMantenimiento().pipe(take(1)).subscribe(
       (interconexiones) => {
         this.interconexiones = interconexiones;

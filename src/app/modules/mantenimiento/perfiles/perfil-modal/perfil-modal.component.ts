@@ -40,6 +40,7 @@ export class PerfilModalComponent implements OnInit {
   opcionesElegidas = [];
   menu: ITree[] = [];
   menuInitialState: ITree[] = [];
+  menuPrincipal: any;
 
   ngOnInit(): void {
     this.inicializar();
@@ -62,7 +63,8 @@ export class PerfilModalComponent implements OnInit {
         activo: data.activo,
       }
       this.inicializarForm();
-      this.menu = data.tree;
+      this.menuPrincipal = data.tree.find(menu => menu.home);
+      this.menu = data.tree.filter(menu => !menu.home);        
       this.menuInitialState = this.utilsService.copy(this.menu);
       setTimeout(()=> this.child.actualizarDataSource(), 0);
       
@@ -82,7 +84,8 @@ export class PerfilModalComponent implements OnInit {
   onTipoPerfilSelectedChanged(tipoPerfil) {
     if (tipoPerfil != null) {
       this.menuRepository.listarMenuPorTipoPerfil(tipoPerfil.id).pipe(take(1)).subscribe(data => {
-        this.menu = data;
+        this.menuPrincipal = data.find(menu => menu.home);
+        this.menu = data.filter(menu => !menu.home);        
         this.menuInitialState = this.utilsService.copy(this.menu);
         this.child.actualizarDataSource();
       });
@@ -93,6 +96,7 @@ export class PerfilModalComponent implements OnInit {
 
   submit(value) {
     let opcionesSeleccionadas = this.listarOpcionesSeleccionadas(this.menu);
+    opcionesSeleccionadas.push(this.menuPrincipal.id);
     let registro = {
       nombre: value.nombre, 
       tipoPerfilId: value.tipoPerfil.id,

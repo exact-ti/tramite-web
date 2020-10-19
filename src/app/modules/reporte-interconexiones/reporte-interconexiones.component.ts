@@ -37,6 +37,7 @@ export class ReporteInterconexionesComponent implements OnInit {
   }
 
   submit(value): void {
+    this.lotesDS.reset();
     this.registros = [];
     this.loteRepository.listarReporteLotes(value.desde, value.hasta).pipe(take(1)).subscribe(rpta => {
       if (rpta.status == "success") {

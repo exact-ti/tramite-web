@@ -18,10 +18,11 @@
             [invalid]="perfilForm.get('tipoPerfil').invalid && !perfilForm.get('tipoPerfil').pristine"
             mensajeInvalido="Es necesaria la elección de un perfil" formControlName="tipoPerfil">
         </app-valid-select>
+        <div *ngIf="menuPrincipal" class="font-italic">
+            <b>Módulo principal: </b> {{menuPrincipal.nombre}}
+        </div>
+        
         <div *ngIf="perfilForm.get('tipoPerfil').value; else mensaje">
-            <div>
-                <span>Menú: </span>
-            </div>
             <div style="max-height: 250px; overflow-y: scroll;">
                 <app-check-tree-view [tree]="menu" (checkedChanged)="onCheckedChanged()"></app-check-tree-view>
             </div>

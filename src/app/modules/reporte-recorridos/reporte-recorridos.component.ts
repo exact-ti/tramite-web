@@ -40,6 +40,7 @@ export class ReporteRecorridosComponent implements OnInit {
 
   submit(value): void {
     this.registros = [];
+    this.recorridosDS.reset();
     this.recorridoRepository.listarReporteRecorridos(value.desde, value.hasta).pipe(take(1)).subscribe(rpta => {
       if (rpta.status == "success") {
         this.registros = rpta.data.map(element => {

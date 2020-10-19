@@ -51,6 +51,7 @@ export class UsuariosComponent implements OnInit {
 
   listarUsuarios(): void {
     this.usuarios = [];
+    this.usuariosDS.reset();
     this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(rpta => {
       
       if (rpta.status == "success") {

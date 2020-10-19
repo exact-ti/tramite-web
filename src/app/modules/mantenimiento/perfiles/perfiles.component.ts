@@ -36,6 +36,7 @@ export class PerfilesComponent implements OnInit {
 
   listarPerfiles(): void {
     this.perfiles = [];
+    this.perfilesDS.reset();
     this.perfilRepository.listarPerfiles(true).pipe(take(1)).subscribe(data => {
       this.perfiles = data;
       this.perfilesDS.load(data.map(item => {
@@ -65,9 +66,9 @@ export class PerfilesComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
+      // id: {
+      //   title: 'ID'
+      // },
       nombre: {
         title: 'Nombre'
       },

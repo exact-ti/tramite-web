@@ -6,7 +6,7 @@ import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
 import { take } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
 import { UtilsService } from 'src/app/utils/utils';
-import * as moment from 'moment-timezone';
+
 import { MensajeEnum } from 'src/app/enum/mensaje.enum';
 import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 
@@ -69,6 +69,7 @@ export class ReporteGeneralComponent implements OnInit {
 
   submit(value): void {
     this.registros = [];
+    this.enviosDS.reset();
     let estadosIds = JSON.stringify(value.estados) == JSON.stringify(this.estados) ? [] : value.estados.map(item => item.id);
     let origenesIds = JSON.stringify(value.utdsOrigenes) == JSON.stringify(this.utds) ? [] : value.utdsOrigenes.map(item => item.id);
     let destinosIds = JSON.stringify(value.utdsDestinos) == JSON.stringify(this.utds) ? [] : value.utdsDestinos.map(item => item.id);

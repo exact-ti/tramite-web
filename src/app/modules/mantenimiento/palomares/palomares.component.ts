@@ -80,6 +80,8 @@ export class PalomaresComponent implements OnInit {
 
 
   inicializarPalomares(): void {
+    this.palomares = [];
+    this.dataPalomares.reset();
     this.palomarRepository.listarPalomaresPrincipal().pipe(take(1)).subscribe(
       (palomares) => {
         this.palomares = palomares;

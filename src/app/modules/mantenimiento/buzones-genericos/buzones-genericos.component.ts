@@ -49,6 +49,7 @@ export class BuzonesGenericosComponent implements OnInit {
 
   listarBuzones(): void {
     this.buzones = [];
+    this.buzonesDS.reset();
     this.buzonRepository.listarBuzonesMantenimiento().pipe(take(1)).subscribe(data => {
       this.buzones = data.data;
       this.buzonesDS.load(this.buzones.map(item => {

@@ -25,6 +25,8 @@ import { ValidSelectComponent } from './valid-select/valid-select.component';
 import { ActivoSwitchComponent } from './activo-switch/activo-switch.component';
 import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 import { CheckTreeViewComponent } from './check-tree-view/check-tree-view.component';
+import { DetalleErrorComponent } from './modals/detalle-error/detalle-error.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { CheckTreeViewComponent } from './check-tree-view/check-tree-view.compon
     ActivoSwitchComponent,
     CustomDatePipe,
     CheckTreeViewComponent,
+    DetalleErrorComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +58,7 @@ import { CheckTreeViewComponent } from './check-tree-view/check-tree-view.compon
     MatTreeModule,
     MatIconModule,
     MatCheckboxModule,
+    Ng2SmartTableModule,
   ],
   exports: [
     BuzonCardComponent,
@@ -78,7 +82,8 @@ import { CheckTreeViewComponent } from './check-tree-view/check-tree-view.compon
   ],
   entryComponents: [
     TrackingComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent, 
+    DetalleErrorComponent,
   ]
 })
 export class SharedModule { }

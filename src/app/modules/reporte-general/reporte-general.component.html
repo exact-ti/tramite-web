@@ -1,4 +1,4 @@
-<app-export [cabecera] = "settings.columns" [registros] = "registros" *ngIf="enviosDS.count() !== 0"></app-export>
+<app-export [cabecera] = "settings.columns" [registros] = "registros" nombreReporte="reporte-general" *ngIf="enviosDS.count() !== 0"></app-export>
 <form [formGroup]="reporteGeneralForm" (ngSubmit)="submit(reporteGeneralForm.value)">
     <div class="row justify-content-around">
         <div class="col-12">

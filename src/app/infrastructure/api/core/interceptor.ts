@@ -5,9 +5,8 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { LocalStorage } from 'src/app/core/repository/local-storage';
-import 'rxjs/add/operator/catch';
 import { AppConfig } from 'src/app/app.config';
-import { flatMap } from 'rxjs/operators';
+import { catchError, flatMap } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class Interceptor implements HttpInterceptor {
         authReq = req.clone({
             headers: this.headers
         });
-        return next.handle(authReq).catch((err: HttpErrorResponse) => {
+        return next.handle(authReq).pipe(catchError((err: HttpErrorResponse) => {
             console.log(err);
             if (err.error.status == 894) {
                 this.ponerRefreshTokenEnHeader();
@@ -60,7 +59,7 @@ export class Interceptor implements HttpInterceptor {
                 return throwError(err);
             }
             
-        });
+        }));
     }
 
 

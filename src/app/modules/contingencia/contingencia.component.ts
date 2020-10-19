@@ -7,7 +7,9 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 import { IContingenciaRepository } from 'src/app/core/repository/contingencia.repository';
 import * as $ from 'jquery';
-import { NgxSpinnerService } from 'ngx-spinner';
+import * as moment from 'moment-timezone';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DetalleErrorComponent } from '../shared/modals/detalle-error/detalle-error.component';
 
 @Component({
   selector: 'app-contingencia',
@@ -22,6 +24,7 @@ export class ContingenciaComponent implements OnInit {
     private utils: UtilsService,
     private customDatePipe: CustomDatePipe,
     private contingenciaRepository: IContingenciaRepository,
+    private modalService: BsModalService,
   ) { }
 
   envios: any[] = [];
@@ -70,8 +73,8 @@ export class ContingenciaComponent implements OnInit {
         this.resetForm();
       } else if (!rpta.data) {
         this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message);
-      } else {
-        this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message + ": " + rpta.data.join(', '));
+      }else {
+       this.mostrarDetalleErrores(rpta); 
       }
     });
   }
@@ -119,6 +122,14 @@ export class ContingenciaComponent implements OnInit {
       this.showError('Algunos registros tienen fechas inválidas');
       return;
     }
+    var fechaActual = moment();
+    if (envios.find(envio => {
+      var fechaEntrega = moment(envio.fechaEntrega, "DD/MM/YYYY hh:mm");
+      return fechaEntrega > fechaActual })) {
+        this.showError('Algunos registros tienen fechas de entrega mayores que la actual');
+        return;
+    }
+
 
     let paquetes = envios.map(envio => envio.paqueteId);
     paquetes = paquetes.slice().sort();
@@ -146,6 +157,35 @@ export class ContingenciaComponent implements OnInit {
     this.envios = [];
     $('#archContingencia').val('');
     $('#cargoContingencia').val('');
+  }
+
+
+  mostrarDetalleErrores(rpta): void {
+    var lista = [];
+    var mostrarCabecera = true;
+    if (rpta.data[0].tieneError) {
+      lista = rpta.data.map(d => {
+        return {
+          ...d.objeto, 
+          Error: d.error,
+          }
+      });
+    }else{
+      lista = rpta.data.map(s => {
+        return {
+          Sobre: s
+        }
+      });
+      mostrarCabecera = false;
+    }
+    let bsModalRef: BsModalRef = this.modalService.show(DetalleErrorComponent, {
+      initialState: {
+        mostrarCabecera,
+        mensaje: rpta.message, 
+        lista,
+      },
+      class: 'modal-lg'      
+    });
   }
 
 
