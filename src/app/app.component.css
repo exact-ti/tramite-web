@@ -1,0 +1,7 @@
+#principal-component{
+    overflow-y: auto;
+}
+
+#principal-component::-webkit-scrollbar{
+    width: 15px;
+}

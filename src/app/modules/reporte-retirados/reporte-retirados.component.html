@@ -1,4 +1,4 @@
-<app-export [cabecera] = "settings.columns" [registros] = "registros" *ngIf="retiradosDS.count() !== 0"></app-export>
+<app-export [cabecera] = "settings.columns" [registros] = "registros" nombreReporte="reporte-retirados" *ngIf="retiradosDS.count() !== 0"></app-export>
 <form [formGroup]="reporteRetiradosForm" (ngSubmit)="submit(reporteRetiradosForm.value)">
     <div class="row justify-content-around">
         <div class="col-12">

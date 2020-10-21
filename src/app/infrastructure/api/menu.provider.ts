@@ -9,6 +9,7 @@ import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class MenuProvider extends IMenuRepository {
+    
           
 
     constructor(
@@ -73,6 +74,13 @@ export class MenuProvider extends IMenuRepository {
             .set("tipoPerfilId", tipoPerfilId.toString())
         });
     } 
+
+    listarMenuByRuta(ruta: string): Observable<Menu> {
+        if (ruta == "/") {
+            return this.listarMenuPrincipal();   
+        }
+        return this.listarMenu().pipe(map(menu => this.listarOpciones(menu).find(item => item.link == ruta)));
+    }
 
 
 

@@ -10,6 +10,7 @@ import { UtilsService } from 'src/app/utils/utils';
 export class ExportComponent implements OnInit {
 
   @Input() registros: any = [];
+  registrosConCabeceras = [];
   @Input() cabecera: any = {};
   @Input() nombreReporte: string = "descarga"
 
@@ -23,13 +24,13 @@ export class ExportComponent implements OnInit {
 
   exportar(): void {
     this.renameProperties();
-    this.excelService.exportAsExcelFile(this.registros, this.nombreReporte);
+    this.excelService.exportAsExcelFile(this.registrosConCabeceras, this.nombreReporte);
   }
 
   private renameProperties(): void {
     let keys = Object.keys(this.registros[0]);
-    var rg = this.utils.copy(this.registros);
-    rg.forEach(registro => {
+    this.registrosConCabeceras = this.utils.copy(this.registros);
+    this.registrosConCabeceras.forEach(registro => {
       keys.forEach(key => {
         var titulo = this.cabecera[key] ? this.cabecera[key].title : "ID";
         Object.defineProperty(registro, titulo,

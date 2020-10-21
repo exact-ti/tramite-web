@@ -1,4 +1,4 @@
-<app-export [cabecera] = "settings.columns" [registros] = "registros" *ngIf="lotesDS.count() !== 0"></app-export>
+<app-export [cabecera] = "settings.columns" [registros] = "registros" nombreReporte="reporte-interconexiones" *ngIf="lotesDS.count() !== 0"></app-export>
 <form [formGroup]="reporteInterconexionesForm" (ngSubmit)="submit(reporteInterconexionesForm.value)">
     <div class="row justify-content-around">
         <div class="col-12">

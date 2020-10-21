@@ -4,13 +4,13 @@
 
     <a *ngIf="item.link" [routerLink]="['/' + item.link]" routerLinkActive="router-link-active" class="collapse-item"
         [ngClass]="{'nav-link': nivel == 0}" href="#" aria-expanded="true" aria-controls="collapseTwo">
-        <i [class]="item.icono"></i>
-        <span>{{item.nombre}}</span>
+        <i [class]="iconoEnum[item.icono]" ></i>
+        <span >{{item.nombre}}</span>
     </a>
 
     <div *ngIf="!item.link">
         <a class="nav-link collapsed" data-toggle="collapse" [href]="'#collapse' + item.id" aria-expanded="false">
-            <i [class]="item.icono"></i>
+            <i [class]="iconoEnum[item.icono]"></i>
             <span>{{item.nombre}}</span>
         </a>
         <div [id]="'collapse' + item.id" class="collapse">

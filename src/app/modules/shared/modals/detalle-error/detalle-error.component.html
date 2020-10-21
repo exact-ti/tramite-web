@@ -8,7 +8,7 @@
     <div class="col alert alert-warning ">
         {{mensaje}}
     </div>
-    <app-export [cabecera] = "settings.columns" [registros] = "lista" nombreReporte="reporte-general" *ngIf="lista.length > 0"></app-export>
+    <app-export [cabecera] = "settings.columns" [registros] = "lista" nombreReporte="detalle-errores" *ngIf="lista.length > 0"></app-export>
     <div *ngIf="lista.length > 0" class="center mt-3"  style = "overflow-x: scroll;">
         <ng2-smart-table [settings]="settings" [source]="erroresDS"></ng2-smart-table>
     </div>

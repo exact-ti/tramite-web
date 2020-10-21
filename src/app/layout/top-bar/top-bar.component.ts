@@ -15,6 +15,8 @@ import { SubmitForm } from 'src/app/utils/submit-form';
 import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
 import { INotificacionRepository } from 'src/app/core/repository/notificacion.repository';
 import { CambiarPasswordModalComponent } from './cambiar-password-modal/cambiar-password-modal.component';
+import { IconoEnum } from 'src/app/enum/icono.enum';
+import { Menu } from 'src/app/core/model/menu.model';
 
 declare var $: any;
 
@@ -50,10 +52,11 @@ export class TopBarComponent implements OnInit, OnDestroy {
   public textChange: any;
   confirmarSubscription: Subscription;
   @Output() BuzonUtdCreadoEvent = new EventEmitter<File>();
-  public titulo: String;
+  public menu: any = {};
   public integracionDocflow: boolean;
   public notificaciones = [];
   private notificacionesSubscription: Subscription;
+  public iconoEnum = IconoEnum;
 
 
 
@@ -73,7 +76,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       AppConfig.DespuesDeInicializar(() => {
-        this.menuRepository.listarNombreByRuta(this.router.url.split('?')[0].split(';')[0]).subscribe(nombre => this.titulo = nombre);
+        this.menuRepository.listarMenuByRuta(this.router.url.split('?')[0].split(';')[0]).subscribe(menu => this.menu = menu);
       });
 
     });

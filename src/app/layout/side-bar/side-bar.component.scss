@@ -1,0 +1,13 @@
+#altura{
+    height: 100%;
+}
+
+#menu {
+    overflow-y: scroll;
+    overflow-x: hidden;                   /* width of the entire scrollbar */
+}
+
+#menu::-webkit-scrollbar {
+    border-radius: 5px  ;
+    width: 12px;  
+}   
