@@ -8,7 +8,7 @@ import { BsModalRef } from "ngx-bootstrap/modal";
 })
 export class ConfirmModalComponent implements OnInit {
 
-  constructor(public bsModalRef: BsModalRef) {}
+  constructor(public bsModalRefConfirmar: BsModalRef) {}
 
   @Output() confirmarEvent = new EventEmitter();
   titulo: string;
@@ -21,7 +21,7 @@ export class ConfirmModalComponent implements OnInit {
 
   confirmar(){
     this.confirmarEvent.emit();
-    this.bsModalRef.hide();
+    this.bsModalRefConfirmar.hide();
   }
 
 }

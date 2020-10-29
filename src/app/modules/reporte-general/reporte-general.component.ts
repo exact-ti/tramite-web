@@ -22,6 +22,7 @@ export class ReporteGeneralComponent implements OnInit {
     public estadoEnvioRepository: IEstadoEnvioRepository,
     public envioRepository: IEnvioRepository,
     public customDatePipe: CustomDatePipe,
+    public utils: UtilsService,
   ) { }
 
   mensajeEnum = MensajeEnum;
@@ -32,6 +33,7 @@ export class ReporteGeneralComponent implements OnInit {
   enviosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
   registros = [];
+  maxDate = this.utils.dateToString(new Date());
 
   ngOnInit(): void {
     this.configurarTabla();
@@ -58,7 +60,7 @@ export class ReporteGeneralComponent implements OnInit {
   }
 
   listarEstados(): void {
-    this.estadoEnvioRepository.listar(false).pipe(take(1)).subscribe(rpta => {
+    this.estadoEnvioRepository.listar(true).pipe(take(1)).subscribe(rpta => {
       if (rpta.status == "success") {
         this.estados = rpta.data;
       } else {

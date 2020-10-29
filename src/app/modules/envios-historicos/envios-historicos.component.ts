@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
 import { take } from 'rxjs/operators';
 import { MensajeEnum } from 'src/app/enum/mensaje.enum';
+import { UtilsService } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-envios-historicos',
@@ -13,12 +14,14 @@ export class EnviosHistoricosComponent implements OnInit {
 
   constructor(
     public envioRepository: IEnvioRepository,
+    public utils: UtilsService,
   ) { }
 
   tabs: string[]  = ['Entrada', 'Salida']; 
   tabActiva: string = 'Entrada';
   enviosWrappers: any[] = [];
   seHizoBusqueda: boolean = false;
+  maxDate = this.utils.dateToString(new Date());
 
   mensajeEnum = MensajeEnum;
 

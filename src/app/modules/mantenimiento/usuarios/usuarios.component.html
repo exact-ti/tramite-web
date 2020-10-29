@@ -1,3 +1,4 @@
+<app-export [cabecera] = "columnas" [registros] = "usuarios" nombreReporte="usuarios" *ngIf="usuarios.length !== 0"></app-export>
 <div class="my-4 mb-5">
     <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
     <div *ngIf="usuarios.length !== 0; else mensaje" class="center mt-3"  style = "overflow-x: scroll;">

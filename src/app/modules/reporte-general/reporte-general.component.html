@@ -1,22 +1,11 @@
 <app-export [cabecera] = "settings.columns" [registros] = "registros" nombreReporte="reporte-general" *ngIf="enviosDS.count() !== 0"></app-export>
+
 <form [formGroup]="reporteGeneralForm" (ngSubmit)="submit(reporteGeneralForm.value)">
     <div class="row justify-content-around">
         <div class="col-12">
             <div class="form-group row">
-                <label for="example-date-input" class="col col-form-label">Desde:</label>
-                <div class="col-11">
-                    <input class="form-control" formControlName="desde" type="date"
-                        [max]="reporteGeneralForm.get('hasta').value">
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="form-group row">
-                <label for="example-date-input" class="col col-form-label">Hasta:</label>
-                <div class="col-11">
-                    <input class="form-control" formControlName="hasta" type="date"
-                        [min]="reporteGeneralForm.get('desde').value">
-                </div>
+                <app-datepicker class="col-6" formControlName="desde" placeholder="Desde"  [maxDate] = "reporteGeneralForm.get('hasta').value" ></app-datepicker>
+                <app-datepicker class="col-6" formControlName="hasta" placeholder="Hasta"  [minDate] = "reporteGeneralForm.get('desde').value" [maxDate]="maxDate" ></app-datepicker>
             </div>
         </div>
     </div>

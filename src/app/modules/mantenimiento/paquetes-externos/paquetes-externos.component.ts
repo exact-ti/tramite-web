@@ -23,11 +23,11 @@ export class PaquetesExternosComponent implements OnInit {
   paquetesExternos = [];
   paquetesExternosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
+  columnas = {};
 
   ngOnInit(): void {
     this.configurarTabla();
     AppConfig.DespuesDeInicializar(()=> this.listarPaquetesExternos());
-    
     
 
   }
@@ -35,14 +35,14 @@ export class PaquetesExternosComponent implements OnInit {
   listarPaquetesExternos(): void {
     this.paquetesExternos = [];
     this.tipoPaqueteRepository.listarTiposPaquetes(false, true).pipe(take(1)).subscribe(data => {
-      this.paquetesExternos = data;
-      this.paquetesExternosDS.load(data.map(item => {
+     this.paquetesExternos = data.map(item => {
         return {
           id: item.id,
           nombre: item.nombre,
           estado: item.activo ? "ACTIVO" : "INACTIVO",
         }
-      }))
+      });
+      this.paquetesExternosDS.load(this.paquetesExternos);
     });
   }
 
@@ -51,9 +51,7 @@ export class PaquetesExternosComponent implements OnInit {
       initialState
     });
 
-    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String) => {
-      this.listarPaquetesExternos();
-    });
+    bsModalRef.content.successed.pipe(take(1)).subscribe(()=>this.listarPaquetesExternos());
   }
 
   onAgregar(): void {
@@ -64,13 +62,16 @@ export class PaquetesExternosComponent implements OnInit {
 
 
   configurarTabla(): void {
-    this.settings.columns = {
+    this.columnas = {
       nombre: {
         title: 'Nombre'
       },
       estado: {
         title: 'Estado'
       },
+    };
+    this.settings.columns = {
+      ...this.columnas,
       btnEditar: {
         title: 'Editar',
         type: 'custom',

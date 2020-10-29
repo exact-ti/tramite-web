@@ -15,7 +15,7 @@
                         <div class="three-col top">
                             <div class="col" *ngFor="let item of tipoIndicador.indicadores">
                                 <a
-                                    [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id}]">
+                                    [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id, redirigido: true}]">
                                     <div class="sub-heading">
                                         <div class="picup">
                                             <p class="classp">{{item.cantidad}}</p>
@@ -31,7 +31,7 @@
 
                                 <div class="col" *ngFor="let item of tipoIndicador.indicadores">
                                     <a
-                                        [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id}]">
+                                        [routerLink]="['/envios-activos', {tipo: tipoIndicador.nombre.toLowerCase(), etapa: item.id, redirigido: true}]">
                                         <div class="timeline-dot">
                                         </div>
                                         <div class="sub-heading">
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div *ngIf="integracionDocflow">
-        <div class="page-header mt-5">
+        <div class="page-header my-5">
             <h2>Mensajería externa</h2>
         </div>
         <div class="row">
@@ -62,8 +62,8 @@
                     <div class="intro">
                         <div class="main-heading">
                             <div class="three-col top">
-                                <div class="col" *ngFor="let item of estadosDocflow; let last = last"
-                                    [ngClass]="{'timeline-item-last': last}" (click)="detalleIndicadorDocflow(item)">
+                                <div class="col" *ngFor="let item of estadosDocflow; let last = last" 
+                                    [ngClass]="{'timeline-item-last': last}"  (click)="detalleIndicadorDocflow(item)">
                                     <div class="sub-heading">
                                         <div class="picup">
                                             <p class="classp">{{item.cantidad}}</p>
@@ -76,9 +76,9 @@
                             <div class="three-col bottom">
                                 <div className="wrapper-bottom">
                                     <div class="col" *ngFor="let item of estadosDocflow; let last = last"
-                                        [ngClass]="{'timeline-item-last': last}"
+                                        [ngClass]="{'timeline-item-last': last}" 
                                         (click)="detalleIndicadorDocflow(item)">
-                                        <div class="timeline-dot">
+                                        <div class="timeline-dot pointer">
                                         </div>
                                         <div class="sub-heading">
                                             <div class="picbottom">

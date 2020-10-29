@@ -1,0 +1,6 @@
+<mat-form-field appearance="fill">
+    <mat-label *ngIf="label">{{label}}</mat-label>
+    <input matInput [min]="_minDate" [max]="_maxDate" (dateChange) = "onSelected($event.target.value)" (click)="picker.open()" [matDatepicker]="picker" [placeholder]="placeholder" readonly>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>

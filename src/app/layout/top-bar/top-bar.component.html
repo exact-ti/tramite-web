@@ -7,6 +7,10 @@
         <i class="fa fa-bars"></i>
     </button>
     <!-- ssdfsd -->
+    <button id="goback" class="mt-1 mr-3 pointer" *ngIf="redirigido" (click)="goback()">
+        <i class="fas fa-arrow-left" ></i>
+    </button>
+    
     <i [class] = "iconoEnum[menu.icono] + ' h5 mt-1'"></i>
     <span class="ml-2"> 
         {{menu.nombre}}
@@ -24,7 +28,7 @@
         <!-- Nav Item - Alerts -->
         <li class="nav-item dropdown no-arrow mx-1">
 
-            <a class="nav-link dropdown-toggle" id="alertsDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle pointer" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-bell"></i>
                 <!-- Counter - Alerts -->
@@ -73,16 +77,16 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" (click)="modificarData()">
+                <a class="dropdown-item pointer" (click)="modificarData()">
                     <i class="fas fa-exchange-alt mr-2"></i>
                     {{textChange}}
                 </a>
-                <a class="dropdown-item" (click)="cambiarPassword()">
+                <a class="dropdown-item pointer" (click)="cambiarPassword()">
                     <i class="fas fa-cog mr-2"></i>
                     Cambiar contraseña
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" (click)="cerrarSesion()">
+                <a class="dropdown-item pointer" (click)="cerrarSesion()">
                     <i class="fas fa-sign-out-alt mr-2"></i>
                     Cerrar sesión
                 </a>

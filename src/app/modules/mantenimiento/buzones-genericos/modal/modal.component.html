@@ -38,6 +38,9 @@
                     <app-usuario-card [wrapper]="usuario" (click)="seleccionarToggle(usuario)" (onClose)="removerUsuario(usuario)"></app-usuario-card>
                 </div>
             </div>
+            <span class="small text-danger" *ngIf="usuariosSeleccionadas.length > 0 && !representanteSeleccionado">
+                Debes elegir el representante del buzón genérico
+            </span>
             <ng-template #mensaje>
                 <div class="row">
                     <div class="col">
@@ -47,6 +50,7 @@
                     </div>
                 </div>
             </ng-template>
+            
         </div>
         <div *ngIf="tipoFormulario!=1">
             <app-activo-switch formControlName="activo">

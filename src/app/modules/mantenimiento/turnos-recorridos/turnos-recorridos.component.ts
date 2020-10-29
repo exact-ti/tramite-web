@@ -23,6 +23,7 @@ export class TurnosRecorridosComponent implements OnInit {
   turnosRecorridos = [];
   turnosRecorridosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
+  columnas = {};
 
 
   ngOnInit(): void {
@@ -43,17 +44,14 @@ export class TurnosRecorridosComponent implements OnInit {
       initialState
     });
 
-    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String)=> {
-      this.listarTurnosRecorridos();
-    });
+    bsModalRef.content.successed.pipe(take(1)).subscribe(()=> this.listarTurnosRecorridos());
   }
 
   listarTurnosRecorridos(): void {
     this.turnosRecorridos = [];
     this.turnosRecorridosDS.reset();
     this.turnoRecorridoRepository.listarTurnosRecorridosDeUTD().pipe(take(1)).subscribe(data => {
-      this.turnosRecorridos = data;
-      this.turnosRecorridosDS.load(data.map(item => {
+      this.turnosRecorridos = data.map(item => {
         return {
           id: item.id,
           nombre: item.nombre,
@@ -63,12 +61,14 @@ export class TurnosRecorridosComponent implements OnInit {
           nroAreas: item.cantidadAreas,
           estado: item.activo ? 'ACTIVO': 'INACTIVO',
         }
-      }));
+      });
+      this.turnosRecorridosDS.load(this.turnosRecorridos);
     });
   }
 
   configurarTabla(): void {
-    this.settings.columns = {
+
+    this.columnas = {
       nombre: {
         title: 'Nombre'
       },
@@ -87,6 +87,9 @@ export class TurnosRecorridosComponent implements OnInit {
       estado: {
         title: 'Estado'
       },
+    };
+    this.settings.columns = {
+      ...this.columnas,
       btnEditar: {
         title: 'Editar',
         type: 'custom',

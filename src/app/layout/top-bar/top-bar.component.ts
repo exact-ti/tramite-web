@@ -17,13 +17,14 @@ import { INotificacionRepository } from 'src/app/core/repository/notificacion.re
 import { CambiarPasswordModalComponent } from './cambiar-password-modal/cambiar-password-modal.component';
 import { IconoEnum } from 'src/app/enum/icono.enum';
 import { Menu } from 'src/app/core/model/menu.model';
+import {Location} from '@angular/common';
 
 declare var $: any;
 
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.css']
+  styleUrls: ['./top-bar.component.scss']
 })
 export class TopBarComponent implements OnInit, OnDestroy {
 
@@ -33,12 +34,13 @@ export class TopBarComponent implements OnInit, OnDestroy {
     private perfilRepository: IPerfilRepository,
     private localStorageService: LocalStorage,
     private modalService: BsModalService,
-    private activatedRoute: ActivatedRoute,
+    private route: ActivatedRoute,
     private router: Router,
     private menuRepository: IMenuRepository,
     private docflowRepository: IDocflowRepository,
     private submitForm: SubmitForm,
     private notificacionRepository: INotificacionRepository,
+    private location: Location,
   ) { }
 
   ngOnDestroy(): void {
@@ -57,6 +59,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   public notificaciones = [];
   private notificacionesSubscription: Subscription;
   public iconoEnum = IconoEnum;
+  public redirigido = false; 
 
 
 
@@ -69,14 +72,26 @@ export class TopBarComponent implements OnInit, OnDestroy {
       this.notificacionesSubscription = this.notificacionRepository.escucharNotificacionesNuevas().subscribe(
         data =>
           this.notificaciones = data
-      );
+      );      
+    });
+
+    this.route.params.subscribe(params => {
+      if (params.redirigido) {
+        this.redirigido = params.redirigido;
+      }
     });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       AppConfig.DespuesDeInicializar(() => {
-        this.menuRepository.listarMenuByRuta(this.router.url.split('?')[0].split(';')[0]).subscribe(menu => this.menu = menu);
+        var segmentos: string[] =  this.router.url.split('?')[0].split(';');
+        this.menuRepository.listarMenuByRuta(segmentos[0]).subscribe(menu => this.menu = menu);
+        if (segmentos.length > 1) {
+          this.redirigido = segmentos.find(segmento => segmento.includes('redirigido'))?.split('=')[1] == 'true';
+        }else{
+          this.redirigido = false;
+        }
       });
 
     });
@@ -95,6 +110,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
     } else {
       this.cargarUtds();
     }
+  }
+
+  goback(){
+    this.location.back();
   }
 
   listarNotificacionesPendientes(): void {

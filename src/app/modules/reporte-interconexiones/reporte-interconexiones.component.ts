@@ -15,6 +15,7 @@ export class ReporteInterconexionesComponent implements OnInit {
 
   constructor(
     private loteRepository: ILoteRepository,
+    private utils: UtilsService,
   ) { }
   mensajeEnum = MensajeEnum;
   seHizoBusqueda: boolean = false;
@@ -22,6 +23,7 @@ export class ReporteInterconexionesComponent implements OnInit {
   lotesDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
   registros = [];
+  maxDate = this.utils.dateToString(new Date());
 
   ngOnInit(): void {
     this.configurarTabla();

@@ -17,6 +17,7 @@ export class ReporteRecorridosComponent implements OnInit {
   constructor(
     private recorridoRepository: IRecorridoRepository,
     private customDatePipe: CustomDatePipe,
+    private utils: UtilsService,
   ) { }
   mensajeEnum = MensajeEnum;
   seHizoBusqueda: boolean = false;
@@ -24,6 +25,7 @@ export class ReporteRecorridosComponent implements OnInit {
   recorridosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
   registros = [];
+  maxDate = this.utils.dateToString(new Date());
 
   ngOnInit(): void {
     this.configurarTabla();

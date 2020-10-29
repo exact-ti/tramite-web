@@ -27,6 +27,7 @@ export class BuzonesGenericosComponent implements OnInit {
     this.settings.hideSubHeader = false;
   }
   buzones: any[] = [];
+  columnas = {};
 
   onAgregar() {
     this.mostrarBuzonFormulario({
@@ -42,17 +43,14 @@ export class BuzonesGenericosComponent implements OnInit {
       backdrop: "static"
     });
 
-    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String) => {
-      this.listarBuzones();
-    });
+    bsModalRef.content.successed.pipe(take(1)).subscribe(()=> this.listarBuzones());
   }
 
   listarBuzones(): void {
     this.buzones = [];
     this.buzonesDS.reset();
     this.buzonRepository.listarBuzonesMantenimiento().pipe(take(1)).subscribe(data => {
-      this.buzones = data.data;
-      this.buzonesDS.load(this.buzones.map(item => {
+      this.buzones = data.data.map(item => {
         return {
           id: item.id,
           area: item.area,
@@ -60,13 +58,14 @@ export class BuzonesGenericosComponent implements OnInit {
           usuario: item.cantidadUsuarios,
           estado: item.activo ? "ACTIVO" : "INACTIVO"
         }
-      }));
+      });
+      this.buzonesDS.load(this.buzones);
     });
   }
 
   configurarTabla(): void {
-    this.settings.columns = {
 
+    this.columnas = {
       nombre: {
         title: 'Nombre'
       },
@@ -79,6 +78,10 @@ export class BuzonesGenericosComponent implements OnInit {
       estado: {
         title: 'Estado'
       },
+    };
+    this.settings.columns = {
+
+      ...this.columnas,
       btnEditar: {
         title: 'Editar',
         type: 'custom',

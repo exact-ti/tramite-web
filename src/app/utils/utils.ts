@@ -92,9 +92,17 @@ export class UtilsService {
     return object != null && typeof object === 'object';
   }
 
-  public parseDate(date: string): string{
-    return moment(date, "YYYY/MM/DD").format("DD/MM/yyyy");
+  public parseDate(date: string, inputFormat: string = "YYYY/MM/DD"): string{
+    return moment(date, inputFormat).format("DD/MM/yyyy");
   }
+
+  public stringToDate(date: string, inputFormat: string = "DD/MM/YYYY"): Date {
+    return  moment(date, inputFormat).toDate();
+  }
+
+  public dateToString(date: Date, outputFormat: string = "DD/MM/YYYY"): string {
+    return moment(date).format("DD/MM/yyyy");
+  };
 
   public copy(aObject) {
     if (!aObject) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ITipoPaqueteRepository } from 'src/app/core/repository/tipo-paquete.repository';
@@ -24,6 +24,8 @@ export class PaqueteExternoModalComponent implements OnInit {
   tipoFormulario: number;
 
   tipoPaqueteId: number;
+
+  @Output() successed = new EventEmitter();
 
   paqueteExternoInitialState: any = {
     nombre: '',
@@ -82,6 +84,7 @@ export class PaqueteExternoModalComponent implements OnInit {
     if (data.status == "success") {
       let accion = this.tipoFormulario == 1 ? 'creado': 'actualizado';
       this.notifier.notify('success', "Se ha " + accion + " el paquete externo correctamente");
+      this.successed.emit();
       this.bsModalRef.hide();
     }else{
       this.notifier.notify('error', data.mensaje);

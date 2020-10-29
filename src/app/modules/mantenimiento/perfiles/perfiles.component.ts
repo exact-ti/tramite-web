@@ -22,6 +22,7 @@ export class PerfilesComponent implements OnInit {
   perfiles = [];
   perfilesDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
+  columnas = {};
 
   ngOnInit(): void {
     this.configurarTabla();
@@ -38,15 +39,15 @@ export class PerfilesComponent implements OnInit {
     this.perfiles = [];
     this.perfilesDS.reset();
     this.perfilRepository.listarPerfiles(true).pipe(take(1)).subscribe(data => {
-      this.perfiles = data;
-      this.perfilesDS.load(data.map(item => {
+      this.perfiles = data.map(item => {
         return {
           id: item.id,
           nombre: item.nombre,
           tipoPerfil: item.tipoPerfil.nombre,
           estado: item.activo ? 'ACTIVO': 'INACTIVO'
         }
-      }))
+      });
+      this.perfilesDS.load(this.perfiles);
     });
   }
 
@@ -58,17 +59,12 @@ export class PerfilesComponent implements OnInit {
       backdrop: "static"
     });
 
-    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String)=> {
-      this.listarPerfiles();
-    });
+    bsModalRef.content.successed.pipe(take(1)).subscribe(()=> this.listarPerfiles());
   }
 
 
   configurarTabla(): void {
-    this.settings.columns = {
-      // id: {
-      //   title: 'ID'
-      // },
+    this.columnas = {
       nombre: {
         title: 'Nombre'
       },
@@ -77,7 +73,13 @@ export class PerfilesComponent implements OnInit {
       },
       estado: {
         title: 'Estado'
-      },      
+      }, 
+    }
+    this.settings.columns = {
+      // id: {
+      //   title: 'ID'
+      // },
+      ...this.columnas,
       buttonModificar: {
         title: 'Editar',
         type: 'custom',

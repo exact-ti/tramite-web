@@ -26,6 +26,7 @@ export class AreasComponent implements OnInit {
   public areaModal: Area;
   public modalTipoId: number;
   public mensaje: String;
+  public columnas = {};
   settings = UtilsService.tableSettings;
   dataAreas: LocalDataSource = new LocalDataSource();
 
@@ -39,8 +40,8 @@ export class AreasComponent implements OnInit {
 
 
   generarColumnas() {
-    this.settings.columns = {
-      codigobandeja: {
+    this.columnas = {
+      codigo: {
         title: 'Código bandeja'
       },
       nombre: {
@@ -61,6 +62,9 @@ export class AreasComponent implements OnInit {
       estado: {
         title: 'Estado'
       },
+    }
+    this.settings.columns = {
+      ...this.columnas,
       buttonModificar: {
         title: 'Editar',
         type: 'custom',
@@ -78,13 +82,11 @@ export class AreasComponent implements OnInit {
   inicializarAreas(): void {
     this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(
       (areas) => {
-        this.areas = areas;
-        let dataAreas = [];
         areas.forEach(
           area => {
-            dataAreas.push({
+            this.areas.push({
               id: area.id,
-              codigobandeja: area.codigo,
+              codigo: area.codigo,
               nombre: area.nombre,
               ubicacion: area.ubicacion,
               sede: area.sede.descripcion,
@@ -94,7 +96,7 @@ export class AreasComponent implements OnInit {
             })
           }
         )
-        this.dataAreas.load(dataAreas);
+        this.dataAreas.load(this.areas);
       }
     )
   }

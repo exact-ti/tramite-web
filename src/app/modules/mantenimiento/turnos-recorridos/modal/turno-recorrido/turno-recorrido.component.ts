@@ -43,6 +43,7 @@ export class TurnoRecorridoComponent implements OnInit {
   operativos: any[] = [];
   areas: any[] = [];
   areasSeleccionadas: any[] = [];
+  successed = new EventEmitter();
 
   ngOnInit(): void {
     this.inicializarForm();
@@ -150,6 +151,7 @@ export class TurnoRecorridoComponent implements OnInit {
           this.turnoRecorridoRepository.registrarTurnoRecorrido(value).pipe(take(1)).subscribe(data => {
             if (data.status == "success") {
               this.notifier.notify('success', 'Se ha creado el turno recorrido correctamente');
+              this.successed.emit();
               this.bsModalRef.hide();
             }else{
               this.notifier.notify('error', 'No se creó el turno recorrido');
@@ -162,6 +164,7 @@ export class TurnoRecorridoComponent implements OnInit {
           this.turnoRecorridoRepository.editarTurnoRecorrido(this.turnoRecorridoId, value).pipe(take(1)).subscribe(data => {
             if (data.status == "success") {
               this.notifier.notify('success', 'Se ha actualizado el turno recorrido correctamente');
+              this.successed.emit();
               this.bsModalRef.hide();
             }else{
               this.notifier.notify('error', 'No se modificó el turno recorrido');

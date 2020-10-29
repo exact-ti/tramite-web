@@ -21,6 +21,7 @@ export class EnviosActivosComponent implements OnInit {
 
   public tabs: string[] = ['Entrada', 'Salida'];
   public tabActiva: string = 'Entrada';
+  public redirigido: boolean = false;
   public estadosEnvios: any[] = [];
   public estadosSeleccionados: any[] = [];
   public enviosWrappers: any[] = [];
@@ -32,6 +33,7 @@ export class EnviosActivosComponent implements OnInit {
         if (params.tipo) {
           this.tabActiva = params.tipo == "salidas" ? 'Salida' : this.tabActiva;
           this.estadosSeleccionados = this.estadosSeleccionados.filter(estadoSeleccionado => estadoSeleccionado.id == params.etapa);
+          this.redirigido = params.redirigido;
         }
         this.listarEnvios();
       });

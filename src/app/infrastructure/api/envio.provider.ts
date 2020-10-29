@@ -64,8 +64,8 @@ export class EnvioProvider extends IEnvioRepository {
         return this.buzonRepository.listarBuzonSeleccionado().pipe(flatMap((buzon: Buzon) => this.client.get(this.prefix + "/buzones/" + buzon.id.toString() + "/envios/" + filtro.toLowerCase(), {
             params: new HttpParams()
             .set("etapasIds", etapasIds.join(","))
-            .set("desde", this.utils.parseDate(desde))
-            .set("hasta", this.utils.parseDate(hasta))
+            .set("desde", desde)
+            .set("hasta", hasta)
         })));
     }
 
@@ -75,16 +75,16 @@ export class EnvioProvider extends IEnvioRepository {
             .set("estadosIds", estadosIds.join(","))
             .set("origenesIds", origenesIds.join(","))
             .set("destinosIds", destinosIds.join(","))
-            .set("desde", this.utils.parseDate(desde))
-            .set("hasta", this.utils.parseDate(hasta))
+            .set("desde", desde)
+            .set("hasta", hasta)
         });
     }
 
     listarEnviosRetiradosPorRangoDeFechas(desde: string, hasta: string): Observable<any> {
         return this.client.get(this.prefix + "/envios/retirados", {
             params: new HttpParams()
-            .set("desde", this.utils.parseDate(desde))
-            .set("hasta", this.utils.parseDate(hasta))
+            .set("desde", desde)
+            .set("hasta", hasta)
         });
     }
 

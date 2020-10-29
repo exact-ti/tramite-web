@@ -48,6 +48,7 @@ export class InterconexionModalComponent implements OnInit {
   turnosSeleccionadasProbar: any[] = [];
   registrarPalomar: any;
   modificarBoolean=false;
+
   intervalo : any = {
     horaInicio:'',
     horaFin:'',

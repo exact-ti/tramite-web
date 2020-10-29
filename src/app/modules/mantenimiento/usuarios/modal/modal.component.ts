@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
 import { IUtdRepository } from 'src/app/core/repository/utd.repository';
@@ -51,6 +51,12 @@ export class ModalComponent implements OnInit {
   utdsSeleccionadasInitialState: any[] = [];
   utd: any;
   showUTD: boolean = true;
+  @Output() successed = new EventEmitter();
+
+
+
+
+
   ngOnInit(): void {
     this.show_password = false;
     this.inicializarForm();
@@ -239,8 +245,9 @@ export class ModalComponent implements OnInit {
           if (data.status == "success") {
             this.notifier.notify('success', 'Usuario creado');
             this.bsModalRef.hide();
+            this.successed.emit();
           } else {
-            this.notifier.notify('error', 'No se creó el usuario');
+            this.notifier.notify(data.status == 'fail' ? 'warning': 'error', data.message);
           }
         },
           error => {
@@ -251,8 +258,9 @@ export class ModalComponent implements OnInit {
           if (data.status == "success") {
             this.notifier.notify('success', 'Usuario actualizado');
             this.bsModalRef.hide();
+            this.successed.emit();
           } else {
-            this.notifier.notify('error', 'No se actualizó el usuario');
+            this.notifier.notify(data.status == 'fail' ? 'warning': 'error', data.message);
           }
         },
           error => {

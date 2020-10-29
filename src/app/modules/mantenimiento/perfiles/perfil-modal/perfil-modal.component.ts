@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -41,6 +41,7 @@ export class PerfilModalComponent implements OnInit {
   menu: ITree[] = [];
   menuInitialState: ITree[] = [];
   menuPrincipal: any;
+  @Output() successed = new EventEmitter();
 
   ngOnInit(): void {
     this.inicializar();
@@ -170,6 +171,7 @@ export class PerfilModalComponent implements OnInit {
     this.perfilRepository.registrarPerfil(registro).pipe(take(1)).subscribe(
       data => {
         if (data.status == "success") {
+          this.successed.emit();
           this.bsModalRef.hide();
           this.notifier.notify("success", "Se ha registrado el perfil correctamente");
         }else{
@@ -183,6 +185,7 @@ export class PerfilModalComponent implements OnInit {
     this.perfilRepository.actualizarPerfil(perfilId, registro).pipe(take(1)).subscribe(
       data => {
         if (data.status == "success") {
+          this.successed.emit();
           this.bsModalRef.hide();
           this.notifier.notify("success", "Se ha actualizado el perfil correctamente");
         }else{

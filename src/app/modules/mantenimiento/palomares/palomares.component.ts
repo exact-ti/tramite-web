@@ -8,7 +8,6 @@ import { ButtonViewComponent } from '../../shared/button-view/button-view.compon
 import { AppConfig } from 'src/app/app.config';
 import { take } from 'rxjs/operators';
 import { PalomarModalComponent } from './palomar-modal/palomar-modal.component';
-import { Area } from 'src/app/core/model/area.model';
 
 @Component({
   selector: 'app-palomares',
@@ -26,6 +25,7 @@ export class PalomaresComponent implements OnInit {
     public mensaje : String;
     settings = UtilsService.tableSettings;
     dataPalomares: LocalDataSource = new LocalDataSource();
+    columnas = {};
 
   ngOnInit(): void {
     AppConfig.DespuesDeInicializar(()=> this.inicializarPalomares());    
@@ -37,8 +37,8 @@ export class PalomaresComponent implements OnInit {
 
   
   generarColumnas() {
-    this.settings.columns = {
-      codigopalomar: {
+    this.columnas = {
+      id: {
         title: 'Código palomar'
       },
       ubicacion: {
@@ -52,7 +52,10 @@ export class PalomaresComponent implements OnInit {
       },
       estado: {
         title: 'Estado'
-      },      
+      },    
+    }
+    this.settings.columns = {
+      ...this.columnas,
       buttonModificar: {
         title: 'Editar',
         type: 'custom',
@@ -84,12 +87,10 @@ export class PalomaresComponent implements OnInit {
     this.dataPalomares.reset();
     this.palomarRepository.listarPalomaresPrincipal().pipe(take(1)).subscribe(
       (palomares) => {
-        this.palomares = palomares;
-        let datapalomares = [];
         palomares.forEach(
           palomar => {
-            datapalomares.push({
-              codigopalomar: palomar.id,
+            this.palomares.push({
+              id: palomar.id,
               ubicacion:palomar.ubicacion,
               tipo:palomar.tipoPalomar,
               destino:palomar.destino,
@@ -97,7 +98,7 @@ export class PalomaresComponent implements OnInit {
             })
           }
         )
-        this.dataPalomares.load(datapalomares);
+        this.dataPalomares.load(this.palomares);
       }
     )
 } 
@@ -105,7 +106,7 @@ export class PalomaresComponent implements OnInit {
   
 modelPalomar(row,modalId) {
   if(row!=null){
-    this.palomarModal = this.palomares.find(palomar => palomar.id == row.codigopalomar);
+    this.palomarModal = this.palomares.find(palomar => palomar.id == row.id);
   }else{
     this.palomarModal=null
   }
@@ -113,7 +114,7 @@ modelPalomar(row,modalId) {
     initialState: {
       tipoModalId: modalId,
       palomar:  this.palomarModal,
-      titulo: this.palomarModal==null ? 'NUEVO PALOMAR' : 'MODIFICAR PALOMAR'+" "+row.codigopalomar
+      titulo: this.palomarModal==null ? 'NUEVO PALOMAR' : 'MODIFICAR PALOMAR'+" "+row.id
     },
     class: 'modal-md',
     keyboard: false,

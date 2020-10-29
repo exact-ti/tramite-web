@@ -11,9 +11,11 @@ export class ExcelService {
 
   constructor() { }
 
-  public exportAsExcelFile(json: any[], excelFileName: string): void {
+  public exportAsExcelFile(json: any[], excelFileName: string, nombreHoja: string = "data"): void {    
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    var sheets = {};
+    sheets[nombreHoja] = worksheet;
+    const workbook: XLSX.WorkBook = { Sheets: sheets, SheetNames: [nombreHoja] };
     XLSX.writeFile(workbook, excelFileName + Excel_EXTENSION);
   }
 

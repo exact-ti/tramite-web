@@ -34,10 +34,16 @@ export class ContingenciaComponent implements OnInit {
   cabeceras = [
     'PAQUETE',
     'FECHA',
-  ]
+  ];
+
+  columnasExcel = {};
+  
 
   ngOnInit(): void {
     this.configurarTabla();
+    this.cabeceras.forEach(cabecera => this.columnasExcel[cabecera] = {
+      title: cabecera,
+    });
   }
 
   handleFileInput(files: FileList) {
@@ -187,6 +193,8 @@ export class ContingenciaComponent implements OnInit {
       class: 'modal-lg'      
     });
   }
+
+  
 
 
 

@@ -28,6 +28,7 @@ export class InterconexionesComponent implements OnInit {
   public mensaje : String;
   settings = UtilsService.tableSettings;
   dataInterconexiones: LocalDataSource = new LocalDataSource();
+  public columnas = {};
 
   ngOnInit(): void {
     AppConfig.DespuesDeInicializar(()=> this.inicializarInterconexiones());    
@@ -37,7 +38,8 @@ export class InterconexionesComponent implements OnInit {
 
 
   generarColumnas() {
-    this.settings.columns = {
+
+    this.columnas = {
       nombre: {
         title: 'Nombre'
       },
@@ -50,6 +52,9 @@ export class InterconexionesComponent implements OnInit {
       estado: {
         title: 'Estado'
       },
+    }
+    this.settings.columns = {
+      ...this.columnas,
       buttonModificar: {
         title: 'Editar',
         type: 'custom',
@@ -69,11 +74,10 @@ export class InterconexionesComponent implements OnInit {
     this.dataInterconexiones.reset();
     this.interconexionRepository.listarInterconexionesMantenimiento().pipe(take(1)).subscribe(
       (interconexiones) => {
-        this.interconexiones = interconexiones;
-        let datainterconexiones = [];
+        this.interconexiones = [];
         interconexiones.forEach(
           interconexion => {
-            datainterconexiones.push({
+            this.interconexiones.push({
               id:interconexion.id,
               nombre: interconexion.nombre,
               destino:interconexion.destino,
@@ -82,7 +86,7 @@ export class InterconexionesComponent implements OnInit {
             })
           }
         )
-        this.dataInterconexiones.load(datainterconexiones);
+        this.dataInterconexiones.load(this.interconexiones);
       }
     )
 } 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -29,6 +29,9 @@ export class ModalComponent implements OnInit {
     area: null,
     activo: true,
   };
+
+  @Output() successed = new EventEmitter();
+
   buzonGenericoId: number;
   buzonForm: FormGroup;
   mostrar: any;
@@ -36,8 +39,9 @@ export class ModalComponent implements OnInit {
   usuarios: any[] = [];
   usuariosSeleccionadas: any[] = [];
   usuariosSeleccionadasInitialState: any[] = [];
+  representanteSeleccionado = false;
   usuario: any;
-  probar: any;
+
   ngOnInit(): void {
     this.inicializarForm();
     if (this.tipoFormulario == 2) {
@@ -74,6 +78,7 @@ export class ModalComponent implements OnInit {
           data: usuarioBuzon
         }
       }) : [];
+      this.representanteSeleccionado = true;
       this.usuariosSeleccionadasInitialState = this.utilsService.copy(this.usuariosSeleccionadas);
       this.inicializarForm();
     }
@@ -92,10 +97,12 @@ export class ModalComponent implements OnInit {
       });
       wrapper.seleccionado = true;
       wrapper.data.representante = true;
+      this.representanteSeleccionado = true;
 
     } else {
       wrapper.seleccionado = false;
       wrapper.data.representante = false;
+      this.representanteSeleccionado = false;
     }
     this.buzonForm.updateValueAndValidity();
   }
@@ -150,6 +157,9 @@ export class ModalComponent implements OnInit {
 
   removerUsuario(usuario: any) {
     this.usuariosSeleccionadas.splice(this.usuariosSeleccionadas.findIndex(usuarioSeleccionada => usuarioSeleccionada.data.id == usuario.id), 1);
+    if(this.usuariosSeleccionadas.findIndex(usuarioSeleccionada => usuarioSeleccionada.data.representante) == -1){
+      this.representanteSeleccionado == false;
+    }
     this.buzonForm.updateValueAndValidity();
   }
 
@@ -175,7 +185,7 @@ export class ModalComponent implements OnInit {
 
   submit(value: any) {
     value.usuarios = this.usuariosSeleccionadas.map(usuarioSeleccionado => usuarioSeleccionado.data);
-    value.representante = this.usuariosSeleccionadas.find(usuarioSeleccionado => usuarioSeleccionado.data.representante).data;
+    value.representante = this.usuariosSeleccionadas.find(usuarioSeleccionado => usuarioSeleccionado.data.representante)?.data;
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
         mensaje: this.tipoFormulario == 1 ? "¿Está seguro que desea crear un nuevo buzón?" : "¿Está seguro que desea modificar el buzón?"
@@ -187,6 +197,7 @@ export class ModalComponent implements OnInit {
         this.buzonRepository.registrarBuzon(value).pipe(take(1)).subscribe(data => {
           if (data.status == "success") {
             this.notifier.notify('success', 'Se ha creado el buzón correctamente');
+            this.successed.emit();
             this.bsModalRef.hide();
           }else{
             this.notifier.notify('error', 'No se registro el buzón');
@@ -199,6 +210,7 @@ export class ModalComponent implements OnInit {
         this.buzonRepository.editarBuzon(this.buzonGenericoId, value).pipe(take(1)).subscribe(data => {
           if (data.status == "success") {
             this.notifier.notify('success', 'Se ha actualizado el buzón correctamente');
+            this.successed.emit();
             this.bsModalRef.hide();
           }else{
             this.notifier.notify('error', 'No se actualizó el buzón');
@@ -206,7 +218,7 @@ export class ModalComponent implements OnInit {
         },
         error => {
           this.notifier.notify('error', 'No se actualizó el buzón');
-        });;
+        });
       }
 
     })

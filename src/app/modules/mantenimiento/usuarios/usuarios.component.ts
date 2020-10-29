@@ -22,6 +22,7 @@ export class UsuariosComponent implements OnInit {
     usuarios = [];
     usuariosDS: LocalDataSource = new LocalDataSource();
     settings = UtilsService.tableSettings;
+    columnas = {};
   
 
   ngOnInit(): void {
@@ -44,9 +45,8 @@ export class UsuariosComponent implements OnInit {
       backdrop: "static"
     });
 
-    this.modalService.onHidden.pipe(take(1)).subscribe((reason: String)=> {
-      this.listarUsuarios();
-    });
+    bsModalRef.content.successed.pipe(take(1)).subscribe(() => this.listarUsuarios());
+    
   }
 
   listarUsuarios(): void {
@@ -55,8 +55,7 @@ export class UsuariosComponent implements OnInit {
     this.usuarioRepository.listarUsuariosMantenimiento().pipe(take(1)).subscribe(rpta => {
       
       if (rpta.status == "success") {
-        this.usuarios = rpta.data;
-        this.usuariosDS.load(rpta.data.map(item => {
+        this.usuarios = rpta.data.map(item => {
           return {
             id: item.id,
             codigo: item.codigo,
@@ -66,9 +65,11 @@ export class UsuariosComponent implements OnInit {
             perfil: item.perfil, 
             tipoPerfil: item.tipoPerfil, 
             ubicacion: item.ubicacion,
+            sede: item.sede,
             estado: item.activo ? 'ACTIVO' : 'INACTIVO',
           }
-        }));
+        });
+        this.usuariosDS.load(this.usuarios);
       }else{
         alert(rpta.mensaje);
       }
@@ -78,7 +79,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   configurarTabla(): void {
-    this.settings.columns = {
+    this.columnas = {
       codigo: {
         title: 'Código'
       },
@@ -100,9 +101,15 @@ export class UsuariosComponent implements OnInit {
       ubicacion: {
         title: 'Ubicación'
       },
+      sede: {
+        title: 'Sede'
+      },
       estado: {
         title: 'Estado'
       },
+    };
+    this.settings.columns = {
+      ...this.columnas,
       btnEditar: {
         title: 'Editar',
         type: 'custom',

@@ -1,30 +1,18 @@
 <app-export [cabecera] = "settings.columns" [registros] = "registros" nombreReporte="reporte-recorridos" *ngIf="recorridosDS.count() !== 0"></app-export>
 <form [formGroup]="reporteRecorridosForm" (ngSubmit)="submit(reporteRecorridosForm.value)">
     <div class="row justify-content-around">
-        <div class="col-12">
+        <div class="col">
             <div class="form-group row">
-                <label for="example-date-input" class="col col-form-label">Desde:</label>
-                <div class="col-11">
-                    <input class="form-control" formControlName="desde" type="date"
-                        [max]="reporteRecorridosForm.get('hasta').value">
-                </div>
+                <app-datepicker class="col-6" formControlName="desde" placeholder="Desde"  [maxDate] = "reporteRecorridosForm.get('hasta').value" ></app-datepicker>
+                <app-datepicker class="col-6" formControlName="hasta" placeholder="Hasta"  [minDate] = "reporteRecorridosForm.get('desde').value" [maxDate]="maxDate" ></app-datepicker>
+            </div>
+            <div class="form-group row">
+                <button class="col btn btn-primary" [disabled] = "reporteRecorridosForm.invalid" type="submit">
+                    Buscar
+                </button>
             </div>
         </div>
-        <div class="col-12">
-            <div class="form-group row">
-                <label for="example-date-input" class="col col-form-label">Hasta:</label>
-                <div class="col-11">
-                    <input class="form-control" formControlName="hasta" type="date"
-                        [min]="reporteRecorridosForm.get('desde').value">
-                </div>
-            </div>
-        </div>
-    </div>    
-    <div class="form-group row">
-        <button class="col btn btn-primary" [disabled] = "reporteRecorridosForm.invalid" type="submit">
-            Buscar
-        </button>
-    </div>    
+    </div>       
 </form>
 
 <div *ngIf="registros.length !== 0; else vacio" class="center mt-3"  style = "overflow-x: scroll;">

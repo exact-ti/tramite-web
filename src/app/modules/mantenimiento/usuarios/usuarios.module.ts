@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DndModule } from 'ngx-drag-drop';
 import { SharedModule } from '../../shared/shared.module';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 
 
@@ -22,6 +23,6 @@ import { SharedModule } from '../../shared/shared.module';
     NgSelectModule,
     DndModule,
     SharedModule,
-  ]
+  ], 
 })
 export class UsuariosModule { }

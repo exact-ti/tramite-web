@@ -17,6 +17,7 @@ export class ReporteRetiradosComponent implements OnInit {
   constructor(
     private envioRepository: IEnvioRepository,
     public customDatePipe: CustomDatePipe,
+    public utils: UtilsService  
   ) { }
 
   mensajeEnum = MensajeEnum;
@@ -25,6 +26,8 @@ export class ReporteRetiradosComponent implements OnInit {
   retiradosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
   registros = [];
+  maxDate = this.utils.dateToString(new Date());
+
 
   ngOnInit(): void {
     this.configurarTabla();

@@ -7,6 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from "@angular/material/icon";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
 
 import { BuzonCardComponent } from './buzon-card/buzon-card.component';
 import { EnvioCardComponent } from './envio-card/envio-card.component';
@@ -27,6 +31,7 @@ import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 import { CheckTreeViewComponent } from './check-tree-view/check-tree-view.component';
 import { DetalleErrorComponent } from './modals/detalle-error/detalle-error.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { DatepickerComponent } from './datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +53,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     CustomDatePipe,
     CheckTreeViewComponent,
     DetalleErrorComponent,
+    DatepickerComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +65,10 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     MatIconModule,
     MatCheckboxModule,
     Ng2SmartTableModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
   ],
   exports: [
     BuzonCardComponent,
@@ -75,10 +85,12 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     ActivoSwitchComponent,
     CustomDatePipe,
     CheckTreeViewComponent,
+    DatepickerComponent,
   ],
   providers: [
     BsModalService,
     CustomDatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'es-PE' }
   ],
   entryComponents: [
     TrackingComponent,
