@@ -59,7 +59,7 @@ export class TurnosRecorridosComponent implements OnInit {
           utd:item.utd,
           horario: item.horaInicio + " - " + item.horaFin, 
           nroAreas: item.cantidadAreas,
-          estado: item.activo ? 'ACTIVO': 'INACTIVO',
+          estado: item.activo ? 'Activo': 'Inactivo',
         }
       });
       this.turnosRecorridosDS.load(this.turnosRecorridos);

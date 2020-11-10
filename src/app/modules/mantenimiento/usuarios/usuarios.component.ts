@@ -66,7 +66,7 @@ export class UsuariosComponent implements OnInit {
             tipoPerfil: item.tipoPerfil, 
             ubicacion: item.ubicacion,
             sede: item.sede,
-            estado: item.activo ? 'ACTIVO' : 'INACTIVO',
+            estado: item.activo ? 'Activo' : 'Inactivo',
           }
         });
         this.usuariosDS.load(this.usuarios);

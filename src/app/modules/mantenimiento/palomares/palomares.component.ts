@@ -94,7 +94,7 @@ export class PalomaresComponent implements OnInit {
               ubicacion:palomar.ubicacion,
               tipo:palomar.tipoPalomar,
               destino:palomar.destino,
-              estado:palomar.activo == true ? "ACTIVO" : "INACTIVO",
+              estado:palomar.activo == true ? "Activo" : "Inactivo",
             })
           }
         )
@@ -114,7 +114,7 @@ modelPalomar(row,modalId) {
     initialState: {
       tipoModalId: modalId,
       palomar:  this.palomarModal,
-      titulo: this.palomarModal==null ? 'NUEVO PALOMAR' : 'MODIFICAR PALOMAR'+" "+row.id
+      titulo: this.palomarModal==null ? 'Nuevo Palomar' : 'Modificar Palomar'+" "+row.id
     },
     class: 'modal-md',
     keyboard: false,

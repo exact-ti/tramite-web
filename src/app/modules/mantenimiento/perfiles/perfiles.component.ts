@@ -44,7 +44,7 @@ export class PerfilesComponent implements OnInit {
           id: item.id,
           nombre: item.nombre,
           tipoPerfil: item.tipoPerfil.nombre,
-          estado: item.activo ? 'ACTIVO': 'INACTIVO'
+          estado: item.activo ? 'Activo': 'Inactivo'
         }
       });
       this.perfilesDS.load(this.perfiles);

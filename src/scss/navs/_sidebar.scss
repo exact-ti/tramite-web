@@ -185,7 +185,7 @@
             }
             span {
               display: inline-block;
-              font-size: 0.85rem !important;
+              font-size: 0.85rem;
             }
           }
         }
@@ -194,10 +194,6 @@
       .collapsing {
         display: block;
         transition: $transition-collapse;
-      }
-      .collapse,
-      .collapsing {
-        margin: 0 1rem;
       }
       
       .nav-link {
@@ -247,19 +243,32 @@
       overflow: visible;
       width: $sidebar-collapsed-width !important;
       .nav-item {
-        // Accordion
-        .collapse {
-          position: absolute;
-          left: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
-          z-index: 1;
-          top: 2px;
-          // Grow In Animation for Toggled State
-          animation-name: growIn;
-          animation-duration: 200ms;
-          animation-timing-function: transform cubic-bezier(.18,1.25,.4,1), opacity cubic-bezier(0,1,.4,1);
-          .collapse-inner {
-            box-shadow: $box-shadow;
-            border-radius: $border-radius;
+        //Accordion
+        // .collapse {
+        //   position: absolute;
+        //   left: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
+        //   z-index: 1;
+        //   top: 2px;
+        //   // Grow In Animation for Toggled State
+        //   animation-name: growIn;
+        //   animation-duration: 200ms;
+        //   animation-timing-function: transform cubic-bezier(.18,1.25,.4,1), opacity cubic-bezier(0,1,.4,1);
+        //   .collapse-inner {
+        //     box-shadow: $box-shadow;
+        //     border-radius: $border-radius;
+        //   }
+        // }
+        .collapse-inner {
+          border-radius: $border-radius;
+          box-shadow: $box-shadow;
+          .collapse-item {
+            text-align: center;
+            display: block;
+            padding: 0.5rem 0rem;
+            span{
+              display: block;
+              font-size: 0.65rem;
+            }
           }
         }
         .collapsing {
@@ -268,8 +277,41 @@
         }
         .collapse,
         .collapsing {
-          margin: 0;
+          .collapse-inner {
+          padding: .5rem 0;
+          //min-width: 10rem;
+          font-size: $dropdown-font-size;
+          margin: 0 0 1rem 0;
+          .collapse-header {
+            margin: 0;
+            //white-space: nowrap;
+            padding: .5rem 1.5rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            font-size: 0.65rem;
+            color: $gray-500;
+          }
+          .collapse-item {
+            display: block;
+            padding: 0.5rem 0rem;
+            margin: 0 0.5rem;
+            color: $gray-900;
+            text-decoration: none;
+            border-radius: $border-radius;
+            //white-space: nowrap;
+            &:hover {
+              background-color: $gray-200;
+            }
+            &:active {
+              background-color: $gray-300;
+            }
+            &.active {
+              color: $primary;
+              font-weight: 700;
+            }
+          }
         }
+      }
         &:last-child {
           margin-bottom: 1rem;
         }

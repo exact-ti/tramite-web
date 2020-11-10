@@ -21,6 +21,7 @@ export class AreasComponent implements OnInit {
     private areaRepository: IAreaRepository
   ) { }
 
+  public registros: any[] = [];
   public areas: any[] = [];
   public enviosWrappers: any[] = [];
   public areaModal: Area;
@@ -80,11 +81,13 @@ export class AreasComponent implements OnInit {
   }
 
   inicializarAreas(): void {
+    this.registros = [];
     this.areaRepository.listarAreasbySede().pipe(take(1)).subscribe(
       (areas) => {
+        this.areas = areas;
         areas.forEach(
           area => {
-            this.areas.push({
+            this.registros.push({
               id: area.id,
               codigo: area.codigo,
               nombre: area.nombre,
@@ -92,11 +95,11 @@ export class AreasComponent implements OnInit {
               sede: area.sede.descripcion,
               tiposede: area.tipoSede.descripcion,
               palomar: area.palomar?.descripcion,
-              estado: area.activo ? 'ACTIVO' : 'INACTIVO',
+              estado: area.activo ? 'Activo' : 'Inactivo',
             })
           }
         )
-        this.dataAreas.load(this.areas);
+        this.dataAreas.load(this.registros);
       }
     )
   }
@@ -124,7 +127,7 @@ export class AreasComponent implements OnInit {
       initialState: {
         tipoModalId: modalId,
         area: this.areaModal,
-        titulo: this.areaModal == null ? 'NUEVA ÁREA' : 'MODIFICAR ÁREA' + " " + row.nombre.toUpperCase()
+        titulo: this.areaModal == null ? 'Nueva Área' : 'Modificar Área' + " " + row.nombre.toUpperCase()
       },
       class: 'modal-md',
       keyboard: false,

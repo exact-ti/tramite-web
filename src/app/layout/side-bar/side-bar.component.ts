@@ -27,14 +27,29 @@ export class SideBarComponent implements OnInit, OnDestroy {
   inicializarMenu(): void {
     AppConfig.onInicialization.pipe(take(1)).subscribe(()=> {
       this.menuRepository.listarMenu().pipe(take(1)).subscribe(
-        (menu: Menu[]) => {
-          this.menu = menu;
+        (menus: Menu[]) => {
+          this.menu = this.ordenarMenu(menus);
         }
       )
     });    
   } 
   
   ngOnDestroy(): void {
+  }
+
+  ordenarMenu(menus: Menu[]): Menu[] {
+    var m = menus.sort((a,b) => {
+      return a.orden - b.orden;
+    });
+
+    m.forEach(m2 => {
+      if (m2.menuHijos && m2.menuHijos.length > 0) {
+        m2.menuHijos = this.ordenarMenu(m2.menuHijos);
+      }
+    });
+
+    return m; 
+
   }
   
 

@@ -39,7 +39,7 @@ export class PaquetesExternosComponent implements OnInit {
         return {
           id: item.id,
           nombre: item.nombre,
-          estado: item.activo ? "ACTIVO" : "INACTIVO",
+          estado: item.activo ? "Activo" : "Inactivo",
         }
       });
       this.paquetesExternosDS.load(this.paquetesExternos);
@@ -84,7 +84,7 @@ export class PaquetesExternosComponent implements OnInit {
               tipoPaqueteId: row.id,
               paqueteExternoInitialState: {
                 nombre: row.nombre,
-                activo: row.estado == 'ACTIVO'
+                activo: row.estado.toUpperCase() === 'ACTIVO'
               }
             })
           });

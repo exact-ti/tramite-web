@@ -56,7 +56,7 @@ export class BuzonesGenericosComponent implements OnInit {
           area: item.area,
           nombre: item.nombre,
           usuario: item.cantidadUsuarios,
-          estado: item.activo ? "ACTIVO" : "INACTIVO"
+          estado: item.activo ? "Activo" : "Inactivo"
         }
       });
       this.buzonesDS.load(this.buzones);
