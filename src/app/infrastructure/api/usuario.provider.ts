@@ -1,10 +1,11 @@
 import { ITurnoRecorridoRepository } from 'src/app/core/repository/turno-recorrido.repository';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, scheduled } from 'rxjs';
 import { RequesterService } from './core/requester.service';
 import { IUtdRepository } from 'src/app/core/repository/utd.repository';
 import { flatMap, map } from 'rxjs/operators';
 import { IUsuarioRepository } from 'src/app/core/repository/usuario.repository';
+import {of} from 'rxjs';
 
 
 @Injectable()
@@ -21,6 +22,10 @@ export class UsuarioProvider extends IUsuarioRepository{
 
     private prefix: string = "/servicio-tramite";
     private prefixUsuario: string = "/servicio-usuario";
+
+    listarNombreDeUsuarioAutenticado(): Observable<string> {
+        return of<string>('Orlando Heredia');
+    }
 
     listarOperativosDeUTD(): Observable<any[]> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap(utd => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/usuarios")));

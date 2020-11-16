@@ -104,7 +104,7 @@ export class PalomarModalComponent implements OnInit {
   }
 
     validarTipoPalomar(tipo :any){
-        if(tipo=="AREA"){
+        if(tipo.toUpperCase() == "AREA"){
           return true;
         }else{
           return false;

@@ -2,6 +2,8 @@ import { Observable } from 'rxjs';
 
 
 export abstract class IUsuarioRepository {
+
+    abstract listarNombreDeUsuarioAutenticado(): Observable<string>;
     
     abstract listarOperativosDeUTD(): Observable<any[]>;
 
