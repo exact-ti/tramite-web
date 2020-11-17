@@ -11,6 +11,7 @@ import {of} from 'rxjs';
 @Injectable()
 export class UsuarioProvider extends IUsuarioRepository{
     
+    
 
     constructor(
         private client: RequesterService,
@@ -23,8 +24,8 @@ export class UsuarioProvider extends IUsuarioRepository{
     private prefix: string = "/servicio-tramite";
     private prefixUsuario: string = "/servicio-usuario";
 
-    listarNombreDeUsuarioAutenticado(): Observable<string> {
-        return of<string>('Orlando Heredia');
+    listarDetalleDelUsuarioAutenticado(): Observable<any> {
+        return this.client.get(this.prefixUsuario + "/usuarios/autenticado/detalle");
     }
 
     listarOperativosDeUTD(): Observable<any[]> {

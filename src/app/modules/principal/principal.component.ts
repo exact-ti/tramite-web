@@ -16,8 +16,13 @@ export class PrincipalComponent implements OnInit {
   nombreUsuario: string = "";
 
   ngOnInit(): void {
-    this.usuarioRepository.listarNombreDeUsuarioAutenticado().pipe(take(1)).subscribe(
-      nombre => this.nombreUsuario = nombre
+    this.usuarioRepository.listarDetalleDelUsuarioAutenticado().pipe(take(1)).subscribe(
+      rpta => {
+        if (rpta.status === "success") {
+          var data = rpta.data;
+          this.nombreUsuario = data.nombre;
+        }
+      }
     )
   }
 
