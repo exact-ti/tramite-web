@@ -11,5 +11,11 @@
         "login_url": "http://www.exact.com.pe:8401",
         "api": "http://www.exact.com.pe:8891",
         "integracion_docflow": true
+    },
+
+    "cloud": {
+        "login_url": "http://104.46.3.107:8401",
+        "api": "http://104.46.3.107:8891",
+        "integracion_docflow": true
     }
 }
