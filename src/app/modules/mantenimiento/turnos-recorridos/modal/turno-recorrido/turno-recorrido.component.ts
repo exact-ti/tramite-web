@@ -96,7 +96,7 @@ export class TurnoRecorridoComponent implements OnInit {
         this.areasSeleccionadas.push(area);
         this.turnoRecorridoForm.updateValueAndValidity();
       } else {
-        alert('No puedes agregar un área que ya está en la lista');
+        this.notifier.notify("warning", "No puedes agregar un área que ya está en la lista");
       }
     }
     this.area = null;
