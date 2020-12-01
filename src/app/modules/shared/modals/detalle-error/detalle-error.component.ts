@@ -11,19 +11,23 @@ import * as lodash from 'lodash-es';
 })
 export class DetalleErrorComponent implements OnInit {
 
+  @Input() titulo = "Detalle de Errores";
   @Input() mensaje = "Sin mensaje";
+  @Input() nombreReporte = "detalle-errores";
   @Input() lista = [];
   mostrarCabecera = true;
   erroresDS: LocalDataSource = new LocalDataSource();
-  settings = UtilsService.tableSettings;
+  settings;
 
   constructor(
     public bsModalRef: BsModalRef,
+    public utilsService: UtilsService,
   ) { }
 
 
 
   ngOnInit(): void {
+    this.settings = this.utilsService.copy(UtilsService.tableSettings);
     this.inicializarColumnas();
     this.inicializarTabla();
   }

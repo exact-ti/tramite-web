@@ -66,22 +66,8 @@
   </ng-template>
 
     <div *ngIf="tipoModalId==2">
-      <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="activo">Estado</label>
-            <select class="form-control" id="activo" formControlName="activo">
-              <option value="true">ACTIVADO
-              </option>
-              <option value="false">DESACTIVADO
-              </option>
-            </select>
-            <span *ngIf="!agregarForm.get('activo').value" class="text-danger small">
-              No se puede modificar si está desactivado
-            </span>
-          </div>
-        </div>
-      </div>
+      <app-activo-switch formControlName="activo">
+      </app-activo-switch>
     </div>
   </div>
   <div class="modal-footer">

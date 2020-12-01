@@ -82,7 +82,7 @@ export class InterconexionesComponent implements OnInit {
               nombre: interconexion.nombre,
               destino:interconexion.destino,
               turnos:interconexion.turnos,
-              estado:interconexion.activo ==true ? "ACTIVO" : "DESACTIVADO",
+              estado:interconexion.activo ==true ? "Activo" : "Inactivo",
             })
           }
         )

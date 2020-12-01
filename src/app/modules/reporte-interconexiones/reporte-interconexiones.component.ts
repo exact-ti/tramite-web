@@ -5,6 +5,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { UtilsService } from 'src/app/utils/utils';
 import { take } from 'rxjs/operators';
 import { MensajeEnum } from 'src/app/enum/mensaje.enum';
+import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-reporte-interconexiones',
@@ -16,6 +17,7 @@ export class ReporteInterconexionesComponent implements OnInit {
   constructor(
     private loteRepository: ILoteRepository,
     private utils: UtilsService,
+    public customDatePipe: CustomDatePipe,
   ) { }
   mensajeEnum = MensajeEnum;
   seHizoBusqueda: boolean = false;
@@ -52,9 +54,9 @@ export class ReporteInterconexionesComponent implements OnInit {
             utdOrigen: element.utdOrigen,
             utdDestino: element.utdDestino,
             usuarioCreacion: element.usuarioCreacion,
-            fechaCreacion: element.fechaCreacion,
-            fechaInicio: element.fechaInicio,
-            fechaFin: element.fechaFin,
+            fechaCreacion: !element.fechaCreacion ? "" : this.customDatePipe.transform(element.fechaCreacion, 'L LT'),
+            fechaInicio: !element.fechaInicio ? "" : this.customDatePipe.transform(element.fechaInicio, 'L LT'),
+            fechaFin: !element.fechaFin ? "" : this.customDatePipe.transform(element.fechaFin, 'L LT'),
             estado: element.estado,            
           }
         });
@@ -63,8 +65,7 @@ export class ReporteInterconexionesComponent implements OnInit {
       }
       this.lotesDS.load(this.registros);
     });
-    this.seHizoBusqueda = true;
-    
+    this.seHizoBusqueda = true;    
   }
 
 
@@ -73,9 +74,9 @@ export class ReporteInterconexionesComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
+      // id: {
+      //   title: 'ID'
+      // },
       nombre: {
         title: 'Nombre Interconexión'
       }, 

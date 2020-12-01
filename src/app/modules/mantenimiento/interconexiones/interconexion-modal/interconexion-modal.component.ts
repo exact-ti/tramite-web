@@ -127,7 +127,7 @@ export class InterconexionModalComponent implements OnInit {
       this.interconexionFormInitialState = {
         nombre: data.nombre,
         destino: destino,
-        activo: String(data.activo),
+        activo: data.activo,
       };
       data.turnos.map((area) => {
         this.turnosSeleccionadas.push(area);

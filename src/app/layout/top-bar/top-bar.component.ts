@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { take, filter } from 'rxjs/operators';
+import { take, filter, flatMap, map } from 'rxjs/operators';
 import { LocalStorage } from 'src/app/core/repository/local-storage';
 import { AppConfig } from 'src/app/app.config';
 import { IBuzonRepository } from 'src/app/core/repository/buzon.repository';
@@ -8,7 +8,7 @@ import { IUtdRepository } from 'src/app/core/repository/utd.repository';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModificarBuzonUtdComponent } from './modificar-buzon-utd/modificar-buzon-utd.component';
 import { TipoPerfilEnum } from 'src/app/enum/tipoPerfil.enum';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IMenuRepository } from 'src/app/core/repository/menu.repository';
 import { SubmitForm } from 'src/app/utils/submit-form';
@@ -16,8 +16,7 @@ import { IDocflowRepository } from 'src/app/core/repository/docflow.repository';
 import { INotificacionRepository } from 'src/app/core/repository/notificacion.repository';
 import { CambiarPasswordModalComponent } from './cambiar-password-modal/cambiar-password-modal.component';
 import { IconoEnum } from 'src/app/enum/icono.enum';
-import { Menu } from 'src/app/core/model/menu.model';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 declare var $: any;
 
@@ -44,9 +43,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnDestroy(): void {
-    if (this.notificacionesSubscription) {
-      this.notificacionesSubscription.unsubscribe();
-    }
+    this.notificacionesSubscription?.unsubscribe();
+    this.cambioBuzonSubscription?.unsubscribe();
   }
 
   public tipoPerfil: any;
@@ -59,7 +57,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   public notificaciones = [];
   private notificacionesSubscription: Subscription;
   public iconoEnum = IconoEnum;
-  public redirigido = false; 
+  public redirigido = false;
+  private cambioBuzonSubscription: Subscription;
 
 
 
@@ -69,10 +68,11 @@ export class TopBarComponent implements OnInit, OnDestroy {
     AppConfig.DespuesDeInicializar(() => {
       this.integracionDocflow = AppConfig.INTEGRACION_DOCFLOW;
       this.listarNotificacionesPendientes();
-      this.notificacionesSubscription = this.notificacionRepository.escucharNotificacionesNuevas().subscribe(
+      this.cambioBuzonSubscription = this.buzonRepository.cambioBuzon.subscribe(() => this.listarNotificacionesPendientes());
+      this.notificacionesSubscription = this.notificacionRepository.escucharNotificacionesNuevas().pipe(flatMap(notificaciones => this.buzonRepository.listarBuzonSeleccionado().pipe(take(1), map(buzon => notificaciones.filter(notificacion => notificacion.buzonId === buzon.id))))).subscribe(
         data =>
           this.notificaciones = data
-      );      
+      );
     });
 
     this.route.params.subscribe(params => {
@@ -85,11 +85,11 @@ export class TopBarComponent implements OnInit, OnDestroy {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       AppConfig.DespuesDeInicializar(() => {
-        var segmentos: string[] =  this.router.url.split('?')[0].split(';');
+        var segmentos: string[] = this.router.url.split('?')[0].split(';');
         this.menuRepository.listarMenuByRuta(segmentos[0]).subscribe(menu => this.menu = menu);
         if (segmentos.length > 1) {
           this.redirigido = segmentos.find(segmento => segmento.includes('redirigido'))?.split('=')[1] == 'true';
-        }else{
+        } else {
           this.redirigido = false;
         }
       });
@@ -112,7 +112,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  goback(){
+  goback() {
     this.location.back();
   }
 
@@ -120,7 +120,9 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.notificacionRepository.listarNotificacionesPendientesDelUsuario().pipe(take(1)).subscribe(
       rpta => {
         if (rpta.status == "success") {
-          this.notificaciones = rpta.data;
+          this.buzonRepository.listarBuzonSeleccionado().pipe(take(1)).subscribe(buzon => {
+            this.notificaciones = rpta.data.filter(notificacion => notificacion.buzonId === buzon.id);
+          });
         }
       }
     )
@@ -201,7 +203,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
     let element = document.querySelector('#alertsDropdown');
     let observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type == "attributes" && mutation.attributeName == "aria-expanded" && $('#alertsDropdown').attr('aria-expanded') == 'false' ) {
+        if (mutation.type == "attributes" && mutation.attributeName == "aria-expanded" && $('#alertsDropdown').attr('aria-expanded') == 'false') {
           this.notificacionRepository.actualizarVistoNotificacionesDelUsuario().pipe(take(1)).subscribe(
             () => this.notificaciones.forEach(notificacion => notificacion.estado.id = 2)
           );

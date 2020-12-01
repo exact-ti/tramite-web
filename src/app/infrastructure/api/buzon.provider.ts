@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IBuzonRepository } from 'src/app/core/repository/buzon.repository';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Buzon } from 'src/app/core/model/buzon.model';
 import { RequesterService } from './core/requester.service';
 import { map, flatMap, last } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { TipoBuzonEnum } from 'src/app/enum/tipoBuzon.enum';
 @Injectable()
 export class BuzonProvider extends IBuzonRepository {
 
-
+    
    
     
     constructor(private client: RequesterService,
@@ -52,6 +52,7 @@ export class BuzonProvider extends IBuzonRepository {
 
     seleccionarBuzon(buzon: Buzon): Buzon {
         this.buzonSeleccionado = buzon;
+        this.cambioBuzon.next(this.buzonSeleccionado);
         return this.buzonSeleccionado;
     }
 

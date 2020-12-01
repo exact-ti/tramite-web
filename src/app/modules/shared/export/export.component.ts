@@ -33,6 +33,7 @@ export class ExportComponent implements OnInit {
     let keys = Object.keys(this.cabecera);
     if (this.registros.length > 0) {
     this.registrosConCabeceras = this.utils.copy(this.registros);
+    this.registrosConCabeceras.forEach(registro => delete registro["id"]);
     this.registrosConCabeceras.forEach(registro => {
       keys.forEach(key => {
         var titulo = this.cabecera[key] ? this.cabecera[key].title : "ID";

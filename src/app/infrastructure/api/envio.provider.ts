@@ -15,6 +15,7 @@ import { UtilsService } from 'src/app/utils/utils';
 @Injectable()
 export class EnvioProvider extends IEnvioRepository {
     
+    
       
        
     
@@ -86,6 +87,10 @@ export class EnvioProvider extends IEnvioRepository {
             .set("desde", desde)
             .set("hasta", hasta)
         });
+    }
+
+    listarEnviosActivosDelUsuario(usuarioId: number) {
+        return this.client.get(this.prefix + "/usuarios/" + usuarioId + "/enviosactivos");
     }
 
 

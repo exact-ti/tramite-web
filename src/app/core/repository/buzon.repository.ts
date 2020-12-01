@@ -3,6 +3,8 @@ import { Subject, Observable } from 'rxjs';
 
 export abstract class IBuzonRepository{
 
+    public cambioBuzon: Subject<Buzon> = new Subject();
+
     abstract listarBuzonSeleccionado(): Observable<Buzon>;
     abstract seleccionarBuzon(buzon: Buzon): Buzon;
     abstract listarBuzonesDelUsuario(): Observable<Buzon[]>;

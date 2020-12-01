@@ -9,6 +9,8 @@ import { IPerfilRepository } from 'src/app/core/repository/perfil.repository';
 import { ConfirmModalComponent } from 'src/app/modules/shared/modals/confirm-modal/confirm-modal.component';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from 'src/app/utils/utils';
+import { IEnvioRepository } from 'src/app/core/repository/envio.repository';
+import { DetalleErrorComponent } from 'src/app/modules/shared/modals/detalle-error/detalle-error.component';
 
 @Component({
   selector: 'app-modal',
@@ -21,8 +23,10 @@ export class ModalComponent implements OnInit {
     public bsModalRef: BsModalRef,
     public areaRepository: IAreaRepository,
     public usuarioRepository: IUsuarioRepository,
+    public envioRepository: IEnvioRepository,
     public perfilRepository: IPerfilRepository,
-    public utdRepository: IUtdRepository, private modalService: BsModalService,
+    public utdRepository: IUtdRepository, 
+    private modalService: BsModalService,
     private notifier: NotifierService,
     private utils: UtilsService) { }
   tipoFormulario: number;
@@ -51,6 +55,7 @@ export class ModalComponent implements OnInit {
   utdsSeleccionadasInitialState: any[] = [];
   utd: any;
   showUTD: boolean = true;
+  utdPrincipalSeleccionado  = false;
   @Output() successed = new EventEmitter();
 
 
@@ -154,6 +159,10 @@ export class ModalComponent implements OnInit {
     return this.usuarioRepository.listarDetalleUsuario(this.usuarioId).pipe(take(1)).toPromise();
   }
 
+  listarEnviosActivosDelUsuario() {
+    return this.envioRepository.listarEnviosActivosDelUsuario(this.usuarioId).pipe(take(1)).toPromise();
+  }
+
 
 
   private formValidator(form: FormGroup): ValidationErrors | null {
@@ -229,6 +238,31 @@ export class ModalComponent implements OnInit {
       wrapper.data.principal = false;
     }
     this.usuarioForm.updateValueAndValidity();
+  }
+
+  async onActivoChange(activo) {
+    if (!activo) {
+      let rpta = await this.listarEnviosActivosDelUsuario();
+      if(rpta.data.length > 0){
+        let enviosActivos = rpta.data.map(envio => {
+          return {
+            paquete: envio.paqueteId,
+            estado: envio.estado
+          }
+        });
+        console.log(enviosActivos);
+        let bsModalRef: BsModalRef = this.modalService.show(DetalleErrorComponent, {
+          initialState: {
+            titulo: "Envíos pendientes",
+            mostrarCabecera: true,
+            mensaje: "Los siguientes envíos para el usuario aún están activos", 
+            nombreReporte: "envios-pendientes",
+            lista: enviosActivos,
+
+          }   
+        });
+      }
+    }
   }
 
   submit(value: any) {

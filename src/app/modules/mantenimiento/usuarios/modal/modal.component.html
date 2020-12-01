@@ -91,7 +91,7 @@
         </div>
 
         <div *ngIf="tipoFormulario!=1">
-            <app-activo-switch formControlName="activo">
+            <app-activo-switch formControlName="activo" (change)="onActivoChange(usuarioForm.get('activo').value)">
             </app-activo-switch>
         </div>
     </div>

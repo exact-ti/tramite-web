@@ -70,9 +70,9 @@ export class ReporteRecorridosComponent implements OnInit {
 
   configurarTabla(): void {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
+      // id: {
+      //   title: 'ID'
+      // },
       nombre: {
         title: 'Nombre'
       }, 
