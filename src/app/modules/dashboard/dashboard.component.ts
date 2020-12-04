@@ -57,9 +57,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   private listarIndicadores(): void {
-    this.dashboardRepository.listarIndicadores().pipe(take(1)).subscribe((data) => {
-      this.tiposIndicadores[0]["indicadores"] = data.data.entrada.sort((a, b) => a.id - b.id);
-      this.tiposIndicadores[1]["indicadores"] = data.data.salida.sort((a, b) => a.id - b.id);
+    this.dashboardRepository.listarIndicadores().pipe(take(1)).subscribe((rpta) => {
+      this.tiposIndicadores[0]["indicadores"] = rpta.data.entrada.sort((a, b) => a.id - b.id);
+      this.tiposIndicadores[1]["indicadores"] = rpta.data.salida.sort((a, b) => a.id - b.id);
     });
   }
 
