@@ -232,4 +232,13 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.modalService.show(CambiarPasswordModalComponent);
   }
 
+  obtenerIniciales(): String {
+    let iniciales = "";
+    var listPalabras = this.dataSeleccionado.nombre.split(" ");
+    listPalabras.forEach(palabra => {
+      iniciales = iniciales + palabra[0];
+    });
+    return iniciales;
+  }
+
 }
