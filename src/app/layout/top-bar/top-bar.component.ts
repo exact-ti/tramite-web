@@ -203,11 +203,15 @@ export class TopBarComponent implements OnInit, OnDestroy {
     let element = document.querySelector('#alertsDropdown');
     let observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type == "attributes" && mutation.attributeName == "aria-expanded" && $('#alertsDropdown').attr('aria-expanded') == 'false') {
-          this.notificacionRepository.actualizarVistoNotificacionesDelUsuario().pipe(take(1)).subscribe(
-            () => this.notificaciones.forEach(notificacion => notificacion.estado.id = 2)
-          );
-        }
+        this.buzonRepository.listarBuzonSeleccionado().subscribe((buzon) => {
+          if (buzon != null) {
+            if (mutation.type == "attributes" && mutation.attributeName == "aria-expanded" && $('#alertsDropdown').attr('aria-expanded') == 'false') {
+              this.notificacionRepository.actualizarVistoNotificacionesDelUsuario().pipe(take(1)).subscribe(
+                () => this.notificaciones.forEach(notificacion => notificacion.estado.id = 2)
+              );
+            }
+          }
+        })
       });
     });
 
