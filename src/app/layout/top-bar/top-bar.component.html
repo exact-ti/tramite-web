@@ -74,6 +74,10 @@
                 aria-haspopup="true" aria-expanded="false">
                 <span *ngIf="dataSeleccionado"
                 class="mr-2 d-lg-inline text-gray-600 small my-el" [attr.data-letters]="obtenerIniciales()" ></span>
+                <span *ngIf="dataSeleccionado"
+                class="mr-2 d-lg-inline text-gray-600 small d-none">
+            {{dataSeleccionado.nombre}}</span>
+                
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

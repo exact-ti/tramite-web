@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequesterService } from './core/requester.service';
 import { HttpParams } from '@angular/common/http';
-import * as moment from 'moment';
 import { UtilsService } from 'src/app/utils/utils';
 
 
@@ -12,7 +11,6 @@ export class LoteProvider extends ILoteRepository {
     
     constructor(
         private client: RequesterService,
-        private utils: UtilsService,
     ){
         super();
     }
@@ -22,8 +20,8 @@ export class LoteProvider extends ILoteRepository {
     listarReporteLotes(desde: string, hasta: string): Observable<any> {
         return this.client.get(this.prefix + "/lotes", {
             params: new HttpParams()
-            .set("desde", this.utils.parseDate(desde))
-            .set("hasta", this.utils.parseDate(hasta))
+            .set("desde", desde)
+            .set("hasta", hasta)
         });
     }
 

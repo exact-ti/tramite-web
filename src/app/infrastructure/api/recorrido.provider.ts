@@ -22,8 +22,8 @@ export class RecorridoProvider extends IRecorridoRepository {
     listarReporteRecorridos(desde: string, hasta: string): Observable<any> {
         return this.client.get(this.prefix + "/recorridos", {
             params: new HttpParams()
-            .set("desde", this.utils.parseDate(desde))
-            .set("hasta", this.utils.parseDate(hasta))
+            .set("desde", desde )
+            .set("hasta", hasta )
         });
     }
 
