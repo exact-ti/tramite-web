@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h6 class="modal-title pull-left font-weight-bold">
+        {{ tipoFormulario == 1 ? 'Nueva Sede' : 'Actualizar Sede' }}</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cerrar()">
+        <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+</div>
+
+<form [formGroup]="sedeForm" (ngSubmit)="submit(sedeForm.value)">
+    <div class="modal-body pr-3">
+        <app-valid-input placeholder="Codigo" [valid]="sedeForm.get('codigo').valid && sedeForm.get('codigo').touched"
+            [invalid]="sedeForm.get('codigo').invalid && sedeForm.get('codigo').touched"
+            mensajeInvalido="El código de la sede es obligatorio" tipo="text" nombre="Código" formControlName="codigo">
+        </app-valid-input>
+        <app-valid-input placeholder="Nombre" [valid]="sedeForm.get('nombre').valid && sedeForm.get('nombre').touched"
+            [invalid]="sedeForm.get('nombre').invalid && sedeForm.get('nombre').touched"
+            mensajeInvalido="El nombre de la sede es obligatorio" tipo="text" nombre="nombre"
+            formControlName="nombre">
+        </app-valid-input>
+        <app-valid-select [items]="tiposSedes" [isDisabled]="tipoFormulario == 2" [atributo]="'descripcion'" [placeholder]="'Tipo Sede'"
+            [valid]="sedeForm.get('tipoSede').valid && !sedeForm.get('tipoSede').pristine"
+            [invalid]="sedeForm.get('tipoSede').invalid && !sedeForm.get('tipoSede').pristine"
+            mensajeInvalido="Es necesaria la elección del tipo de sede" formControlName="tipoSede">
+        </app-valid-select>
+        <div *ngIf="sedeForm.get('tipoSede') && sedeForm.get('tipoSede').value?.id === tipoSedeEnum.AGENCIA">
+            <app-valid-select [items]="tiposAgencias" [isDisabled]="tipoFormulario == 2" [atributo]="'descripcion'"
+                [placeholder]="'Tipo Agencia'" (change)="onTipoAgenciaSelectedChanged($event.detail)"
+                [valid]="sedeForm.get('tipoAgencia').valid && !sedeForm.get('tipoAgencia').pristine"
+                [invalid]="sedeForm.get('tipoAgencia').invalid && !sedeForm.get('tipoAgencia').pristine"
+                mensajeInvalido="Es necesaria la elección del tipo de agencia" formControlName="tipoAgencia">
+            </app-valid-select>
+            <app-valid-select [items]="gruposAgencias" [atributo]="'descripcion'"
+                [placeholder]="'Grupo Agencia'"
+                [valid]="sedeForm.get('grupoAgencia').valid && !sedeForm.get('grupoAgencia').pristine"
+                [invalid]="sedeForm.get('grupoAgencia').invalid && !sedeForm.get('grupoAgencia').pristine"
+                mensajeInvalido="Es necesaria la elección del grupo de agencia" formControlName="grupoAgencia">
+            </app-valid-select>
+        </div>
+
+        <div *ngIf="tipoFormulario == 2">
+            <app-activo-switch formControlName="activo">
+            </app-activo-switch>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" [disabled]="sedeForm.invalid">{{tipoFormulario==1 ? 'Registrar' :
+            'Actualizar'}}</button>
+    </div>
+</form>

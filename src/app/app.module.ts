@@ -73,6 +73,10 @@ import { ContingenciaProvider } from './infrastructure/api/contingencia.provider
 import { TipoSedeProvider } from './infrastructure/api/tipo-sede.provider';
 import { ITipoSedeRepository } from './core/repository/tipo-sede.repository';
 import { CambiarPasswordModalComponent } from './layout/top-bar/cambiar-password-modal/cambiar-password-modal.component';
+import { ITipoAgenciaRepository } from './core/repository/tipo-agencia.repository';
+import { TipoAgenciaProvider } from './infrastructure/api/tipo-agencia.provider';
+import { IGrupoAgenciaRepository } from './core/repository/grupo-agencia.repository';
+import { GrupoAgenciaProvider } from './infrastructure/api/grupo-agencia.provider';
 
 export function cargarConfiguracion(httpClient: HttpClient) {
   return () => httpClient.get('/assets/config.json').pipe(take(1)).pipe(
@@ -147,6 +151,8 @@ export function cargarConfiguracion(httpClient: HttpClient) {
     {provide: IRecorridoRepository, useClass: RecorridoProvider},
     {provide: IContingenciaRepository, useClass: ContingenciaProvider},
     {provide: ITipoSedeRepository, useClass: TipoSedeProvider},
+    {provide: ITipoAgenciaRepository, useClass: TipoAgenciaProvider},
+    {provide: IGrupoAgenciaRepository, useClass: GrupoAgenciaProvider},
     SubmitForm,
   ],
   bootstrap: [AppComponent],

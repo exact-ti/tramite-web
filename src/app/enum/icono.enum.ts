@@ -26,5 +26,5 @@ export enum IconoEnum {
     reporte = "fas fa-columns",
     perfil = "fas fa-user-circle",
     contingencia = "fas fa-exclamation-triangle",
-
+    sede = "fas fa-building"
 }

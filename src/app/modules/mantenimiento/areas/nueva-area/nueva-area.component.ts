@@ -88,10 +88,6 @@ export class NuevaAreaComponent implements OnInit {
     }
   }
 
-  validarCodigo(codigo: String) {
-
-  }
-
   private existenciaAreaValidator({ value }: AbstractControl): Observable<ValidationErrors | null> {
     if (value.length == 0) {
       return of(null);

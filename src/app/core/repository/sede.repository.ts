@@ -1,9 +1,9 @@
-import { Subject, Observable } from 'rxjs';
-import { Sede } from '../model/sede.model';
+import { Observable } from 'rxjs';
 
 export abstract class ISedeRepository {
-    abstract listarSedes(): Observable<any>;
-    abstract listarSedesSave(): Sede[];
+    abstract listarSedesDeUTD(): Observable<any>;
     abstract listarItemsSedesDeUtdPorTipoSede(tipoSedeId: number): Observable<any>;
-
+    abstract listarDetalleDeSede(id: number): Observable<any>;
+    abstract registrarSede( sede: any): Observable<any>;
+    abstract actualizarSede(sedeId: number,sede: any): Observable<any>;
 }

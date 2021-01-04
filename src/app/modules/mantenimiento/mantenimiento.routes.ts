@@ -33,6 +33,10 @@ const APP_ROUTES: Routes = [
         path: 'perfiles',
         loadChildren: './perfiles/perfiles.module#PerfilesModule'
     },
+    { 
+        path: 'sedes',
+        loadChildren: './sedes/sedes.module#SedesModule'
+    },
 ];
 
 export const APP_ROUTING = RouterModule.forChild(APP_ROUTES);

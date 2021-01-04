@@ -1,0 +1,13 @@
+<app-export [cabecera] = "columnas" [registros] = "sedes" nombreReporte="sedes" *ngIf="sedes.length !== 0"></app-export>
+<div class="my-4 mb-5">
+    <input class="btn btn-primary" type="submit" value="Nuevo" (click)="onAgregar()">
+
+    <div *ngIf="sedes.length !== 0; else mensaje" class="center mt-3"  style = "overflow-x: scroll;">
+        <ng2-smart-table [settings]="settings" [source]="sedesDS"></ng2-smart-table>
+    </div>
+    <ng-template #mensaje>
+        <div class="alert alert-info mt-3" role="alert">
+            No se han encontrado resultados
+        </div>
+    </ng-template>
+</div>

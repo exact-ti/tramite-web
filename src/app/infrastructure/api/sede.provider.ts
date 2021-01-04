@@ -12,7 +12,6 @@ import { Sede } from 'src/app/core/model/sede.model';
 export class SedeProvider extends ISedeRepository{
     
 
-
     constructor(
         private client: RequesterService,
         private utdRepository: IUtdRepository
@@ -22,28 +21,40 @@ export class SedeProvider extends ISedeRepository{
     }
 
     private prefix: string = "/servicio-tramite";
-    private myBool: boolean = true;
 
-    private sedesSaved: Sede[];
-
-    listarSedes(): Observable<any> {
-            return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() + "/sedes").pipe(map((response: any) => {                
-                this.sedesSaved = response.map((element)=> new Sede(element.id, element.descripcion));
-                return this.sedesSaved;
-            }))));
+    listarSedesDeUTD(): Observable<any> {
+            return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() + "/sedes")));
     } 
-    
-    listarSedesSave(): Sede[] {
-        return this.sedesSaved;
-    }
 
     listarItemsSedesDeUtdPorTipoSede(tipoSedeId: number): Observable<any> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" +utd.id.toString() + "/tipossedes/" + tipoSedeId.toString() + "/sedes").pipe(map((response: any) => {                
-            this.sedesSaved = response.data.map((element)=> new Sede(element.id, element.descripcion));
-            return this.sedesSaved;
+            return response.data.map((element)=> new Sede(element.id, element.descripcion));
         }))));
     }
 
 
+    listarDetalleDeSede(id: number): Observable<any> {
+        return this.client.get(`${this.prefix}/sedes/${id}/detalle`);
+    }
 
+    registrarSede(sede: any): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.post(this.prefix + "/utds/" +utd.id.toString() + "/sedes", this.transformar(sede))));
+    }
+
+    actualizarSede(sedeId: number, sede: any): Observable<any> {
+        return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.put(`${this.prefix}/utds/${utd.id.toString()}/sedes/${sedeId}`, this.transformar(sede))));
+    }
+
+
+    private transformar(sede: any) {
+        return {
+            codigo: sede.codigo,
+            nombre: sede.nombre,
+            tipoSedeId: sede.tipoSede.id,
+            tipoAgenciaId: sede.tipoAgencia?.id,
+            grupoAgenciaId: sede.grupoAgencia?.id,
+            activo: sede.activo,
+        }
+    }
+    
 }

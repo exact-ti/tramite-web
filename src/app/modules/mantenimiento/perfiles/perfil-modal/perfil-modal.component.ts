@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
-import { Menu } from 'src/app/core/model/menu.model';
 import { IMenuRepository } from 'src/app/core/repository/menu.repository';
 import { IPerfilRepository } from 'src/app/core/repository/perfil.repository';
 import { CheckTreeViewComponent, ITree } from 'src/app/modules/shared/check-tree-view/check-tree-view.component';
@@ -18,7 +17,6 @@ export class PerfilModalComponent implements OnInit {
 
   constructor(
     public bsModalRef: BsModalRef,
-    private modalService: BsModalService,
     private notifier: NotifierService,
     private perfilRepository: IPerfilRepository,
     private menuRepository: IMenuRepository,
@@ -41,8 +39,9 @@ export class PerfilModalComponent implements OnInit {
   menu: ITree[] = [];
   menuInitialState: ITree[] = [];
   menuPrincipal: any;
+ 
   @Output() successed = new EventEmitter();
-
+  
   ngOnInit(): void {
     this.inicializar();
   }
