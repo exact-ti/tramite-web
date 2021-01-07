@@ -24,32 +24,38 @@ export class ExportComponent implements OnInit {
   }
 
   exportar(): void {
-      this.renameProperties();
-      this.excelService.exportAsExcelFile(this.registrosConCabeceras, this.nombreReporte, this.nombreHoja);    
+    this.renameProperties();
+    this.excelService.exportAsExcelFile(this.registrosConCabeceras, this.nombreReporte, this.nombreHoja);
   }
 
   private renameProperties(): void {
-    
+
     let keys = Object.keys(this.cabecera);
     if (this.registros.length > 0) {
-    this.registrosConCabeceras = this.utils.copy(this.registros);
-    this.registrosConCabeceras.forEach(registro => delete registro["id"]);
-    this.registrosConCabeceras.forEach(registro => {
-      keys.forEach(key => {
-        var titulo = this.cabecera[key] ? this.cabecera[key].title : "ID";
-        Object.defineProperty(registro, titulo,
-          Object.getOwnPropertyDescriptor(registro, key));
-        delete registro[key];
+      this.registrosConCabeceras = this.utils.copy(this.registros);
+      this.registrosConCabeceras.forEach(registro => delete registro["id"]);
+      this.registrosConCabeceras.forEach(registro => {
+        keys.forEach(key => {
+          var titulo = this.cabecera[key] ? this.cabecera[key].title : "ID";
+          Object.defineProperty(registro, titulo,
+            Object.getOwnPropertyDescriptor(registro, key));
+          if (titulo.toString() != key.toString()) {
+            delete registro[key];
+          }else{
+            let dataKey = registro[key];
+            delete registro[key];
+            registro[key]=dataKey;
+          }
+        });
       });
-    });
-    }else{
+    } else {
       this.registrosConCabeceras = [];
       let cabecera = {};
-      keys.forEach(key =>{
-          cabecera[this.cabecera[key].title] = "";
+      keys.forEach(key => {
+        cabecera[this.cabecera[key].title] = "";
       });
       this.registrosConCabeceras.push(cabecera);
-    }  
+    }
   }
 
 }

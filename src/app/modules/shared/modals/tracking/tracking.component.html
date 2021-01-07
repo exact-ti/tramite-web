@@ -50,7 +50,7 @@
                 <div class="col-12 small font-italic text-info" *ngIf="item.observacion && item.observacion.length > 0" >{{item.observacion}}</div>
                 <div *ngIf="item.cargo" class="col-12">
                     <span *ngIf="item.cargo.tipoCargo.id == 1">
-                        Recibido con DNI : {{item.cargo.valor}}
+                        Recibido con código : {{item.cargo.valor}}
                     </span>
                     <button *ngIf="item.cargo.tipoCargo.id == 2" (click)="abrirCargo(item)" class="btn btn-link">
                         <i class="fas fa-file-signature"></i> Cargo
