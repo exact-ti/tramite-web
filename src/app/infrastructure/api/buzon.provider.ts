@@ -12,7 +12,7 @@ import { TipoBuzonEnum } from 'src/app/enum/tipoBuzon.enum';
 
 @Injectable()
 export class BuzonProvider extends IBuzonRepository {
-
+    
     
    
     
@@ -87,6 +87,11 @@ export class BuzonProvider extends IBuzonRepository {
     editarBuzon(id: number, buzon: any): Observable<any> {
         return this.client.put(this.prefix + "/buzones/"+ id.toString(), this.transformar(buzon));
     }
+
+    listarBuzones(): Observable<any> {
+        return this.client.get(this.prefix + "/buzones");
+    }
+
 
 
     transformar(buzon: any) {

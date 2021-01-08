@@ -7,6 +7,7 @@ import { AppConfig } from 'src/app/app.config';
 import { ButtonViewComponent } from '../../shared/button-view/button-view.component';
 import { take } from 'rxjs/operators';
 import { ModalComponent } from './modal/modal.component';
+import { ExcelService} from './../../../utils/excel-service';
 
 @Component({
   selector: 'app-buzones-genericos',
@@ -17,7 +18,8 @@ export class BuzonesGenericosComponent implements OnInit {
 
   constructor(
     private buzonRepository: IBuzonRepository,
-    private modalService: BsModalService,) { }
+    private modalService: BsModalService,
+    private excelService: ExcelService) { }
 
   buzonesDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
@@ -60,6 +62,20 @@ export class BuzonesGenericosComponent implements OnInit {
         }
       });
       this.buzonesDS.load(this.buzones);
+    });
+  }
+
+  descargarBuzones(): void {
+    this.buzonRepository.listarBuzones().toPromise().then(rpta => {
+      if (rpta.status == "success") {
+        this.excelService.exportAsExcelFile(rpta.data.filter(item => item.activo).map(item => {
+          return {
+            Id: item.id, 
+            "Nombre": item.nombre, 
+            "Área": item.area,
+          }
+        }), "Buzones");
+      }
     });
   }
 

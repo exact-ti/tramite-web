@@ -14,5 +14,6 @@ export abstract class IBuzonRepository{
     abstract registrarBuzon(buzon: any): Observable<any>;
     abstract editarBuzon(id: number, buzon: any): Observable<any>;
     abstract listarDetalleBuzon(id: number): Observable<any>;
+    abstract listarBuzones(): Observable<any>;
 
 }
