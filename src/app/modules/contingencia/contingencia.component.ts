@@ -26,7 +26,7 @@ export class ContingenciaComponent implements OnInit {
     private contingenciaRepository: IContingenciaRepository,
     private modalService: BsModalService,
   ) { }
-
+  public modalRef: BsModalRef;
   envios: any[] = [];
   enviosDS: LocalDataSource = new LocalDataSource();
   settings = UtilsService.tableSettings;
@@ -37,7 +37,7 @@ export class ContingenciaComponent implements OnInit {
   ];
 
   columnasExcel = {};
-  
+
 
   ngOnInit(): void {
     this.configurarTabla();
@@ -79,15 +79,16 @@ export class ContingenciaComponent implements OnInit {
         this.resetForm();
       } else if (!rpta.data) {
         this.notifier.notify(rpta.status == "fail" ? "warning" : "error", rpta.message);
-      }else {
-       this.mostrarDetalleErrores(rpta); 
+      } else {
+        this.mostrarDetalleErrores(rpta);
       }
     });
   }
 
+
   configurarTabla(): void {
     this.settings.columns = {
-      paqueteId: {
+      paquete: {
         title: 'Código de paquete'
       },
       fechaEntrega: {
@@ -120,7 +121,7 @@ export class ContingenciaComponent implements OnInit {
     }
     let envios = rows.map(row => {
       return {
-        paqueteId: row.PAQUETE,
+        paquete: row.PAQUETE,
         fechaEntrega: this.customDatePipe.transform(this.utils.excelDateToJSDate(row.FECHA).toString(), 'L LT'),
       };
     });
@@ -131,13 +132,14 @@ export class ContingenciaComponent implements OnInit {
     var fechaActual = moment();
     if (envios.find(envio => {
       var fechaEntrega = moment(envio.fechaEntrega, "DD/MM/YYYY hh:mm");
-      return fechaEntrega > fechaActual })) {
-        this.showError('Algunos registros tienen fechas de entrega mayores que la actual');
-        return;
+      return fechaEntrega > fechaActual
+    })) {
+      this.showError('Algunos registros tienen fechas de entrega mayores que la actual');
+      return;
     }
 
 
-    let paquetes = envios.map(envio => envio.paqueteId);
+    let paquetes = envios.map(envio => envio.paquete);
     paquetes = paquetes.slice().sort();
     let repetidos = [];
 
@@ -145,7 +147,7 @@ export class ContingenciaComponent implements OnInit {
       if (paquetes[i + 1] == paquetes[i]) {
         repetidos.push(paquetes[i]);
       } else {
-        if (i>0 && paquetes[i - 1] == paquetes[i]) {
+        if (i > 0 && paquetes[i - 1] == paquetes[i]) {
           repetidos.push(paquetes[i]);
         }
       }
@@ -155,7 +157,7 @@ export class ContingenciaComponent implements OnInit {
       this.showError('Los siguientes paquetes se repiten: ' + repetidos.join(', '));
       return;
     }
-    return envios;
+    return envios;  
   }
 
   resetForm(): void {
@@ -172,29 +174,37 @@ export class ContingenciaComponent implements OnInit {
     if (rpta.data[0].tieneError) {
       lista = rpta.data.map(d => {
         return {
-          ...d.objeto, 
+          ...d.objeto,
           Error: d.error,
-          }
+        }
       });
-    }else{
+    } else {
       lista = rpta.data.map(s => {
         return {
-          Sobre: s
+          Paquete: s
         }
       });
       mostrarCabecera = false;
     }
+
     let bsModalRef: BsModalRef = this.modalService.show(DetalleErrorComponent, {
       initialState: {
         mostrarCabecera,
-        mensaje: rpta.message, 
+        mensaje: rpta.message,
         lista,
       },
-      class: 'modal-lg'      
-    });
+      class: 'modal-lg',
+      keyboard: false,
+      backdrop: "static"
+    }); 
+
+    bsModalRef.content.successed.subscribe(() => {
+      this.notifier.notify('error', 'No se registró la contingencia');
+      this.resetForm();
+    })
   }
 
-  
+
 
 
 

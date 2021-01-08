@@ -60,6 +60,8 @@ export class RegistroEnvioComponent implements OnInit {
         this.filtroDestinatario = "";        
         this.notifier.notify('success','Envio registrado correctamente');
         this.listarDestinatariosFrecuentes();
+      }else{
+        this.notifier.notify('error','No se pudo realizar el registro');
       }
     }, error => {
       if (error.status === 500) {
