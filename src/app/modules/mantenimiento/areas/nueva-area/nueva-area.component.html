@@ -26,7 +26,7 @@
       [invalid]="agregarForm.get('tipoSede').invalid && !agregarForm.get('tipoSede').pristine"
       mensajeInvalido="Es necesaria la elección de un tipo de sede" formControlName="tipoSede">
     </app-valid-select>
-    <app-valid-select [id]="'sede'" [items]="sedes" [atributo]="'descripcion'" [placeholder]="'Sede'"
+    <app-valid-select [id]="'sede'" [items]="sedes" [atributo]="'descripcion'" [placeholder]="agregarForm.get('tipoSede').value ? agregarForm.get('tipoSede').value.descripcion : 'Sede'"
       [valid]="agregarForm.get('sede').valid && !agregarForm.get('sede').pristine"
       [invalid]="agregarForm.get('sede').invalid && !agregarForm.get('sede').pristine"
       mensajeInvalido="Es necesaria la elección de una sede" formControlName="sede">

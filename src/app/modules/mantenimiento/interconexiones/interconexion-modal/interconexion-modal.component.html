@@ -59,7 +59,7 @@
       <div class="row">
           <div class="col">
               <div class="alert alert-warning" role="alert">
-                  No hay turnos asociadas al recorrido
+                  No hay turnos asociadas a la interconexión
               </div>
           </div>
       </div>
@@ -72,7 +72,7 @@
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-success"
-      [disabled]="agregarForm.invalid || !interconexionFormInitialState.activo"><span>{{tipoModalId==1 ? 'Registrar' : 'Actualizar'}}</span>
+      [disabled]="agregarForm.invalid"><span>{{tipoModalId==1 ? 'Registrar' : 'Actualizar'}}</span>
     </button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
   </div>

@@ -81,14 +81,14 @@ export class RegistroEnvioComponent implements OnInit {
   }
 
   private listarDestinatariosFrecuentes(): void {
-    this.buzonRepository.listarDestinatariosFrecuentes(10).subscribe((data) => {
+    this.buzonRepository.listarDestinatariosFrecuentes(5).subscribe((data) => {
       this.destinatariosFrecuentesWrappers = data.map(item => this.addWrapper(item));
     });
   }
 
   public buscarDestinatariosPorFiltro(filtro: string): void {
     this.destinatariosFiltroWrappers = [];
-    this.buzonRepository.buscarDestinatariosPorFiltro(filtro).subscribe((data) => {
+    this.buzonRepository.buscarDestinatariosPorFiltroDelRemitente(filtro).subscribe((data) => {
       this.destinatariosFiltroWrappers = data.map(item => this.addWrapper(item))
     });
   }

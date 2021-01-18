@@ -9,7 +9,7 @@ export abstract class IBuzonRepository{
     abstract seleccionarBuzon(buzon: Buzon): Buzon;
     abstract listarBuzonesDelUsuario(): Observable<Buzon[]>;
     abstract listarDestinatariosFrecuentes(cantidad: number): Observable<Buzon[]>;
-    abstract buscarDestinatariosPorFiltro(filtro: string): Observable<Buzon[]>;
+    abstract buscarDestinatariosPorFiltroDelRemitente(filtro: string): Observable<Buzon[]>;
     abstract listarBuzonesMantenimiento(): Observable<any>;
     abstract registrarBuzon(buzon: any): Observable<any>;
     abstract editarBuzon(id: number, buzon: any): Observable<any>;

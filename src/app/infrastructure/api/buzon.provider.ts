@@ -64,11 +64,17 @@ export class BuzonProvider extends IBuzonRepository {
         }), last());
         
     }
-    buscarDestinatariosPorFiltro(filtro: string): Observable<any> {
-        return this.client.get(this.prefix + "/buzones", {
-            params: new HttpParams().set("filtro", filtro),
-        });
+
+    buscarDestinatariosPorFiltroDelRemitente(filtro: string): Observable<Buzon[]> {
+        return this.listarBuzonSeleccionado().pipe(flatMap((buzonSeleccionado)=>{
+            return this.client.get(`${this.prefix}/buzones`, {
+                params: new HttpParams()
+                .set("filtro", filtro)
+                .set("remitenteId", buzonSeleccionado.id.toString()),
+            });
+        }), last());
     }
+    
 
     listarBuzonesMantenimiento(): Observable<any> {
         return this.utdRepository.listarUtdSeleccionado().pipe(flatMap((utd: Utd) => this.client.get(this.prefix + "/utds/" + utd.id.toString() + "/tiposbuzones/"+TipoBuzonEnum.GENERICO+"/buzones",{

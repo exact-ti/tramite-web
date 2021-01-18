@@ -57,7 +57,7 @@ export class InterconexionModalComponent implements OnInit {
   interconexionFormInitialState: any = {
     id: '',
     nombre: '',
-    destino: '',
+    destino: null,
     activo: true,
   };
   ngOnInit(): void {

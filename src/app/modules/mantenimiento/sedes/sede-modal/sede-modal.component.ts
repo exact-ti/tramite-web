@@ -56,8 +56,8 @@ export class SedeModalComponent implements OnInit {
 
   async inicializarData(): Promise<void> {
 
-    this.tiposSedes = (await this.tipoSedeRepository.listarTiposSedes().toPromise()).data;
-    this.tiposAgencias = (await this.tipoAgenciaRepository.listarTiposAgenciasItems().toPromise()).data;
+    this.tiposSedes = (await this.tipoSedeRepository.listarTiposSedesDeLaUtd().toPromise()).data;
+    this.tiposAgencias = (await this.tipoAgenciaRepository.listarTiposAgenciasItemsDeLaUtd().toPromise()).data;
 
     if (this.tipoFormulario == 2) {
       let detalleSede = (await this.sedeRepository.listarDetalleDeSede(this.sedeId).toPromise()).data;
@@ -149,7 +149,7 @@ export class SedeModalComponent implements OnInit {
     if (res.status == "success") {
       this.successed.emit();
       this.bsModalRef.hide();
-      this.notifier.notify("success", `Se ha ${accion} el perfil correctamente`);
+      this.notifier.notify("success", `Se ha ${accion} la sede correctamente`);
     }else{
       this.notifier.notify(res.status == "fail" ? "warning": "error", res.message);
     }

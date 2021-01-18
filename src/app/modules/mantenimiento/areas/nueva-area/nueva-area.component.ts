@@ -60,7 +60,7 @@ export class NuevaAreaComponent implements OnInit {
   modificarAreaSubscription: Subscription;
 
   async cargarDatosVista() {
-    this.tiposSedes = (await this.tipoSedeRepository.listarTiposSedes().toPromise()).data;
+    this.tiposSedes = (await this.tipoSedeRepository.listarTiposSedesDeLaUtd().toPromise()).data;
     this.palomares = await this.palomarRepository.listarPalomares().toPromise();
     if (this.tipoModalId == 2) {
       this.agregarForm.get('tipoSede').setValue(this.tiposSedes.find(tipoSede => this.area.tipoSede.id == tipoSede.id));
